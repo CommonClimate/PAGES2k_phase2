@@ -66,24 +66,26 @@ for k = 1:nType
     
     % plot solid line otherwise, and number of proxies
     [ax,h1,h2]  = plotyy(tce,n_arch{k},tce,pcom_arch{k},@bar,@plot); hold on
-    h1.EdgeColor = rgb('Gainsboro'); h1.EdgeAlpha = 0.5;
+    set(h1,'edgecolor',rgb('Gainsboro')); % set(h1,'edgealpha',0.5);
     set(ax(1),'Ycolor',rgb('Silver'),'YAxisLocation','right','TickDir','out','YMinorTick','on')
     set(get(ax(1),'Ylabel'),'String','# records')
     set(get(ax(1),'Ylabel'),style_l{:})
-    h2.Visible = 'off'; %make invisible for now;
+    set(h2,'visible','off'); %make invisible for now;
     set(h2,'color',Graph{u,1},'linewidth',1);
     set(ax(2),'Ycolor',Graph{u,1},'YAxisLocation','left')
     set(get(ax(2),'Ylabel'),'String','Comp.');
     set(get(ax(2),'Ylabel'),style_l{:})
     set(gcf,'CurrentAxes',ax(2))
-    h2.XData = tce(thresh);  h2.YData = pcom_arch{k}(thresh);
-    refreshdata(h2); h2.Visible = 'on';
+    set(h2,'XData',tce(thresh));  
+    set(h2,'YData',pcom_arch{k}(thresh));
+    refreshdata(h2); 
+    set(h2,'visible','on');
     %plot transparent line for entire period
     hp = patchline(tce,pcom_arch{k},'edgecolor',Graph{u,1},'linewidth',2,'edgealpha',0.4); 
     % plot solid line when enough data are present
     uistack(h2,'top')
     % more cosmetics
-    linkaxes([ax(1),ax(2)],'x'), ax(1).XLim = xlims;
+    linkaxes([ax(1),ax(2)],'x'); set(ax(1),'xLim',xlims);
     set(gca,'Box', 'off', 'TickDir','out','TickLength',[.02 .02],'XMinorTick','on','YMinorTick','on', 'YGrid','on')
     set(gca,'XColor' , [.3 .3 .3], 'LineWidth', 1);
     set(ax(2),'XTick',[])
