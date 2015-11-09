@@ -16,6 +16,6 @@ pages2k_composite_prep
 
 %% STAGE 2: sensitivity analysis of the composite
 options.source = 'smoothed'; % 'unsmoothed' or 'smoothed'
-pages2k_composite_sensitivity
+pages2k_composite_sensitivity2
 
 %% STAGE 3: temperature reconstruction per se
