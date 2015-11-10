@@ -11,7 +11,7 @@ X pieces of code to know about:
 - **pages2k_composite_sensitivity.m** makes various composites by slicing and dicing in various ways.
  FEEL FREE TO ADD TO THIS AD NAUSEAM!
 
- - **pages2k_composite_regression.m** produces the temperature-scaled composite with error estimates
+- **pages2k_composite_regression.m** produces the temperature-scaled composite with error estimates
 
 Al the data are in "data". The figures are all exported to "figs"
 Code utilities are including in "utilities". If you are missing anything, we will be happy to include it.
@@ -33,4 +33,4 @@ please name it pages2k_composite_sensitivity_to_[feature of your choice].m, or u
 Make figures, tables, and analyses. Explain what you've done using abundant comments.
 
 ### Make a pull request
-This will inform the project leader (Julien) that your changes are ready to be shared. I will review them and incorporate them to the master branch if appropriate. 
+This will inform the project leader (Julien) that your changes are ready to be shared. I will review them and incorporate them to the master branch if appropriate.
