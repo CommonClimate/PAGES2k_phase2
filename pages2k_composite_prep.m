@@ -1,20 +1,11 @@
 %
 %   Reconstruct global mean temperature from proxy composite
 %     and investigate robustness to various choices.
-%    All output is saved in ['../data/Pages2kPhase2Database_' vers '_gmean.mat'];
+%    All output is saved in 'fout' (defined in 'workflow' script);
 %  
 
-
+% cosmetic definitions
 style_t = {'FontName','Helvetica','FontSize',[16],'FontWeight','bold'};
-% define options
-lat_weight = 0; % are we normalizing by the cosine of latitude? [boolean]
-sifting_style = 'noSift'; % possible choices: noSift, qcOnly, qcScreenHR, qcScreenLR, qcScreenAll
-norm_p = 1;  % are proxies Gaussianized ?    [boolean] 
-detrend = 0; % are we detrending coral d18O proxies? [boolean]  
-navlMin = 20; % what is our threshold for # samples over the Common Era?
-smoothExport = 0; % graphically export result of smoothing procedure? [boolean]
-tStart = 1; % technically, the Common Era does not have a year 0. 
-tEnd   = 2000; % end year for the analysis
 
 % define a string that encodes these options
 if norm_p == 1
@@ -134,12 +125,10 @@ fancyplot_deco('Low resolution, screened against HR neighbors','Year','PAGES2k L
 %
 linkaxes([ax1,ax2,ax3,ax4,ax5,ax6],'xy'), 
 xlim([0 2010]); ylim([-1.5 2]); 
-hepta_figprint(['./figs/composite_' opstring 'ScreeningEffects_Unsmoothed'])
+export_fig(['./figs/composite_ScreeningEffects_' opstring '_Unsmoothed.pdf'],'-r200','-cmyk','-nocrop')
 
 %% smooth things out
 % =====================
-f_hr = 1/5; f_lr = 1/30; 
-%f_hr = 1/20; f_lr = 1/20; 
 % instrumental
 tt    = hadcrut4.t;
 gmean_f = hepta_smooth(hadcrut4.gmean(ismember(tt,tce)), f_hr);
@@ -267,7 +256,8 @@ fancyplot_deco('Low resolution, screened against HR neighbors','Year','PAGES2k L
 %
 linkaxes([ax1,ax2,ax3,ax4,ax5,ax6],'xy'), 
 xlim([0 2010]); ylim([-1.5 2]); 
-hepta_figprint(['./figs/composite_' opstring 'ScreeningEffects_Smoothed'])
+export_fig(['./figs/composite_ScreeningEffects_' opstring '_Smoothed.pdf'],'-r200','-cmyk','-nocrop')
+%hepta_figprint(['./figs/composite_' opstring 'ScreeningEffects_Smoothed'])
 
 
 %% produce proxy composite
@@ -330,11 +320,14 @@ ttl = ['PAGES2k scaled composite vs HadCRUT4, ' int2str(1/f_hr) 'y smoothed' ];
 title(ttl,style_t{:});
 %axes(ax(2)), hold on
 %hs = stairs(tBin,proxyBinAvg,'k-','linewidth',2);
-lab{1} = 'HadCRUT4.2 global mean, 10y lowpass';
-lab{2} = 'PAGES2k QC composite, 10y lowpass';
+lab{1} = 'HadCRUT4.2 global mean, smoothed';
+lab{2} = 'PAGES2k QC composite, smoothed';
 %lab{3} = '30-year binnned composite';
-hl = legend([h1 h2],lab{:}); set(hl,'FontName','Palatino','FontSize',12,'box','off'); 
-hepta_figprint(['./figs/HadCRUT4_vs_composite_' opstring])
+hl = legend([h1 h2],lab{:}); set(hl,'FontSize',12,'box','off'); 
+%hepta_figprint(['./figs/HadCRUT4_vs_composite_' opstring])
+
+export_fig(['./figs/composite_vsHadCRUT4_' opstring '.pdf'],'-cmyk','-r200','-nocrop','painters')
+
 
 % %%
 % % split along HR/LR criteria

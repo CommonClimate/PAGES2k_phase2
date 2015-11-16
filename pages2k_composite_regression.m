@@ -17,7 +17,7 @@ calib = ismember(tr,ti);
 
 % missingness patterns 
 [np, kavl, kmis, prows, mp, iptrn] = missingness_patterns(proxy_r);
-pmin = 1; pmax = 2;  ns = 50; 
+pmin = 1; pmax = 2;  ns = 200; 
 alph = 0.05; quants   = [alph/2 0.5 (1-alph/2)]; % vector of quantiles
 gmean_cpr = zeros(nt,3);
 lab{1} = '95% prediction interval';
@@ -53,11 +53,11 @@ for j = 1:np
     for s = 1:ns
         noise(:,s) = arsim(w,A,C,nj);
     end
-    yp_noise(prows{j},:) = repmat(yp(prows{j}),[1 ns]) + noise;
-    
     % update the global mean reconstruction with newer nest
 
+    yp_noise(prows{j},:) = repmat(yp(prows{j}),[1 ns]) + noise;
     
+     % PLOT RECON FOR EACH NEST
 %     fig('gmean cpr'),clf
 %     ha = area_fill(tr,yp_quants{j}(:,3)',yp_quants{j}(:,1)',rgb('Silver'),rgb('Gray')); hold on
 %     h1 = plot(tt,gmean_f,'color',rgb('Black'),'linewidth',2);
@@ -82,7 +82,6 @@ yp_quants = quantile(yp_noise,quants,2);
 
 for q = 1:3
     gmean_cpr(:,q) = hepta_smooth(yp_quants(:,q),f_hr);
-    %gmean_cpr(prows{j},q) = gmean_qs(prows{j});
 end
 
 
@@ -112,7 +111,7 @@ hl = legend([ha h0 h2],lab{:}); set(hl,'FontName','Helvetica','FontSize',12,'box
 ttl = ['PAGES2k spliced reconstruction, smoothed'];
 fancyplot_deco(ttl,'year CE','Global Mean Temperature (C)',16,'Helvetica')
 set(gcf,'PaperUnits','inches','PaperPosition',[0 0 4 3],'PaperPositionMode','manual')
-hepta_figprint(['./figs/pages2k_cpr_splice_' opstring])
+hepta_figprint(['./figs/pages2k_cpr_splice_' opstring '_' SmoothString])
 
 save(fout)
 
@@ -179,4 +178,4 @@ hl = legend([h2 hrec h1 hREcrit],lab{:}); set(hl,'FontName','Palatino','FontSize
 %
 fancyplot_deco('Instrumental vs proxy-predicted GMT','year','Global Mean Temperature (C)')
 set(gca,'Ygrid','off')
-hepta_figprint(['./figs/pages2k_cpr_kcv_' opstring])
+hepta_figprint(['./figs/pages2k_cpr_kcv_' opstring '_' SmoothString])
