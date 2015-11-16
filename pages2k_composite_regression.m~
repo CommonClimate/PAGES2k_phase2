@@ -178,4 +178,7 @@ hl = legend([h2 hrec h1 hREcrit],lab{:}); set(hl,'FontName','Palatino','FontSize
 %
 fancyplot_deco('Instrumental vs proxy-predicted GMT','year','Global Mean Temperature (C)')
 set(gca,'Ygrid','off')
-hepta_figprint(['./figs/pages2k_cpr_kcv_' opstring '_' SmoothString])
+%hepta_figprint(['./figs/pages2k_cpr_kcv_' opstring '_' SmoothString])
+export_fig(['./figs/pages2k_cpr_kcv_' opstring '_' smoothString '.pdf'],'-r300','-cmyk','-nocrop')
+
+

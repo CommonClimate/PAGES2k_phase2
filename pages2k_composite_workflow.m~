@@ -32,14 +32,15 @@ f_lr = 1/30; % smoothing cutoff frequency for low-resolution records
 pages2k_composite_prep
 
 %% STAGE 2: sensitivity analysis of the composite
+options.source = 'smoothed'; % 'unsmoothed' or 'smoothed'
 
 % proxy matrix retained (purpose: comparison between raw and processed data)
-if smoothProxies
-    proxy_r = proxy_fs(:,idx_q);   
-    smoothString = 'Smoothed';
-else
+if strcmp(options.source,'unsmoothed')
     proxy_r = proxy(:,idx_q);
-    smoothString = 'Unsmoothed';
+elseif strcmp(options.source,'smoothed')
+    proxy_r = proxy_fs(:,idx_q);
+else 
+    disp('In your dreams! I don''t do that thing')
 end
 
 % stratification by archive type

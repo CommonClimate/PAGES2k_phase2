@@ -1,13 +1,8 @@
 
+% Purpose: investigate how the composite changes when binning sites by
+%  archive type
+% Contributed by: Julien Emile-Geay
 
-% proxy matrix retained for plots
-if strcmp(options.source,'unsmoothed')
-    proxy_r = proxy(:,idx_q);
-elseif strcmp(options.source,'smoothed')
-    proxy_r = proxy_fs(:,idx_q);
-else 
-    disp('In your dreams! I don''t do that thing')
-end
 
 %% 1) composite by archive type
 arch = pages2k.archive(idx_q);
@@ -96,7 +91,7 @@ for k = 1:nType
     %ha = area_fill(tce,p_up,p_dn,Graph{u,1},Graph{u,1},0.3,0.3); 
 end
 
-hepta_figprint(['./figs/compositeByArchive_' opstring '_' options.source],800)
+hepta_figprint(['./figs/compositeByArchive_' opstring '_' smoothString],400)
 
 
 save(fout)
