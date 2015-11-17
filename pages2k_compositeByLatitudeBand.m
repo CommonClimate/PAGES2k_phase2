@@ -33,7 +33,7 @@ for i = 1:5
     xlim([1 2015])
     title(band(i).title)
     holdYlim = ylim;
-    line(tce,nanmean((proxy(:,band(i).index)),2),'color',[0.9 0.9 0.9])
+    line(tce,nanmean((proxy_r(:,band(i).index)),2),'color',[0.8 0.8 0.8])
     line(tce,nanmean((proxys),2),'color',cols(i,:))
     ylim(holdYlim)
     set(gca,'xminortick','on','yminortick','on','box','on')
@@ -44,4 +44,4 @@ end
 
 set(gcf,'units','normalized','position',[0.39 0.18 0.33 0.75])
 %hepta_figprint(['./figs/compositeByLatitude_' options.source],800)
-export_fig(['./figs/compositeByLatitude_' smoothString  '.pdf'],'-r200')
+export_fig(['./figs/compositeByLatitude_' opstring '_' smoothString  '.pdf'],'-r200')

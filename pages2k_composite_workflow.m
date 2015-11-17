@@ -9,10 +9,9 @@ set(0,'defaultaxesfontsize',12); set(0,'defaulttextfontsize',12);
 % define output file
 fout = ['./data/pages2k_composite_' vers '.mat'];
 
-
 % define options
 lat_weight = 0; % are we normalizing by the cosine of latitude? [boolean]
-sifting_style = 'noSift'; % possible choices: noSift, qcOnly, qcScreenHR, qcScreenLR, qcScreenAll
+sifting_style = 'qcScreenHR'; % possible choices: noSift, qcOnly, qcScreenHR, qcScreenLR, qcScreenAll
 norm_p = 1;  % do you want proxies Gaussianized ?    [boolean] 
 detrend = 0; % do you want to detrend coral d18O proxies? [boolean]  
 navlMin = 20; % what is your threshold for # samples over the Common Era?
@@ -35,10 +34,10 @@ pages2k_composite_prep
 
 % proxy matrix retained (purpose: comparison between raw and processed data)
 if smoothProxies
-    proxy_r = proxy_fs(:,idx_q);   
+    proxy_r = standardize(proxy_f(:,idx_q));   
     smoothString = 'Smoothed';
 else
-    proxy_r = proxy(:,idx_q);
+    proxy_r = proxy_sgn(:,idx_q);
     smoothString = 'Unsmoothed';
 end
 
@@ -46,6 +45,9 @@ end
 pages2k_compositeByArchive
 % stratification by latitude band
 pages2k_compositeByLatitudeBand
+% sensitivity to record length
+pages2k_composite_recordLength
+
 % stratification however you want !
   % write your own and share it with the PAGES2k community
   
