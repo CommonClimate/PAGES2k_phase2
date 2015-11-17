@@ -5,7 +5,7 @@
 %  
 
 % cosmetic definitions
-style_t = {'FontName','Helvetica','FontSize',[16],'FontWeight','bold'};
+style_t = {'FontName','Helvetica','FontSize',14,'FontWeight','bold'};
 
 % define a string that encodes these options
 if norm_p == 1
@@ -95,37 +95,71 @@ for r = 1:nr
 end
 idx_qclr_screen = intersect(find(CalibFalse_sig),idx_qclr);
 
-%
+%%
 fig('Screening or not'), clf
-set(gcf,'Position',[440   270   752   528])
+set(gcf,'Position',[440   270   852   628])
+pmax = 600; % scale for # proxies
+ylims = [-1.5 2];
+% Unscreened HR
 ax1 = subplot(3,2,1)
-plot(tce,nmean(proxy_sgn(:,idx_qchr),2)); ps = numel(idx_qchr);
-fancyplot_deco('High Resolution (\Delta t <=5y), unscreened','','PAGES2k HR composite',12,'Helvetica')
-legend(['Unscreened HR proxies, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
-ax2 = subplot(3,2,2) 
-plot(tce,nmean(proxy_sgn(:,intersect(scr_reg,idx_qchr)),2)), ps = numel(intersect(scr_reg,idx_qchr));
-legend(['Regional screening, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
-fancyplot_deco('High Resolution, regional screening (R < 2000km)','','PAGES2k HR composite',12,'Helvetica')
+Xlab = ''; Ylab = {'# records','HR composite'};
+P = proxy_sgn(:,idx_qchr); ps = size(P,2); navl = sum(~isnan(P),2);
+col{1} = rgb('Silver'), col{2} = rgb('Blue');
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('High Resolution (\Delta t <=5y), unscreened',style_t{:})
+set(ax1,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% Regional screening
+ax2 = subplot(3,2,2)
+P = proxy_sgn(:,intersect(scr_reg,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('High Resolution, regional screening (R < 2000km)',style_t{:})
+set(ax2,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% Regional screening w/ FDR
 ax3 = subplot(3,2,3)
-plot(tce,nmean(proxy_sgn(:,intersect(scr_fdr,idx_qchr)),2)); ps = numel(intersect(scr_fdr,idx_qchr));
-fancyplot_deco('High Resolution, FDR screening (R < 2000km) ','','PAGES2k HR composite',12,'Helvetica')
-legend(['FDR screening, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
+P = proxy_sgn(:,intersect(scr_fdr,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('High Resolution, FDR screening (R < 2000km)',style_t{:})
+set(ax3,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% local screening
 ax4 = subplot(3,2,4) 
-plot(tce,nmean(proxy_sgn(:,intersect(scr_loc,idx_qchr)),2)); ps = numel(intersect(scr_loc,idx_qchr));
-legend(['Local screening, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
-fancyplot_deco('High Resolution, local screening','','PAGES2k HR composite',12,'Helvetica')
-ax5 = subplot(3,2,5)
-plot(tce,nmean(proxy_sgn(:,idx_qclr),2),'r'); ps = numel(idx_qclr);
-fancyplot_deco('Low resolution (\Delta t >5y), unscreened','Year','PAGES2k LR composite',12,'Helvetica')
-legend(['Unscreened LR proxies, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
+P = proxy_sgn(:,intersect(scr_loc,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('High Resolution, local screening',style_t{:})
+set(ax4,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% Low-res unscreened
+ax5 = subplot(3,2,5), pmax = 100;
+Xlab = 'Year CE'; Ylab = {'# records','LR composite'};
+P = proxy_sgn(:,idx_qclr); ps = size(P,2); navl = sum(~isnan(P),2);
+col{1} = rgb('Silver'), col{2} = rgb('Red');
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('Low resolution (\Delta t > 5y), unscreened',style_t{:})
+set(ax5,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% Low-res, screened
 ax6 = subplot(3,2,6) 
-plot(tce,nmean(proxy_sgn(:,idx_qclr_screen),2),'r'),  ps = numel(idx_qclr_screen);
-legend(['Screened LR proxies, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
-fancyplot_deco('Low resolution, screened against HR neighbors','Year','PAGES2k LR composite',12,'Helvetica')
+P = proxy_sgn(:,idx_qclr_screen); ps = size(P,2); navl = sum(~isnan(P),2);
+col{1} = rgb('Silver'), col{2} = rgb('Red');
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('Low resolution, screened against HR neighbors',style_t{:})
+set(ax6,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+
 %
-linkaxes([ax1,ax2,ax3,ax4,ax5,ax6],'xy'), 
-xlim([0 2010]); ylim([-1.5 2]); 
-export_fig(['./figs/composite_ScreeningEffects_' opstring '_Unsmoothed.pdf'],'-r200','-cmyk','-nocrop')
+%linkaxes([ax1,ax2,ax3,ax4,ax5,ax6],'xy'), 
+%xlim([0 2010]); ylim([-1.5 2]); 
+%export_fig(['./figs/composite_ScreeningEffects_' opstring '_Unsmoothed.pdf'],'-r200','-cmyk','-nocrop')
+
+hepta_figprint(['./figs/composite_ScreeningEffects_' opstring '_Unsmoothed'])
 
 %% smooth things out
 % =====================
@@ -226,37 +260,10 @@ for r = idx_qclr
     end
 end
 
-%
-fig('Screening or not, after smoothing'), clf
-set(gcf,'Position',[440   270   752   528])
-ax1 = subplot(3,2,1)
-plot(tce,nmean(proxy_f(:,idx_qchr),2)); ps = numel(idx_qchr);
-fancyplot_deco('High Resolution (\Delta t <=5y), unscreened','','PAGES2k HR composite',12,'Helvetica')
-legend(['Unscreened HR proxies, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
-ax2 = subplot(3,2,2) 
-plot(tce,nmean(proxy_f(:,intersect(scr_reg,idx_qchr)),2)), ps = numel(intersect(scr_reg,idx_qchr));
-legend(['Regional screening, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
-fancyplot_deco('High Resolution, regional screening (R < 2000km)','','PAGES2k HR composite',12,'Helvetica')
-ax3 = subplot(3,2,3)
-plot(tce,nmean(proxy_f(:,intersect(scr_fdr,idx_qchr)),2)); ps = numel(intersect(scr_fdr,idx_qchr));
-fancyplot_deco('High Resolution, FDR screening (R < 2000km) ','','PAGES2k HR composite',12,'Helvetica')
-legend(['FDR screening, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
-ax4 = subplot(3,2,4) 
-plot(tce,nmean(proxy_f(:,intersect(scr_loc,idx_qchr)),2)); ps = numel(intersect(scr_loc,idx_qchr));
-legend(['Local screening, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
-fancyplot_deco('High Resolution, local screening','','PAGES2k HR composite',12,'Helvetica')
-ax5 = subplot(3,2,5)
-plot(tce,nmean(proxy_f(:,idx_qclr),2),'r'); ps = numel(idx_qclr);
-fancyplot_deco('Low resolution (\Delta t >5y), unscreened','Year','PAGES2k LR composite',12,'Helvetica')
-legend(['Unscreened LR proxies, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
-ax6 = subplot(3,2,6) 
-plot(tce,nmean(proxy_f(:,idx_qclr_screen),2),'r'),  ps = numel(idx_qclr_screen);
-legend(['Screened LR proxies, ', int2str(ps) ' records'],'location','Northwest'), legend boxoff
-fancyplot_deco('Low resolution, screened against HR neighbors','Year','PAGES2k LR composite',12,'Helvetica')
-%
-linkaxes([ax1,ax2,ax3,ax4,ax5,ax6],'xy'), 
-xlim([0 2010]); ylim([-1.5 2]); 
-export_fig(['./figs/composite_ScreeningEffects_' opstring '_Smoothed.pdf'],'-r200','-cmyk','-nocrop')
+
+
+
+
 %hepta_figprint(['./figs/composite_' opstring 'ScreeningEffects_Smoothed'])
 
 
@@ -294,13 +301,77 @@ else
     proxy_fs = standardize(proxy_f(:,idx_q));%.*repmat(sgn_vec(idx_q)',[nce, 1]);  
 end
 
-% mean composite
+
+%%
+fig('Screening or not, after smoothing'), clf
+set(gcf,'Position',[440   270   852   628])
+pmax = 600; % scale for # proxies
+ylims = [-1.5 2];
+% Unscreened HR
+ax1 = subplot(3,2,1)
+Xlab = ''; Ylab = {'# records','HR composite'};
+P = proxy_fs(:,idx_qchr); ps = size(P,2); navl = sum(~isnan(P),2);
+col{1} = rgb('Silver'), col{2} = rgb('Blue');
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('High Resolution (\Delta t <=5y), unscreened',style_t{:})
+set(ax1,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% Regional screening
+ax2 = subplot(3,2,2)
+P = proxy_fs(:,intersect(scr_reg,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('High Resolution, regional screening (R < 2000km)',style_t{:})
+set(ax2,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% Regional screening w/ FDR
+ax3 = subplot(3,2,3)
+P = proxy_fs(:,intersect(scr_fdr,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('High Resolution, FDR screening (R < 2000km)',style_t{:})
+set(ax3,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% local screening
+ax4 = subplot(3,2,4) 
+P = proxy_fs(:,intersect(scr_loc,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('High Resolution, local screening',style_t{:})
+set(ax4,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% Low-res unscreened
+ax5 = subplot(3,2,5), pmax = 100;
+Xlab = 'Year CE'; Ylab = {'# records','LR composite'};
+P = proxy_fs(:,idx_qclr); ps = size(P,2); navl = sum(~isnan(P),2);
+col{1} = rgb('Silver'), col{2} = rgb('Red');
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('Low resolution (\Delta t > 5y), unscreened',style_t{:})
+set(ax5,'Ylim',[0 pmax],'Ytick',[0:100:pmax]);
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% Low-res, screened
+ax6 = subplot(3,2,6) 
+P = proxy_fs(:,idx_qclr_screen); ps = size(P,2); navl = sum(~isnan(P),2);
+col{1} = rgb('Silver'), col{2} = rgb('Red');
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+set(ax(1),'xLim',[tStart tEnd]);
+title('Low resolution, screened against HR neighbors',style_t{:})
+set(ax6,'Ylim',[0 pmax],'Ytick',[0:100:pmax]);
+set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+%
+%linkaxes([ax1,ax2,ax3,ax4,ax5,ax6],'xy'), 
+% export
+hepta_figprint(['./figs/composite_ScreeningEffects_' opstring '_Smoothed'])
+
+%% mean composite
 p_comp = nmean(proxy_fs,2);
 p_std  =  nstd(proxy_fs,0,2);
 save(fout)
 
 
-%% FIGURE
+% FIGURE
 fig('global composite'), clf
 [ax, h1, h2] = plotyy(tt,gmean_f, tce,p_comp, 'plot');
 set(h1,'color',rgb('Silver'),'linewidth',2); 
