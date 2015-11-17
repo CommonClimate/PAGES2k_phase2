@@ -5,6 +5,7 @@ The main goal of this repository is to give project collaborators
 
 ## Organization
 
+**pages2k_composite_worflow.m** is made up of the following pieces:
 - **pages2k_composite_prep.m** prepares the data for compositing. The following codes then slice and dice the living daylight out of them:
 
 - **pages2k_compositeByArchive**
