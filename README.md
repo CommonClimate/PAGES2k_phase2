@@ -14,7 +14,7 @@ X pieces of code to know about:
 - **pages2k_composite_regression.m** produces the temperature-scaled composite with error estimates
 
 Al the data are in "data". The figures are all exported to "figs"
-Code utilities are including in "utilities". If you are missing anything, we will be happy to include it. To comply with the license, some third-party packages need to be installed separately.
+Code dependencies needed to run the above codes are included in "utilities". If you are missing anything, we will be happy to add it. To comply with the license, some third-party packages need to be installed separately:
 
 - [export_fig](https://github.com/altmany/export_fig)
 
