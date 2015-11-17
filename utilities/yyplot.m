@@ -1,5 +1,5 @@
-function [ax,h1,h2] = yyplot(x,y1,y2,Xlab,Ylab,Ttl,col)
-% function [ax,h1,h2] = yyplot(t,X,Y,Xlab,Ylab,Ttl)
+function [ax,h1,h2] = yyplot(x,y1,y2,Xlab,Ylab,col)
+% function [ax,h1,h2] = yyplot(t,X,Y,Xlab,Ylab,col)
 %   Plot two variables, one as bars (X, h1) , the other as a curve (Y, h2),
 %     as a function of time (t). 
 %
@@ -22,16 +22,6 @@ set(h2,'color',col{2},'linewidth',1);
 set(ax(2),'Ycolor',col{2},'YAxisLocation','left')
 set(get(ax(2),'Ylabel'),'String',Ylab{2});
 set(get(ax(2),'Ylabel'),style_l{:})
-% set(gcf,'CurrentAxes',ax(2))
-% set(h2,'XData',tce(thresh));
-% set(h2,'YData',pcom_arch{k}(thresh));
-% refreshdata(h2);
-% set(h2,'visible','on');
-% %plot transparent line for entire period
-% hp = patchline(x,y1,'edgecolor',Graph{u,1},'linewidth',2,'edgealpha',0.4);
-% % plot solid line when enough data are present
-% uistack(h2,'top')
-% more cosmetics
 linkaxes([ax(1),ax(2)],'x'); 
 set(gca,'Box', 'off', 'TickDir','out','TickLength',[.02 .02],'XMinorTick','on','YMinorTick','on', 'YGrid','on')
 set(gca,'XColor' , [.3 .3 .3], 'LineWidth', 1);

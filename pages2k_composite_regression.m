@@ -111,7 +111,7 @@ hl = legend([ha h0 h2],lab{:}); set(hl,'FontName','Helvetica','FontSize',12,'box
 ttl = ['PAGES2k spliced reconstruction, smoothed'];
 fancyplot_deco(ttl,'year CE','Global Mean Temperature (C)',16,'Helvetica')
 set(gcf,'PaperUnits','inches','PaperPosition',[0 0 4 3],'PaperPositionMode','manual')
-hepta_figprint(['./figs/pages2k_cpr_splice_' opstring '_' SmoothString])  %% transparency needs to be restored in Illustrator or such if you are using Matlab's old graphics engine
+hepta_figprint(['./figs/pages2k_cpr_splice_' opstring '_' smoothString])  %% transparency needs to be restored in Illustrator or such if you are using Matlab's old graphics engine
 %export_fig(['./figs/pages2k_cpr_splice_' opstring '_' smoothString '.png'],'-r300','-cmyk','-painters','-nocrop')
 
 
@@ -181,7 +181,7 @@ hl = legend([h2 hrec h1 hREcrit],lab{:}); set(hl,'FontName','Helvetica','FontSiz
 %
 fancyplot_deco('Instrumental vs proxy-predicted GMT','year','Global Mean Temperature (C)')
 set(gca,'Ygrid','off')
-%hepta_figprint(['./figs/pages2k_cpr_kcv_' opstring '_' smoothString])
-export_fig(['./figs/pages2k_cpr_kcv_' opstring '_' smoothString '.pdf'],'-r800','-cmyk','-painters','-nocrop')
+hepta_figprint(['./figs/pages2k_cpr_kcv_' opstring '_' smoothString])
+%export_fig(['./figs/pages2k_cpr_kcv_' opstring '_' smoothString '.pdf'],'-r800','-cmyk','-painters','-nocrop')
 
 

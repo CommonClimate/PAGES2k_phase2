@@ -105,7 +105,7 @@ ax1 = subplot(3,2,1)
 Xlab = ''; Ylab = {'# records','HR composite'};
 P = proxy_sgn(:,idx_qchr); ps = size(P,2); navl = sum(~isnan(P),2);
 col{1} = rgb('Silver'), col{2} = rgb('Blue');
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('High Resolution (\Delta t <=5y), unscreened',style_t{:})
 set(ax1,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
@@ -113,7 +113,7 @@ set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 % Regional screening
 ax2 = subplot(3,2,2)
 P = proxy_sgn(:,intersect(scr_reg,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('High Resolution, regional screening (R < 2000km)',style_t{:})
 set(ax2,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
@@ -121,7 +121,7 @@ set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 % Regional screening w/ FDR
 ax3 = subplot(3,2,3)
 P = proxy_sgn(:,intersect(scr_fdr,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('High Resolution, FDR screening (R < 2000km)',style_t{:})
 set(ax3,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
@@ -129,7 +129,7 @@ set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 % local screening
 ax4 = subplot(3,2,4) 
 P = proxy_sgn(:,intersect(scr_loc,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('High Resolution, local screening',style_t{:})
 set(ax4,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
@@ -139,7 +139,7 @@ ax5 = subplot(3,2,5), pmax = 100;
 Xlab = 'Year CE'; Ylab = {'# records','LR composite'};
 P = proxy_sgn(:,idx_qclr); ps = size(P,2); navl = sum(~isnan(P),2);
 col{1} = rgb('Silver'), col{2} = rgb('Red');
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('Low resolution (\Delta t > 5y), unscreened',style_t{:})
 set(ax5,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
@@ -148,7 +148,7 @@ set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 ax6 = subplot(3,2,6) 
 P = proxy_sgn(:,idx_qclr_screen); ps = size(P,2); navl = sum(~isnan(P),2);
 col{1} = rgb('Silver'), col{2} = rgb('Red');
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('Low resolution, screened against HR neighbors',style_t{:})
 set(ax6,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
@@ -310,33 +310,33 @@ ylims = [-1.5 2];
 % Unscreened HR
 ax1 = subplot(3,2,1)
 Xlab = ''; Ylab = {'# records','HR composite'};
-P = proxy_fs(:,idx_qchr); ps = size(P,2); navl = sum(~isnan(P),2);
+P = standardize(proxy_f(:,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
 col{1} = rgb('Silver'), col{2} = rgb('Blue');
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('High Resolution (\Delta t <=5y), unscreened',style_t{:})
 set(ax1,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
 set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 % Regional screening
 ax2 = subplot(3,2,2)
-P = proxy_fs(:,intersect(scr_reg,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+P = standardize(proxy_f(:,intersect(scr_reg,idx_qchr))); ps = size(P,2); navl = sum(~isnan(P),2);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('High Resolution, regional screening (R < 2000km)',style_t{:})
 set(ax2,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
 set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 % Regional screening w/ FDR
 ax3 = subplot(3,2,3)
-P = proxy_fs(:,intersect(scr_fdr,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+P = standardize(proxy_f(:,intersect(scr_fdr,idx_qchr))); ps = size(P,2); navl = sum(~isnan(P),2);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('High Resolution, FDR screening (R < 2000km)',style_t{:})
 set(ax3,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
 set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 % local screening
 ax4 = subplot(3,2,4) 
-P = proxy_fs(:,intersect(scr_loc,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+P = standardize(proxy_f(:,intersect(scr_loc,idx_qchr))); ps = size(P,2); navl = sum(~isnan(P),2);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('High Resolution, local screening',style_t{:})
 set(ax4,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
@@ -344,18 +344,18 @@ set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 % Low-res unscreened
 ax5 = subplot(3,2,5), pmax = 100;
 Xlab = 'Year CE'; Ylab = {'# records','LR composite'};
-P = proxy_fs(:,idx_qclr); ps = size(P,2); navl = sum(~isnan(P),2);
+P = standardize(proxy_f(:,idx_qclr)); ps = size(P,2); navl = sum(~isnan(P),2);
 col{1} = rgb('Silver'), col{2} = rgb('Red');
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('Low resolution (\Delta t > 5y), unscreened',style_t{:})
 set(ax5,'Ylim',[0 pmax],'Ytick',[0:100:pmax]);
 set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 % Low-res, screened
 ax6 = subplot(3,2,6) 
-P = proxy_fs(:,idx_qclr_screen); ps = size(P,2); navl = sum(~isnan(P),2);
+P = standardize(proxy_f(:,idx_qclr_screen)); ps = size(P,2); navl = sum(~isnan(P),2);
 col{1} = rgb('Silver'), col{2} = rgb('Red');
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,Ttl,col);
+[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
 set(ax(1),'xLim',[tStart tEnd]);
 title('Low resolution, screened against HR neighbors',style_t{:})
 set(ax6,'Ylim',[0 pmax],'Ytick',[0:100:pmax]);
