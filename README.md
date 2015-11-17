@@ -4,14 +4,13 @@ Data and Matlab code for the second phase of the PAGES2k synthesis of temperatur
 The main goal of this repository is to give project collaborators
 
 ## Organization
-X pieces of code to know about:
 
-- **pages2k_composite_prep.m** prepares the data for compositing, then we slice and dice the dataset in all kinds of ways:
+- **pages2k_composite_prep.m** prepares the data for compositing. The following codes then slice and dice the living daylight out of them:
 
 - **pages2k_compositeByArchive**
-- **pages2k_compositeByLatitudeBand
-- **sensitivity to record length
-- **YOUR_CONTRIBUTION_HERE
+- **pages2k_compositeByLatitudeBand**
+- **sensitivity to record length**
+- **YOUR_CONTRIBUTION_HERE**
 
 - **pages2k_composite_regression.m** produces the temperature-scaled composite with error estimates
 
