@@ -1,7 +1,7 @@
 
 # PAGES2k phase2 composite
 Data and Matlab code for the second phase of the PAGES2k synthesis of temperature-sensitive proxies.
-The main goal of this repository is to give project collaborators
+The main goal of this repository is to give project collaborators the opportunity to experiment with the code and data, and generate their own analyses to clarify points they believe insufficiently clear in the current version of the manuscript.
 
 ## Organization
 
