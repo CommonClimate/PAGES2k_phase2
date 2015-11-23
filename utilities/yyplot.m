@@ -25,5 +25,7 @@ set(get(ax(2),'Ylabel'),style_l{:})
 linkaxes([ax(1),ax(2)],'x'); 
 set(gca,'Box', 'off', 'TickDir','out','TickLength',[.02 .02],'XMinorTick','on','YMinorTick','on', 'YGrid','on')
 set(gca,'XColor' , [.3 .3 .3], 'LineWidth', 1);
+xlabel(Xlab);
+set(gca,style_l{:})
 set(ax(2),'XTick',[])
 ch = get(h1,'child'); set(ch,'EdgeAlpha',.3)
