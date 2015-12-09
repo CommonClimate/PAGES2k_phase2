@@ -1,11 +1,12 @@
 %
 %   Reconstruct global mean temperature from proxy composite
 %     and investigate robustness to various choices.
-%    All output is saved in 'fout' (defined in 'workflow' script);
+%    All output is saved in 'f_out' (defined in 'workflow' script);
 %  
 
 % cosmetic definitions
 style_t = {'FontName','Helvetica','FontSize',14,'FontWeight','bold'};
+style_l = {'FontName','Helvetica','FontSize',12,'FontWeight','bold'};
 
 % define a string that encodes these options
 if norm_p == 1
@@ -23,18 +24,19 @@ opstring =  [sifting_style '_'  Gauss '_' dts];
 
 % load data matrices [TO DO: clean up so only the merged one is needed]
 % ==================
-% HadCRUT4.2 data interpolated as in https://www.authorea.com/users/18150/articles/20243/_show_article
-hadcrut4 = load('./data/had4med_graphem_sp70_annual');
+hadcrut4 = load(f_temp);  
 % PAGES2k database
-pages2k = load(['./data/Pages2kPhase2Database_' vers '_unpack']);
+pages2k = load(f_db); 
+
 % define output file
-merged = load(['./data/pages2k_hadcrut4_original_' vers '.mat'])% merged proxy /temperature matrix
+%merged = load(['./data/pages2k_hadcrut4_noDetrend_' vers '.mat'])% deprecated 
+merged = load(f_merged)% merged proxy /temperature matrix
 % load essential arrays
 t = pages2k.year;
 tce  = pages2k.year(t >= tStart & t <= tEnd); nce = length(tce);
 
-T = pages2k.TS_temp; nr = length(T);
-names = {T.paleoArchiveName};
+T = pages2k.S; nr = length(T);
+names = {T.dataSetName};
 yearMin = pages2k.yearMin;
 yearMax = pages2k.yearMax;
 resMed  = pages2k.resMed;
@@ -43,6 +45,10 @@ resAvg  = pages2k.resAvg;
 resMax  = pages2k.resMax;
 p_code  = pages2k.p_code; 
 Graph   = pages2k.Graph; 
+p_lon   = pages2k.p_lon;
+p_lat   = pages2k.p_lat;
+edgec   = pages2k.edgec;
+
 
 incl = [1:nr]; 
 % account for various pre-processing choices
@@ -59,33 +65,34 @@ end
 [ny,nr] = size(proxy);
 
 % exploit temperature interpretation
-sgn = lower({T.climateInterpretationInterpDirection});
+sgn = lower({T.climateInterpretation_interpDirection});
 sgn_vec = zeros(nr,1);
 for r = 1:nr
-    if strcmpi(sgn{r},'positive')
+    if strcmpi(sgn{r},'positive') || strcmpi(sgn{r},'p')  % KLUDGE
         sgn_vec(r) = +1;
     elseif strcmpi(sgn{r},'negative')
         sgn_vec(r) = -1;
     end
 end
+
 proxy_sgn = standardize(proxy).*repmat(sgn_vec',[nce, 1]);
 
 %% apply basic filtering: 
 %  - proxies need to be available at least prior to 1850AD, and with a total of at least 20 observations
 %  - kick boreholes out (they are great for validation, but they are not proxies) 
-navl      = sum(~isnan(proxy_sgn)); ma = {pages2k.TS_temp.archiveType};
+navl      = sum(~isnan(proxy_sgn)); ma = {pages2k.S.archiveType};
 idx_qchr = find(~strcmp(ma,'borehole') & resMed' <= 5 & resAvg' <= 5 & yearMin' <= 1850 & navl >= navlMin);
 idx_qclr = find(~strcmp(ma,'borehole') & resMed'  > 5 & yearMin' <= 1850 & navl >= navlMin);%
 
 %% screening for significant correlations.
 % 1) Calibratable Proxies
 radius   = merged.pages2k.radius;
-scr_reg  = find(merged.pages2k.screen_reg{1}); % MAT regional correlation screening
+scr_reg  = merged.pages2k.screen_reg{1}; % MAT regional correlation screening
 scr_fdr  = find(merged.pages2k.signif_fdr_mat(:,radius == 2000)); % MAT regional correlation screening controlling for false discovery rate
-scr_loc  = find(merged.pages2k.screen_loc{1}); % MAT local correlation screening
+scr_loc  = merged.pages2k.screen_loc{1}; % MAT local correlation screening
 
 % merge indices of screened proxies
-idx_qchr_scr_fdr = intersect(scr_fdr,idx_qchr);
+idx_qchr_scr = intersect(scr_reg,idx_qchr);
 
 CalibFalse_sig = zeros(nr,1); signif_n = pages2k.signif_n;
 for r = 1:nr
@@ -161,6 +168,8 @@ set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 
 hepta_figprint(['./figs/composite_ScreeningEffects_' opstring '_Unsmoothed'])
 
+
+
 %% smooth things out
 % =====================
 % instrumental
@@ -219,14 +228,14 @@ for r = idx_qchr
         ha = plot(ti,Zf,'color',Graph{p_code(r),1},'linewidth',2); hold off;
         xlim([max(1,yearMin(r)),yearMax(r)]);
         lab{1}  = 'annualized data'; lab{2} = [int2str(1/f_hr) 'y smoothed'];
-        site_n = strrep(T(r).paleoArchiveName,'_',' ');
+        site_n = strrep(T(r).dataSetName,'_',' ');
         ttl = [int2str(j),') record #',int2str(r),', ',T(r).archiveType,', ', site_n];
         ylab = [T(r).measurementShortName ' (' removeLeadingAndTrailingSpaces(T(r).measurementUnits) ')'];
         fancyplot_deco(ttl,'Year (CE)',ylab,14);
         legend(lab{:}), legend boxoff
         filen=['./figs/smoothing/pages_2k_phase2_record_' sprintf('%03d',r) '_' opstring '.pdf'];
         %pause
-        export_fig(filen,'-r100','-cmyk','-painters','-nocrop')
+        export_fig(filen,'-r100','-cmyk','-nocrop')
     end
 end
 
@@ -249,7 +258,7 @@ for r = idx_qclr
         ha = plot(ti,Zf,'color',Graph{p_code(r),1},'linewidth',2); hold off;
         xlim([max(1,yearMin(r)),yearMax(r)]);
         lab{1}  = 'annualized data'; lab{2} = [int2str(1/f_lr) 'y smoothed'];
-        site_n = strrep(T(r).paleoArchiveName,'_',' ');
+        site_n = strrep(T(r).dataSetName,'_',' ');
         ttl = [int2str(j),') record #',int2str(r),', ',T(r).archiveType,', ', site_n];
         ylab = [T(r).measurementShortName ' (' removeLeadingAndTrailingSpaces(T(r).measurementUnits) ')'];
         fancyplot_deco(ttl,'Year (CE)',ylab,14);
@@ -262,11 +271,6 @@ end
 
 
 
-
-
-%hepta_figprint(['./figs/composite_' opstring 'ScreeningEffects_Smoothed'])
-
-
 %% produce proxy composite
 % the signal appears much cleaner w/ screening. 
 switch sifting_style
@@ -274,14 +278,14 @@ switch sifting_style
         idx_q = [1:nr];
         p_lr = numel(resMed <= 5); p_hr = numel(resMed > 5);
     case 'qcOnly'
-        idx_q    = union(idx_qchr,idx_qclr,'stable');
+        idx_q    = unique(union(idx_qchr,idx_qclr,'stable'));
         p_lr = numel(idx_qclr); p_hr = numel(idx_qchr);
     case 'qcScreenAll'
-        idx_q    = union(idx_qchr_scr_fdr,idx_qclr_screen,'stable');
-        p_lr = numel(idx_qclr_screen); p_hr = numel(idx_qchr_scr_fdr);
+        idx_q    = union(idx_qchr_scr,idx_qclr_screen,'stable');
+        p_lr = numel(idx_qclr_screen); p_hr = numel(idx_qchr_scr);
     case 'qcScreenHR'
-        idx_q    = union(idx_qchr_scr_fdr,idx_qclr,'stable');
-        p_lr = numel(idx_qclr); p_hr = numel(idx_qchr_scr_fdr);
+        idx_q    = union(idx_qchr_scr,idx_qclr,'stable');
+        p_lr = numel(idx_qclr); p_hr = numel(idx_qchr_scr);
     case 'qcScreenLR'
         idx_q    = union(idx_qchr,idx_qclr_screen,'stable');
         p_lr = numel(idx_qclr_screen); p_hr = numel(idx_qchr);
@@ -300,6 +304,60 @@ if lat_weight
 else
     proxy_fs = standardize(proxy_f(:,idx_q));%.*repmat(sgn_vec(idx_q)',[nce, 1]);  
 end
+
+%% MAP THE RECORDS USED IN THE COMPOSITE
+p_code_k = p_code(idx_q);  avec = unique(p_code_k);
+aType  = pages2k.archiveType(avec); nak = numel(aType);
+Graph_k = Graph(avec,:); avail_k = pages2k.avail(t >= tStart & t <= tEnd,idx_q);
+nproxy = zeros(ny,nak); pind = zeros(nak,1); 
+for k=1:nak % loop over archive types
+    a = avec(k);
+    nproxy(:,a) = sum(~isnan(avail_k(:,p_code_k == a)),2);
+    pind(a) = find(p_code_k == a,1,'first');
+end
+pind = pind(pind~=0);
+
+n1000 = ceil(sum(nproxy(tce == 1000,:))/10)*10;
+nsites    = length(unique({pages2k.S(idx_q).dataSetName})); % # of sites
+versl = strrep(vers,'_','.');
+fig('PAGES 2K screened'), clf;
+set(gcf,'position',[10 10 791 550])
+orient landscape
+% plot spatial distribution
+hmap=axes('Position', [.05 0.45 0.75 0.5]);
+m_proj('Robinson','clong',10);
+m_coast('patch',[.9 .9 .9]);
+m_grid('xtick',6,'ytick',9,'xticklabel',[ ],'xlabeldir','middle', 'fontsize',8);
+% loop over records
+for j = 1:length(idx_q)
+    r = idx_q(j);
+    hk(j) = m_line(p_lon(r),p_lat(r),'marker',Graph{p_code(r),2},'MarkerEdgeColor',edgec{r},'MarkerFaceColor',Graph{p_code(r),1},'linewidth',[1],'MarkerSize',[7],'linestyle','none');
+end
+text(-2,1.75,['Screened PAGES2k network (',sifting_style,' sifting , ', int2str(length(idx_q)) , ' records from ', int2str(nsites), ' sites)'],style_t{:});
+% legend
+hl = legend(hk(pind),aType,'location',[.84 .6 .1 .2]);
+set(hl, 'FontName', 'Helvetica','box','off');
+% temporal availability
+hstack=axes('Position', [0.1 0.1 0.8 0.29]);
+cmap=cell2mat(Graph(:,1));
+colormap(cmap);
+area(tce,nproxy,'EdgeColor','w'), set(gca,'YAxisLocation','Right');
+xlim([1 2000])
+fancyplot_deco('','Year (CE)','# proxies');
+title('Temporal Availability',style_t{:})
+% inset
+frac=.5;
+hstackin=axes('Position', [0.1 0.23 frac*.8 0.14]);
+area(tce,nproxy,'EdgeColor','w')
+axis([1 1000 0 n1000])
+set(hstackin,'xtick',[],'box','off','TickDir','out','TickLength',[.02 .02],'YMinorTick','on', 'YGrid','on')
+set(hstackin,'YAxisLocation','Right')
+set(hstackin,'ytick',[0:50:n1000],'YColor', [.3 .3 .3])
+%title('First Millennium',style_l{:})
+hepta_figprint('./figs/records_included_in_composite')
+
+clear hk
+
 
 
 %%
@@ -368,7 +426,7 @@ hepta_figprint(['./figs/composite_ScreeningEffects_' opstring '_Smoothed'])
 %% mean composite
 p_comp = nmean(proxy_fs,2);
 p_std  =  nstd(proxy_fs,0,2);
-save(fout)
+save(f_out)
 
 
 % FIGURE

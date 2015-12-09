@@ -1,29 +1,43 @@
 clear all; close all;  % clean slate
-vers = '2015_08_20';  % version of the database to be use
+vers = '1_7_1';  % version of the database to be use
 addpath(genpath('./utilities'))% load code utilities 
-% define graphical defaults
-set(0, 'DefaultAxesFontName', 'Helvetica','DefaultAxesFontWeight','bold')
-set(0, 'DefaultTextFontName', 'Helvetica','DefaultTextFontWeight','bold')  
-set(0,'defaultaxesfontsize',12); set(0,'defaulttextfontsize',12);
 
-% define output file
-fout = ['./data/pages2k_composite_' vers '.mat'];
-
-% define options
+% define analysis options
 lat_weight = 0; % are we normalizing by the cosine of latitude? [boolean]
 sifting_style = 'qcScreenHR'; % possible choices: noSift, qcOnly, qcScreenHR, qcScreenLR, qcScreenAll
-norm_p = 1;  % do you want proxies Gaussianized ?    [boolean] 
+norm_p = 0;  % do you want proxies Gaussianized ?    [boolean] 
 detrend = 0; % do you want to detrend coral d18O proxies? [boolean]  
 navlMin = 20; % what is your threshold for # samples over the Common Era?
 smoothProxies = 1 ; % do you want to smooth proxies or use raw data?
 smoothExport = 0; % should we graphically export result of the smoothing procedure? [boolean]
 tStart = 1; % define start year (remember: the Common Era does not have a year 0). 
 tEnd   = 2000; %  define end year for the analysis
-f_hr = 1/10;  % smoothing cutoff frequency for high-resolution records
-f_lr = 1/30; % smoothing cutoff frequency for low-resolution records
+f_hr = 1/10;  % smoothing cutoff frequency for high-resolution records [in 1/years]
+f_lr = 1/30; % smoothing cutoff frequency for low-resolution records  [in 1/years]
 
 
+% define I/O files
+f_out = ['./data/pages2k_composite_' vers '.mat'];
+f_db = ['./data/pages2kTS_' vers '_unpack'];
+f_temp = './data/had4med_graphem_sp70_annual'; % replaced with Cowtan & Way median
+if detrend
+    d_str = 'detrend';
+else
+    d_str = 'noDetrend';
+end
 
+if norm_p 
+    g_str = 'normal';
+else
+    g_str = 'raw';
+end
+
+f_merged = ['./data/pages2k_hadcrut4_' d_str '_' g_str '_' vers];
+
+% define graphical defaults
+set(0, 'DefaultAxesFontName', 'Helvetica','DefaultAxesFontWeight','bold')
+set(0, 'DefaultTextFontName', 'Helvetica','DefaultAxesFontWeight','normal')  
+set(0,'defaultaxesfontsize',12); set(0,'defaulttextfontsize',12);
 
 % Now let the wild rumpus begin
 
@@ -54,6 +68,7 @@ pages2k_composite_recordLength
 
 %% STAGE 3: temperature reconstruction per se
 
+% TO DO: fix # of records
 pages2k_composite_regression
 
 

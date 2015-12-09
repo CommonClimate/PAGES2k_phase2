@@ -3,7 +3,7 @@
 % align proxies and temperature matrices.
 nproxy = zeros(nce,1);
 for j=1:nce
-	nz = ~isnan(proxy(j,:));
+	nz = ~isnan(proxy_r(j,:));
 	nproxy(j) = sum(nz);
 end
 iRecon = (nproxy>=10);  % 1 to 2010.
@@ -75,7 +75,7 @@ for j = 1:np
     % save frame!  
 end
 
-save(fout)
+save(f_out)
 
 
 yp_quants = quantile(yp_noise,quants,2);
@@ -84,7 +84,7 @@ for q = 1:3
     gmean_cpr(:,q) = hepta_smooth(yp_quants(:,q),f_hr);
 end
 
-
+%% PLOT
 fig('gmean cpr splice'),clf
 [ax, h1, h2] = plotyy(tce,nproxy, tr,gmean_cpr(:,2),'bar','plot'); hold on
 set(h1,'Edgecolor',rgb('Gainsboro')); 
@@ -116,7 +116,7 @@ hepta_figprint(['./figs/pages2k_cpr_splice_' opstring '_' smoothString])  %% tra
 
 
 
-save(fout)
+save(f_out)
 
 %% k-fold cross validation
 % define folds 
@@ -173,11 +173,11 @@ for k = 1:Kcv
     hrec = line(ti(out{k}),gmean_kcv(out{k}),'color',cols(k,:),'linewidth',4);
 end
 hold off
-lab{1} = 'HadCRUT4.2';
-lab{2} = 'Proxy-predicted';
-lab{3} = 'Reduction of error (RE)';
-lab{4} = 'Critical RE (AR(1) benchmark)';
-hl = legend([h2 hrec h1 hREcrit],lab{:}); set(hl,'FontName','Helvetica','FontSize',12,'box','off','location','SouthEast');
+lab2{1} = 'HadCRUT4.2';
+lab2{2} = 'Proxy-predicted';
+lab2{3} = 'Reduction of error (RE)';
+lab2{4} = 'Critical RE (AR(1) benchmark)';
+hl = legend([h2 hrec h1 hREcrit],lab2{:}); set(hl,'FontName','Helvetica','FontSize',12,'box','off','location','SouthEast');
 %
 fancyplot_deco('Instrumental vs proxy-predicted GMT','year','Global Mean Temperature (C)')
 set(gca,'Ygrid','off')

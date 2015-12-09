@@ -14,12 +14,12 @@ q_code_freq = hist(q_code,u_code);
 u_code_n =  u_code(q_code_freq > 2); % only consider composites with >2 series
 select = find(ismember(q_code, u_code_n));
 
-% KLUDGE alert: manually exlude floating coral sequences (REMOVE once it's
-% done upstream)
-namesq = names(idx_q);
-Dam = find(~cellfun(@isempty,strfind(namesq,'Damassa'))); % could Matlab's string parsin possibly be any more bulky? 
-Pal = find(~cellfun(@isempty,strfind(namesq,'Palmyra')));
-select = setdiff(select,[Dam; Pal],'stable');
+% % KLUDGE alert: manually exlude floating coral sequences (REMOVE once it's
+% % done upstream)
+% namesq = names(idx_q);
+% Dam = find(~cellfun(@isempty,strfind(namesq,'Damassa'))); % could Matlab's string parsin possibly be any more bulky? 
+% Pal = find(~cellfun(@isempty,strfind(namesq,'Palmyra')));
+% select = setdiff(select,[Dam; Pal],'stable');
 %
 s_code = q_code(select);
 proxy_fss = proxy_r(:,select);
@@ -94,4 +94,24 @@ end
 hepta_figprint(['./figs/compositeByArchive_' opstring '_' smoothString],400)
 
 
-save(fout)
+save(f_out)
+
+
+
+% troubleshoot weird U-shape of coral composite
+% culprit: longest record
+coral = proxy_fss(:,s_code == 2); 
+
+% find the first row
+ncoral = nsum(~isnan(coral),2);
+earliest = find(ncoral == 1,1,'first')
+find(~isnan(coral(earliest,:))) 
+
+%trace the litle scoundrel
+coral_ind = find(s_code == 2);
+scoundrel = pages2k.S(idx_q(select(coral_ind(1))));
+% it is : 'Gingerbreads Bahamas coral growth data', paleoData_TSid: 'Ocean2kHR_130'
+
+
+
+
