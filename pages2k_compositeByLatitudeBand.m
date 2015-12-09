@@ -3,10 +3,10 @@
 % latitude
 % Contributed by: Kevin J Anchukaitis
 
-ts = pages2k.TS_temp(idx_q);
+ts = pages2k.S(idx_q);
 
 cols = brewermap(5,'Paired');
-lat = [ts.geo_latitude_value]'; 
+lat = [ts.geo_meanLat]'; 
 
 % -90 to -60
 band(5).index = find(lat>=-90 & lat<=-60);
@@ -43,5 +43,5 @@ for i = 1:5
 end
 
 set(gcf,'units','normalized','position',[0.39 0.18 0.33 0.75])
-%hepta_figprint(['./figs/compositeByLatitude_' options.source],800)
-export_fig(['./figs/compositeByLatitude_' opstring '_' smoothString  '.pdf'],'-r200')
+hepta_figprint(['./figs/compositeByLatitude_' smoothString],400)
+%export_fig(['./figs/compositeByLatitude_' opstring '_' smoothString  '.pdf'],'-r200')

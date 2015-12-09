@@ -63,7 +63,7 @@ for s  = 1:nrecs
         %xlim(min(ta),max(ta)
         hold off; lab{2} = 'Raw'; lab{1} = 'Annualized'; legend(lab{:}), legend boxoff
         ylab = [T.measurementShortName ' (' removeLeadingAndTrailingSpaces(T.measurementUnits) ')'];
-        site_n = strrep(T.paleoArchiveName,'_','\_');
+        site_n = strrep(T.dataSetName,'_','\_');
         ttl = [int2str(r),') ', archive{r},', ', site_n];
         fancyplot_deco(ttl,'Year (CE)',ylab,14);
         pause
