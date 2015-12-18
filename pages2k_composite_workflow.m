@@ -8,7 +8,7 @@ sifting_style = 'qcScreenHR'; % possible choices: noSift, qcOnly, qcScreenHR, qc
 norm_p = 0;  % do you want proxies Gaussianized ?    [boolean] 
 detrend = 0; % do you want to detrend coral d18O proxies? [boolean]  
 navlMin = 20; % what is your threshold for # samples over the Common Era?
-smoothProxies = 1 ; % do you want to smooth proxies or use raw data?
+smoothProxies = 0 ; % do you want to smooth proxies or use raw data?
 smoothExport = 0; % should we graphically export result of the smoothing procedure? [boolean]
 tStart = 1; % define start year (remember: the Common Era does not have a year 0). 
 tEnd   = 2000; %  define end year for the analysis
@@ -41,8 +41,12 @@ set(0,'defaultaxesfontsize',12); set(0,'defaulttextfontsize',12);
 
 % Now let the wild rumpus begin
 
-%% STAGE 1: load relevant data files and prepare the data
+%% STAGE 1a: load relevant data files and prepare the data
 pages2k_composite_prep
+
+
+%% STAGE 1b: create global binned composites, and test their sensitivity to methodological choices
+pages2k_globalBins
 
 %% STAGE 2: sensitivity analysis of the composite
 
