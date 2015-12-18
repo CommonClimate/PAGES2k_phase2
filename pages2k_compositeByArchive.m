@@ -112,6 +112,15 @@ coral_ind = find(s_code == 2);
 scoundrel = pages2k.S(idx_q(select(coral_ind(1))));
 % it is : 'Gingerbreads Bahamas coral growth data', paleoData_TSid: 'Ocean2kHR_130'
 
+fig('Coral composite'), clf 
+plot(tce,pcom_arch{1},'linewidth',2,'color',Graph{2,1}), hold on
+plot(tce,coral(:,1),'color',rgb('DimGray'))
+lab{1} = ['PAGE2k composite, v' versl]; 
+lab{2} = 'Gingerbreads Bahamas coral growth data';
+xlim([1550, 2000]); hl = legend(lab{:},style_l{:}), set(hl, 'box','off')
+fancyplot_deco('Coral composite U-ness investigation','Time','Z-score')
+hepta_figprint(['./figs/coral_composite' opstring '_' smoothString],400)
+
 
 
 
