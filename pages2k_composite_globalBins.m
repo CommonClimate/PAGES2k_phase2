@@ -3,6 +3,9 @@
 %     and investigate robustness to various choices.
   
 
+
+
+
 %---- SPECIFY PARAMETERS HERE!
 %set up a sequence of six options
 
