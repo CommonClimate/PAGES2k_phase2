@@ -197,7 +197,7 @@ proxy_q = proxy_sgn(:,idx_q);
 p_q  = size(proxy_q,2);
 
 weights = cosd(pages2k.p_lat(idx_q));
-proxy_qw = proxy_f(:,idx_q).*repmat(weights,[nce 1]);
+proxy_qw = proxy_q.*repmat(weights,[nce 1]);
 % ========== 
 if lat_weight
    proxy_qs = standardize(proxy_qw);
@@ -256,7 +256,7 @@ axis([1 1000 0 n1000])
 set(hstackin,'xtick',[],'box','off','TickDir','out','TickLength',[.02 .02],'YMinorTick','on', 'YGrid','on')
 set(hstackin,'YAxisLocation','Right')
 set(hstackin,'ytick',[0:50:n1000],'YColor', [.3 .3 .3])
-%title('First Millennium',style_l{:})
+title('First Millennium',style_l{:})
 hepta_figprint('./figs/records_included_in_composite')
 
 clear hk
@@ -266,34 +266,6 @@ clear hk
 p_comp = nmean(proxy_qs,2);
 p_std  =  nstd(proxy_qs,0,2);
 save(f_out)
-
-% FIGURE
-fig('global composite'), clf
-[ax, h1, h2] = plotyy(tt,gmean_f, tce,p_comp, 'plot');
-set(h1,'color',rgb('Silver'),'linewidth',2); 
-set(ax(1),'Ycolor',rgb('Silver'),'YAxisLocation','right','Ylim',[-.5 .5])
-set(get(ax(1),'Ylabel'),'String','Global mean temperature (C)');
-set(get(ax(1),'Ylabel'),style_t{:})
-%
-set(h2,'color',rgb('Red')); 
-set(ax(2),'Ycolor',rgb('Red'),'Ylim',[-1 2],'Xtick',[-1:2],'YAxisLocation','left','TickDir','out','YMinorTick','on')
-set(get(ax(2),'Ylabel'),'String','Proxy composite')
-set(get(ax(2),'Ylabel'),style_t{:})
-linkaxes([ax(1),ax(2)],'x'), xlim(ax(1),[0 2010]);
-set(gca,'Box', 'off', 'TickDir','out','TickLength',[.02 .02],'XMinorTick','on','YMinorTick','on', 'YGrid','on')
-set(gca,'XColor' , [.3 .3 .3], 'LineWidth', 1);
-set(ax(2),'XTick',[])
-ttl = ['PAGES2k scaled composite vs HadCRUT4, ' int2str(1/f_hr) 'y smoothed' ];
-title(ttl,style_t{:});
-%axes(ax(2)), hold on
-%hs = stairs(tBin,proxyBinAvg,'k-','linewidth',2);
-lab{1} = 'HadCRUT4.2 global mean, smoothed';
-lab{2} = 'PAGES2k QC composite, smoothed';
-%lab{3} = '30-year binnned composite';
-hl = legend([h1 h2],lab{:}); set(hl,'FontSize',12,'box','off'); 
-%hepta_figprint(['./figs/HadCRUT4_vs_composite_' opstring])
-
-export_fig(['./figs/composite_vsHadCRUT4_' opstring '.pdf'],'-cmyk','-r200','-nocrop','painters')
 
 
 
