@@ -8,13 +8,8 @@ sifting_style = 'qcScreenHR'; % possible choices: noSift, qcOnly, qcScreenHR, qc
 norm_p = 0;  % do you want proxies Gaussianized ?    [boolean] 
 detrend = 0; % do you want to detrend coral d18O proxies? [boolean]  
 navlMin = 20; % what is your threshold for # samples over the Common Era?
-smoothProxies = 0 ; % do you want to smooth proxies or use raw data?
-smoothExport = 0; % should we graphically export result of the smoothing procedure? [boolean]
 tStart = 1; % define start year (remember: the Common Era does not have a year 0). 
 tEnd   = 2000; %  define end year for the analysis
-f_hr = 1/10;  % smoothing cutoff frequency for high-resolution records [in 1/years]
-f_lr = 1/30; % smoothing cutoff frequency for low-resolution records  [in 1/years]
-
 
 % define I/O files
 f_out = ['./data/pages2k_composite_' vers '.mat'];
@@ -41,23 +36,14 @@ set(0,'defaultaxesfontsize',12); set(0,'defaulttextfontsize',12);
 
 % Now let the wild rumpus begin
 
-%% STAGE 1a: load relevant data files and prepare the data
+%% STAGE 1: load relevant data files and prepare the data
 pages2k_composite_prep
 
 
-%% STAGE 1b: create global binned composites, and test their sensitivity to methodological choices
-pages2k_globalBins
+%% STAGE 2: create global binned composites, and test their sensitivity to methodological choices
+pages2k_composite_globalBins
 
-%% STAGE 2: sensitivity analysis of the composite
-
-% proxy matrix retained (purpose: comparison between raw and processed data)
-if smoothProxies
-    proxy_r = standardize(proxy_f(:,idx_q));   
-    smoothString = 'Smoothed';
-else
-    proxy_r = proxy_sgn(:,idx_q);
-    smoothString = 'Unsmoothed';
-end
+%% STAGE 3: sensitivity analysis of the composite
 
 % stratification by archive type
 pages2k_compositeByArchive
@@ -69,12 +55,6 @@ pages2k_composite_recordLength
 % stratification however you want !
   % write your own and share it with the PAGES2k community
   
-
-%% STAGE 3: temperature reconstruction per se
-
-% TO DO: fix # of records
-pages2k_composite_regression
-
 
 
 
