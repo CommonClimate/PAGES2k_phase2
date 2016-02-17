@@ -33,7 +33,6 @@ f_merged = ['./data/pages2k_hadcrut4_' d_str '_' g_str '_' vers];
 set(0, 'DefaultAxesFontName', 'Helvetica','DefaultAxesFontWeight','bold')
 set(0, 'DefaultTextFontName', 'Helvetica','DefaultAxesFontWeight','normal')  
 set(0,'defaultaxesfontsize',12); set(0,'defaulttextfontsize',12);
-
 % Now let the wild rumpus begin
 
 %% STAGE 1: load relevant data files and prepare the data
