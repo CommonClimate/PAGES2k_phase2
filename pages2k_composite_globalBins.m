@@ -21,12 +21,16 @@ screenLoList={'none','basicFilter','none','basicFilter','none','hrNeighbors'};
 screenHiList={'none','regional','none','regional','none','regionalFDR'};
 %---- end specification
 
-for o=1:length(binStep)
-    
+% Graphical definitions
+Xlab   = 'Year AD';   Ylab = 'Temperature (\circC)';
+col{1} = rgb('DarkBlue'), col{2} = rgb('Gray'); col{3} = rgb('Red');
+nboot  = 500; % # of bootstrap samples
+ylims  = [-.5 .5]; %pmax = 600; % scale for # proxies
+
+for o=1:length(binStep)   
     %find the records that are low vs high res
     loResI=find(resMed>=resCutoff(o));
     hiResI=find(resMed<resCutoff(o));
-    
     
     %calculate some bin parameters
     if rem(2000,binStep)==0
@@ -36,8 +40,7 @@ for o=1:length(binStep)
     end
     binYear=mean([binEdges(2:end) binEdges(1:end-1)],2);
     plotEdges=reshape([binEdges(1:end-1) binEdges(2:end)]',[],1);
-    
-    
+    %
     screenLo=screenLoList{o};
     screenHi=screenHiList{o};
     
@@ -68,47 +71,50 @@ for o=1:length(binStep)
     hiBins = bin_x(tce',proxy_sgn(:,hiBini),binEdges);
     
     % composite matrices by averaging across columns, ignoring missing values
-    loResMean=nanmean(loBins,2);
-    hiResMean=nanmean(hiBins,2);
+    loResMean = nmean(loBins,2);  loResBoot = bootstrp(nboot,@nmean,loBins');
+    ciLoRes  = quantile(loResBoot',[0.025 0.975],2);
+    hiResMean = nmean(hiBins,2);  hiResBoot = bootstrp(nboot,@nmean,hiBins');
+    ciHiRes  = quantile(hiResBoot',[0.025 0.975],2);
     
     %scale to instrumental...
     %simply by matching the mean and variance of the bins
     gBin=bin_x(hadcrut4.t,hadcrut4.gmean,binEdges);
-    good=find(~isnan(gBin));
-    gBM=mean(gBin(good));
-    gBS=std(gBin(good));
+    good=find(~isnan(gBin)); gBM=mean(gBin(good)); gBS=std(gBin(good));
     
-    loGBM=nanmean(loResMean(good));
-    loGBS=nanstd(loResMean(good));
-    hiGBM=nanmean(hiResMean(good));
-    hiGBS=nanstd(hiResMean(good));
-    
-    loResMeanScaled=(((loResMean./loGBS)-loGBM).*gBS)+gBM;
-    hiResMeanScaled=(((hiResMean./hiGBS)-hiGBM).*gBS)+gBM;
-    
-    
+    % find mean and standard deviation
+    loGBM=nanmean(loResMean(good)); loGBS=nanstd(loResMean(good));
+    hiGBM=nanmean(hiResMean(good)); hiGBS=nanstd(hiResMean(good));
+    % rescale composites
+    loResMeanScaled = (((loResMean./loGBS)-loGBM).*gBS)+gBM;
+    ciLoResScaled   = (((ciLoRes  ./loGBS)-loGBM).*gBS)+gBM;
+    hiResMeanScaled = (((hiResMean./hiGBS)-hiGBM).*gBS)+gBM;
+    ciHiResScaled   = (((ciHiRes  ./hiGBS)-hiGBM).*gBS)+gBM;
+     
     %adjust for plotting
     plotLo=reshape([loResMeanScaled loResMeanScaled]',[],1);
     plotHi=reshape([hiResMeanScaled hiResMeanScaled]',[],1);
     plotHAD=reshape([gBin gBin]',[],1);
-      
+    ciLoRes_lo  = reshape([ciLoResScaled(:,1) ciLoResScaled(:,1)]',[],1);  
+    ciLoRes_hi  = reshape([ciLoResScaled(:,2) ciLoResScaled(:,2)]',[],1);
+    ciHiRes_lo  = reshape([ciHiResScaled(:,1) ciHiResScaled(:,1)]',[],1);  
+    ciHiRes_hi  = reshape([ciHiResScaled(:,2) ciHiResScaled(:,2)]',[],1);
+ 
     fig('Global Index Bins'),
     if o==1;
         clf;
         set(gcf,'Position',[440   270   852   628])
     end
-    pmax = 600; % scale for # proxies
-    ylims = [-.5 .5];
-    % Unscreened HR
+    
     ax1 = subplot(3,2,o)
-    Xlab = 'Year AD';
-    Ylab = 'Temperature (\circC)';
-    col{1} = rgb('DarkBlue'), col{2} = rgb('DarkGrey'); col{3} = rgb('Red');
-    plot(plotEdges,plotLo,'color',col{1},'LineWidth',2);
-    hold on
-    plot(plotEdges,plotHi,'color',col{2},'LineWidth',2);
-    hold on
-    plot(plotEdges,plotHAD,'color',col{3},'LineWidth',2);
+    % plot bootstrap CIs
+    wide = (~isnan(ciLoRes_lo) & ciLoRes_hi-ciLoRes_lo>range(ylims)/50.0);  %
+    area_fill(plotEdges(wide)',ciLoRes_lo(wide)',ciLoRes_hi(wide)',col{1},col{1},0.2); hold on
+    wide = (~isnan(ciHiRes_lo) & ciHiRes_hi-ciHiRes_lo>range(ylims)/50.0);  %
+    area_fill(plotEdges(wide)',ciHiRes_lo(wide)',ciHiRes_hi(wide)',col{2},col{2},0.2); 
+    % plot composites
+    line(plotEdges,plotLo,'color',col{1},'LineWidth',2); % LR   
+    line(plotEdges,plotHi,'color',col{2},'LineWidth',2); % HR
+    line(plotEdges,plotHAD,'color',col{3},'LineWidth',2); % HadCRUT4
     
     %plot N
     text(1300,.4,['nHR= ' num2str(size(hiBins,2))],'color',col{2},style_l{:})
@@ -126,4 +132,5 @@ for o=1:length(binStep)
     set(gca,'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 end
 hepta_figprint(['./figs/globalComposite_binned'])
-eps2pdfMac(['./figs/globalComposite_binned.eps'])
+%eps2pdfMac(['./figs/globalComposite_binned.eps'])
+
