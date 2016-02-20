@@ -23,7 +23,7 @@ screenHiList={'none','regional','none','regional','none','regionalFDR'};
 
 % Graphical definitions
 Xlab   = 'Year AD';   Ylab = 'Temperature (\circC)';
-col{1} = rgb('DarkBlue'), col{2} = rgb('Gray'); col{3} = rgb('Red');
+col{1} = rgb('DarkBlue'), col{2} = rgb('DarkGrey'); col{3} = rgb('Red');
 nboot  = 500; % # of bootstrap samples
 ylims  = [-.5 .5]; %pmax = 600; % scale for # proxies
 
