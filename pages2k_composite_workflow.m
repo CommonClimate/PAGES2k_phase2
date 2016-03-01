@@ -5,7 +5,7 @@ addpath(genpath('./utilities'))% load code utilities
 % define analysis options
 lat_weight = 0; % are we normalizing by the cosine of latitude? [boolean]
 sifting_style = 'qcScreenHR'; % possible choices: noSift, qcOnly, qcScreenHR, qcScreenLR, qcScreenAll
-norm_p = 0;  % do you want proxies Gaussianized ?    [boolean] 
+norm_p = 0;  % should proxies be mapped to a standard normal ?    [boolean] 
 detrend = 0; % do you want to detrend coral d18O proxies? [boolean]  
 navlMin = 20; % what is your threshold for # samples over the Common Era?
 tStart = 1; % define start year (remember: the Common Era does not have a year 0). 
@@ -33,12 +33,10 @@ f_merged = ['./data/pages2k_hadcrut4_' d_str '_' g_str '_' vers];
 set(0, 'DefaultAxesFontName', 'Helvetica','DefaultAxesFontWeight','bold')
 set(0, 'DefaultTextFontName', 'Helvetica','DefaultAxesFontWeight','normal')  
 set(0,'defaultaxesfontsize',12); set(0,'defaulttextfontsize',12);
-
 % Now let the wild rumpus begin
 
 %% STAGE 1: load relevant data files and prepare the data
 pages2k_composite_prep
-
 
 %% STAGE 2: create global binned composites, and test their sensitivity to methodological choices
 pages2k_composite_globalBins
