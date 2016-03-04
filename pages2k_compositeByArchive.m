@@ -13,7 +13,10 @@ tb = binEdges(2:end);
 
 
 %% 1) composite by archive type
-arch = pages2k.archive(idx_q);
+archive = {pages2k.S.archiveType};
+archive = strrep(archive,'ice core','glacier ice');
+
+arch = archive(idx_q);
 proxy_r = proxy_sgn(:,idx_q);
 % use only those archive types that passed QC
 archType = unique(arch);
@@ -34,7 +37,8 @@ s_code = q_code(select);
 proxy_s = proxy_r(:,select);
 u_code = unique(s_code);
 archType = unique(arch(select));
-nType = length(archType);
+nType = length(archType); nType = length(u_code);
+
 
 % analysis parameters
 n_tresh = 10; nboot = 500; % # of bootstrap samples.
@@ -93,13 +97,13 @@ for k = 1:nType
     set(get(ax(2),'Ylabel'),'String','Composite');
     set(get(ax(2),'Ylabel'),style_l{:})
     set(gcf,'CurrentAxes',ax(2))
-    %set(h2,'XData',plotEdges(thresh),'YData',pcom_archPlot(thresh));  
-    %refreshdata(h2); set(h2,'visible','on');
+    set(ax(1),'Box', 'off', 'TickDir','out','TickLength',[.02 .02])
+    set(ax(2),'Box', 'off', 'TickDir','out','TickLength',[.02 .02])
+
     % plot bootstrap CI
     wide = (~isnan(ciLo) & ciHi-ciLo>range(ylims)/50.0);  %
     hci = area_fill(plotEdges(wide)',ciLo(wide)',ciHi(wide)',Graph{u,1},Graph{u,1},0.2);
     %plot transparent line for entire period
-    %hp = patchline(plotEdges,pcom_archPlot,'edgecolor',Graph{u,1},'linewidth',2,'edgealpha',0.4); 
     hp = line(plotEdges(thresh),pcom_archPlot(thresh),'color',Graph{u,1},'linewidth',2,'linestyle','-','Parent',ax(2));
     % plot solid line when enough data are present
     uistack(h2,'top')
@@ -111,13 +115,10 @@ for k = 1:nType
     ch = get(h1,'child'); set(ch,'EdgeAlpha',.3)
     title([archType{k} ', ' int2str(p_arch(k)) ' records'],style_l{:});
 end
-%plot2svg(['./figs/compositeByArchive_' opstring '_binned.svg'],gcf)
-%print(gcf, '-djpeg', '-r600','-cmyk',['./figs/compositeByArchive_' opstring '_binned.jpg'])
-hepta_figprint(['./figs/compositeByArchive_' opstring '_binned'],400)
-%eps2pdfMac(['./figs/compositeByArchive_' opstring '_binned.eps'])  % no
-%export to PDF as one needs to adjust transparency manually in Illustrator.
 
-
+froot = ['./figs/' opstring '_compositeByArchive'];
+hepta_figprint(froot,400)  %export to PDF as one needs to adjust transparency manually in Illustrator.
+eps2pdfMac([froot '.eps'])
 
 save(f_out)
 

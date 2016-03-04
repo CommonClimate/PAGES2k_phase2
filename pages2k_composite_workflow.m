@@ -15,8 +15,7 @@ tEnd   = 2000; %  define end year for the analysis
 
 % define I/O files
 f_out = ['./data/pages2k_composite_' vers '.mat'];
-%f_db = ['./data/pages2kTSv' vers '_unpack'];
-%f_temp = './data/had4med_graphem_sp70_annual'; % replaced with Cowtan & Way median
+% replace with Cowtan & Way median
 if detrend
     d_str = 'detrend';
 else

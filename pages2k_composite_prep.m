@@ -10,9 +10,9 @@ style_l = {'FontName','Helvetica','FontSize',12,'FontWeight','bold'};
 
 % define a string that encodes these options
 if norm_p == 1
-    Gauss = 'Gaussianized';
+    Gauss = 'normal';
 else
-    Gauss = 'NotGaussianized';
+    Gauss = 'raw';
 end
 % if detrend == 1
 %     dts = 'CoralO18Detrend';
@@ -20,7 +20,7 @@ end
 %     dts = 'NoCoralO18Detrend';
 % end
 
-opstring =  [sifting_style '_' screenHR_style '_' Gauss];
+opstring =  ['PAGES2k_v' vers '_' sifting_style '_' screenHR_style '_' Gauss];
 
 % load data matrices [TO DO: clean up so only the merged one is needed]
 % ==================
@@ -255,8 +255,8 @@ set(hstackin,'xtick',[],'box','off','TickDir','out','TickLength',[.02 .02],'YMin
 set(hstackin,'YAxisLocation','Right')
 set(hstackin,'ytick',[0:50:n1000],'YColor', [.3 .3 .3])
 title('First Millennium',style_l{:})
-hepta_figprint('./figs/records_included_in_composite')
-
+froot = ['./figs/' opstring '_mapRecordsIncluded'];
+hepta_figprint(froot)  %export to PDF as one needs to adjust transparency manually in Illustrator.
 clear hk
 
 

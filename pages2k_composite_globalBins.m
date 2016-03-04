@@ -23,9 +23,12 @@ screenHiList={'none','regional','none','regional','none','regionalFDR'};
 
 % Graphical definitions
 Xlab   = 'Year AD';   Ylab = 'Temperature (\circC)';
-col{1} = rgb('DarkBlue'), col{2} = rgb('Gray'); col{3} = rgb('Red');
+col{1} = rgb('DarkBlue'), col{2} = rgb('DimGray'); col{3} = rgb('Red');
 nboot  = 500; % # of bootstrap samples
 ylims  = [-.5 .5]; %pmax = 600; % scale for # proxies
+
+
+
 
 for o=1:length(binStep)   
     %find the records that are low vs high res
@@ -120,17 +123,20 @@ for o=1:length(binStep)
     text(1300,.4,['nHR= ' num2str(size(hiBins,2))],'color',col{2},style_l{:})
     text(1300,.3,['nLR= ' num2str(size(loBins,2))],'color',col{1},style_l{:})
     text(1300,.2,['HadCRUT4'],'color',col{3},style_l{:})   
-    
+    %
     set(gca,'xLim',[tStart tEnd]);
-    ylabel(Ylab,style_l{:})
+    set(gca,'Ylim',ylims); %'Ytick',[ylims(1):ylims(2)]);
+    ttl = {['HR screen = ' screenHi '; LR screen = ' screenLo];[num2str(binStep(o)) '-yr bins, \Deltat ' num2str(resCutoff(o)) '-yr cutoff']};
+    %ylabel(Ylab,style_l{:})
     if o>=5
-        xlabel(Xlab,style_l{:})
-    end
+        fancyplot_deco(ttl,Xlab,Ylab,14,'Helvetica');
+        %xlabel(Xlab,style_l{:})
+    else
+        fancyplot_deco(ttl,'',Ylab,14,'Helvetica');
+    end   
     
-    title({['HR screen = ' screenHi '; LR screen = ' screenLo];[num2str(binStep(o)) '-yr bins, \Deltat ' num2str(resCutoff(o)) '-yr cutoff']},style_t{:})
-    
-    set(gca,'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
 end
-hepta_figprint(['./figs/globalComposite_binned'])
-%eps2pdfMac(['./figs/globalComposite_binned.eps'])
+froot = ['./figs/' opstring '_compositeGlobalBins'];
+hepta_figprint(froot)
+eps2pdfMac([froot '.eps'])
 
