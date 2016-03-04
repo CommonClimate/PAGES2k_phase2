@@ -14,23 +14,21 @@ if norm_p == 1
 else
     Gauss = 'NotGaussianized';
 end
-if detrend == 1
-    dts = 'CoralO18Detrend';
-else
-    dts = 'NoCoralO18Detrend';
-end
+% if detrend == 1
+%     dts = 'CoralO18Detrend';
+% else
+%     dts = 'NoCoralO18Detrend';
+% end
 
-opstring =  [sifting_style '_'  Gauss '_' dts];
+opstring =  [sifting_style '_' screenHR_style '_' Gauss];
 
 % load data matrices [TO DO: clean up so only the merged one is needed]
 % ==================
-hadcrut4 = load(f_temp);  
+ 
 % PAGES2k database
-pages2k = load(f_db); 
 
 % define output file
-%merged = load(['./data/pages2k_hadcrut4_noDetrend_' vers '.mat'])% deprecated 
-merged = load(f_merged)% merged proxy /temperature matrix
+load(f_merged)% merged proxy /temperature matrix
 % load essential arrays
 t = pages2k.year;
 tce  = pages2k.year(t >= tStart & t <= tEnd); nce = length(tce);
@@ -40,13 +38,12 @@ names = {T.dataSetName};
 yearMin = pages2k.yearMin;
 yearMax = pages2k.yearMax;
 resMed  = pages2k.resMed;
-resMin  = pages2k.resMin;
 resAvg  = pages2k.resAvg;
 resMax  = pages2k.resMax;
 p_code  = pages2k.p_code; 
 Graph   = pages2k.Graph; 
-p_lon   = pages2k.p_lon;
-p_lat   = pages2k.p_lat;
+p_lon   = pages2k.loc(:,1);
+p_lat   = pages2k.loc(:,2);
 edgec   = pages2k.edgec;
 
 
@@ -86,13 +83,13 @@ idx_qclr = find(~strcmp(ma,'borehole') & resMed'  > 5 & yearMin' <= 1850 & navl 
 
 %% screening for significant correlations.
 % 1) Calibratable Proxies
-radius   = merged.pages2k.radius;
-scr_reg  = merged.pages2k.screen_reg{1}; % MAT regional correlation screening
-scr_fdr  = find(merged.pages2k.signif_fdr_mat(:,radius == 2000)); % MAT regional correlation screening controlling for false discovery rate
-scr_loc  = merged.pages2k.screen_loc{1}; % MAT local correlation screening
+scr_reg  = pages2k.screen_reg{1}; % MAT regional correlation screening
+scr_fdr  = find(pages2k.signif_fdr_mat(:,pages2k.radius == 2000)); % MAT regional correlation screening controlling for false discovery rate
+scr_loc  = pages2k.screen_loc{1}; % MAT local correlation screening
 
+idx_scr = eval(['scr_' screenHR_style]);
 % merge indices of screened proxies
-idx_qchr_scr = intersect(scr_reg,idx_qchr);
+idx_qchr_scr = intersect(idx_scr,idx_qchr);
 
 CalibFalse_sig = zeros(nr,1); signif_n = pages2k.signif_n;
 for r = 1:nr
@@ -102,72 +99,72 @@ for r = 1:nr
 end
 idx_qclr_screen = intersect(find(CalibFalse_sig),idx_qclr);
 
-%%
-fig('Screening or not'), clf
-set(gcf,'Position',[440   270   852   628])
-pmax = 600; % scale for # proxies
-ylims = [-1.5 2];
-% Unscreened HR
-ax1 = subplot(3,2,1)
-Xlab = ''; Ylab = {'# records','HR composite'};
-P = proxy_sgn(:,idx_qchr); ps = size(P,2); navl = sum(~isnan(P),2);
-col{1} = rgb('Silver'), col{2} = rgb('Blue');
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
-set(ax(1),'xLim',[tStart tEnd]);
-title('High Resolution (\Delta t <=5y), unscreened',style_t{:})
-set(ax1,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
-set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
-% Regional screening
-ax2 = subplot(3,2,2)
-P = proxy_sgn(:,intersect(scr_reg,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
-set(ax(1),'xLim',[tStart tEnd]);
-title('High Resolution, regional screening (R < 2000km)',style_t{:})
-set(ax2,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
-set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
-% Regional screening w/ FDR
-ax3 = subplot(3,2,3)
-P = proxy_sgn(:,intersect(scr_fdr,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
-set(ax(1),'xLim',[tStart tEnd]);
-title('High Resolution, FDR screening (R < 2000km)',style_t{:})
-set(ax3,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
-set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
-% local screening
-ax4 = subplot(3,2,4) 
-P = proxy_sgn(:,intersect(scr_loc,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
-set(ax(1),'xLim',[tStart tEnd]);
-title('High Resolution, local screening',style_t{:})
-set(ax4,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
-set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
-% Low-res unscreened
-ax5 = subplot(3,2,5), pmax = 100;
-Xlab = 'Year CE'; Ylab = {'# records','LR composite'};
-P = proxy_sgn(:,idx_qclr); ps = size(P,2); navl = sum(~isnan(P),2);
-col{1} = rgb('Silver'), col{2} = rgb('Red');
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
-set(ax(1),'xLim',[tStart tEnd]);
-title('Low resolution (\Delta t > 5y), unscreened',style_t{:})
-set(ax5,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
-set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
-% Low-res, screened
-ax6 = subplot(3,2,6) 
-P = proxy_sgn(:,idx_qclr_screen); ps = size(P,2); navl = sum(~isnan(P),2);
-col{1} = rgb('Silver'), col{2} = rgb('Red');
-[ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
-set(ax(1),'xLim',[tStart tEnd]);
-title('Low resolution, screened against HR neighbors',style_t{:})
-set(ax6,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
-set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
-
-%
-%linkaxes([ax1,ax2,ax3,ax4,ax5,ax6],'xy'), 
-%xlim([0 2010]); ylim([-1.5 2]); 
-%export_fig(['./figs/composite_ScreeningEffects_' opstring '_Unsmoothed.pdf'],'-r200','-cmyk','-nocrop')
-
-hepta_figprint(['./figs/composite_ScreeningEffects_' opstring '_Unsmoothed'])
-
+% %%
+% fig('Screening or not'), clf
+% set(gcf,'Position',[440   270   852   628])
+% pmax = 600; % scale for # proxies
+% ylims = [-1.5 2];
+% % Unscreened HR
+% ax1 = subplot(3,2,1)
+% Xlab = ''; Ylab = {'# records','HR composite'};
+% P = proxy_sgn(:,idx_qchr); ps = size(P,2); navl = sum(~isnan(P),2);
+% col{1} = rgb('Silver'), col{2} = rgb('Blue');
+% [ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
+% set(ax(1),'xLim',[tStart tEnd]);
+% title('High Resolution (\Delta t <=5y), unscreened',style_t{:})
+% set(ax1,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
+% set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% % Regional screening
+% ax2 = subplot(3,2,2)
+% P = proxy_sgn(:,intersect(scr_reg,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
+% [ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
+% set(ax(1),'xLim',[tStart tEnd]);
+% title('High Resolution, regional screening (R < 2000km)',style_t{:})
+% set(ax2,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
+% set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% % Regional screening w/ FDR
+% ax3 = subplot(3,2,3)
+% P = proxy_sgn(:,intersect(scr_fdr,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
+% [ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
+% set(ax(1),'xLim',[tStart tEnd]);
+% title('High Resolution, FDR screening (R < 2000km)',style_t{:})
+% set(ax3,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
+% set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% % local screening
+% ax4 = subplot(3,2,4) 
+% P = proxy_sgn(:,intersect(scr_loc,idx_qchr)); ps = size(P,2); navl = sum(~isnan(P),2);
+% [ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
+% set(ax(1),'xLim',[tStart tEnd]);
+% title('High Resolution, local screening',style_t{:})
+% set(ax4,'Ylim',[0 pmax],'Ytick',[0:100:pmax])
+% set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% % Low-res unscreened
+% ax5 = subplot(3,2,5), pmax = 100;
+% Xlab = 'Year CE'; Ylab = {'# records','LR composite'};
+% P = proxy_sgn(:,idx_qclr); ps = size(P,2); navl = sum(~isnan(P),2);
+% col{1} = rgb('Silver'), col{2} = rgb('Red');
+% [ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
+% set(ax(1),'xLim',[tStart tEnd]);
+% title('Low resolution (\Delta t > 5y), unscreened',style_t{:})
+% set(ax5,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
+% set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% % Low-res, screened
+% ax6 = subplot(3,2,6) 
+% P = proxy_sgn(:,idx_qclr_screen); ps = size(P,2); navl = sum(~isnan(P),2);
+% col{1} = rgb('Silver'), col{2} = rgb('Red');
+% [ax,h1,h2] = yyplot(tce,navl,nmean(P,2),Xlab,Ylab,col);
+% set(ax(1),'xLim',[tStart tEnd]);
+% title('Low resolution, screened against HR neighbors',style_t{:})
+% set(ax6,'Ylim',[0 pmax],'Ytick',[0:100:pmax]); 
+% set(ax(2),'Ylim',ylims,'Ytick',[ylims(1):ylims(2)]);
+% 
+% %
+% %linkaxes([ax1,ax2,ax3,ax4,ax5,ax6],'xy'), 
+% %xlim([0 2010]); ylim([-1.5 2]); 
+% %export_fig(['./figs/composite_ScreeningEffects_' opstring '_Unsmoothed.pdf'],'-r200','-cmyk','-nocrop')
+% 
+% hepta_figprint(['./figs/composite_ScreeningEffects_' opstring '_Unsmoothed'])
+% 
 
 
 
@@ -196,7 +193,7 @@ proxy_q = proxy_sgn(:,idx_q);
 % how many are there?
 p_q  = size(proxy_q,2);
 
-weights = cosd(pages2k.p_lat(idx_q));
+weights = cosd(p_lat(idx_q))';
 proxy_qw = proxy_q.*repmat(weights,[nce 1]);
 % ========== 
 if lat_weight
@@ -209,8 +206,9 @@ end
 
 
 %% MAP THE RECORDS USED IN THE COMPOSITE
+archiveType = pages2k.archiveType;
 p_code_k = p_code(idx_q);  avec = unique(p_code_k);
-aType  = pages2k.archiveType(avec); nak = numel(aType);
+aType  = archiveType(avec); nak = numel(aType);
 Graph_k = Graph(avec,:); avail_k = pages2k.avail(t >= tStart & t <= tEnd,idx_q);
 nproxy = zeros(ny,nak); pind = zeros(nak,1); 
 for k=1:nak % loop over archive types
@@ -265,6 +263,7 @@ clear hk
 %% mean composite
 p_comp = nmean(proxy_qs,2);
 p_std  =  nstd(proxy_qs,0,2);
+
 save(f_out)
 
 
