@@ -38,6 +38,7 @@ set(0,'defaultaxesfontsize',12); set(0,'defaulttextfontsize',12);
 
 %% STAGE 1: load relevant data files and prepare the data
 pages2k_composite_prep
+SDmakeTable 
 
 %% STAGE 2: create global binned composites, and test their sensitivity to methodological choices
 pages2k_composite_globalBins
