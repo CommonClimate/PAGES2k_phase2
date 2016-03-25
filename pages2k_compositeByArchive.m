@@ -23,7 +23,7 @@ archType = unique(arch);
 q_code = p_code(idx_q); 
 u_code = unique(q_code);
 q_code_freq = hist(q_code,u_code);
-u_code_n =  u_code(q_code_freq > 2); % only consider composites with >2 series
+u_code_n =  u_code(q_code_freq >= 5); % only consider composites with >=5 series
 select = find(ismember(q_code, u_code_n));
 
 % % KLUDGE alert: manually exlude floating coral sequences (REMOVE once it's

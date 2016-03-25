@@ -4,7 +4,7 @@ addpath(genpath('./utilities'))% load code utilities
 
 % define analysis options
 lat_weight = 0; % are we normalizing by the cosine of latitude? [boolean]
-sifting_style = 'qcScreenHR'; % possible choices: noSift, qcOnly, qcScreenHR, qcScreenLR, qcScreenAll
+sifting_style = 'qcOnly'; % possible choices: noSift, qcOnly, qcScreenHR, qcScreenLR, qcScreenAll
 screenHR_style = 'reg';  % 'loc' = local; 'reg' = regional (within 2000km radius), 'fdr' = regional accounting for false discovery rate
 
 norm_p = 1;  % should proxies be mapped to a standard normal ?    [boolean] 
@@ -55,7 +55,8 @@ pages2k_composite_recordLength
 % stratification however you want !
   % write your own and share it with the PAGES2k community
   
-
-
-
+resAvg_nontrees = resAvg(p_code <10);
+mean(resAvg_nontrees)
+resAvg_seds = resAvg(p_code < 8 & p_code > 5);
+mean(resAvg_seds)
 
