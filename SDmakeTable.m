@@ -7,8 +7,7 @@ latValue=({S.geo_meanLat})';   % NEEDS ROUNDING
 longValue=({S.geo_meanLon})';
 %
 archiveType=pages2k.archive';
-proxy={S.paleoData_proxy}';
-
+% chronological information
 minYear=round(arrayfun(@(x) min(x.year),S)');
 maxYear=round(arrayfun(@(x) max(x.year),S)');
 minYear(find(minYear==0))=-1;
@@ -24,6 +23,7 @@ geo_pages2kRegion=({S.geo_pages2kRegion})';
 
 proxyType=({S.paleoData_proxy})';
 parameter=({S.paleoData_parameter})';
+desc = {S.paleoData_description}';
 
 
 climateInterpretation_climateVariable=({S.climateInterpretation_climateVariable})';
@@ -44,10 +44,10 @@ for r = 1:nr
 end
 
 
-TSid=({S.paleoData_TSid})';
+ID=({S.paleoData_TSid})';
 authors=({S.pub1_author})';
 investigators=({S.investigators})';
-pubYear=({S.pub1_pubYear})';
+pubYear=({S.pub1_year})';
 DOI=({S.pub1_DOI})';
 QCnotes={S.paleoData_QCnotes}';
 
@@ -94,15 +94,9 @@ for ii=1:length(siteName)
     end
 end
 for ii=1:length(siteName)
-    year=pubYear{ii,1};
+    year=pubYear{ii};
     if ~isempty(year)
-        if iscell(year)
-            year=cell2str(year);
-        else
-            year=num2str(min(year));
-        end
-        year(ismember(year,' }{'',.:;!-')) = [];
-        printYear{ii,1}=year;
+        pYear{ii,1}=year(1:4);
     end
 end
 
@@ -140,13 +134,8 @@ inComposite = cellstr(repmat('no',[nr 1]));
 inComposite(idx_q) = {'yes'}; 
 %%
 %repeat for all regions
-header={'TS_id' 'dataSetName' 'lat' 'lon' 'archiveType' 'minYear' 'maxYear' 'Resolution' 'Include in composite' 'Reference (DOI for now, to be replaced with BiBTeX key)' };
-
-
-
-outcell=[TSid dataSetName   latValue  longValue archiveType minYear maxYear medResolution inComposite DOI];
-
-
+header={'ID' 'Name' 'Lat' 'Lon' 'Archive' 'Proxy' 'minYear' 'maxYear' 'Resolution' 'Include in composite' 'First Author' 'Publication Year' 'DOI' };
+outcell=[ID dataSetName  latValue  longValue archiveType proxyType minYear maxYear medResolution inComposite firstAuthor pYear DOI];
 cell2csv(['./data/SD-Table_v' vers '.csv'],[header ; outcell],',');
 %
 % notcell=~arrayfun(@(X) iscell(X.paleoData_values),TS);
