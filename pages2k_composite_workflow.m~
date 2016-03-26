@@ -51,23 +51,13 @@ pages2k_compositeByArchive
 pages2k_compositeByLatitudeBand
 % sensitivity to Screening Criterion
 pages2k_compositeByScreenCrit
+
 % sensitivity to record length
 pages2k_composite_recordLength
 
 % stratification however you want !
   % write your own and share it with the PAGES2k community
-
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-% extra diagnostics  
 resAvg_nontrees = resAvg(p_code <10);
 mean(resAvg_nontrees)
 resAvg_seds = resAvg(p_code < 8 & p_code > 5);

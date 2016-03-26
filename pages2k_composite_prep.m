@@ -84,7 +84,7 @@ idx_qclr = find(~strcmp(ma,'borehole') & resMed'  > 5 & yearMin' <= 1850 & navl 
 %% screening for significant correlations.
 % 1) Calibratable Proxies
 scr_reg  = pages2k.screen_reg{1}; % MAT regional correlation screening
-scr_fdr  = find(pages2k.signif_fdr_mat(:,pages2k.radius == 2000)); % MAT regional correlation screening controlling for false discovery rate
+scr_fdr  = pages2k.screen_fdr{1}; % MAT regional correlation screening controlling for false discovery rate
 scr_loc  = pages2k.screen_loc{1}; % MAT local correlation screening
 
 idx_scr = eval(['scr_' screenHR_style]);
