@@ -132,6 +132,15 @@ medResolution(subann) = {'<1'};
 %
 inComposite = cellstr(repmat('no',[nr 1]));
 inComposite(idx_q) = {'yes'}; 
+
+% proxy-proxy relations
+psig = zeros(nr,1);
+for r = 1:nr
+    if ~isempty(pages2k.signif_n{r})
+        psig(r) = sum(pages2k.signif_n{r});
+    end
+end
+
 %%
 %repeat for all regions
 header={'ID' 'Name' 'Lat' 'Lon' 'Archive' 'Proxy' 'minYear' 'maxYear' 'Resolution' 'Include in composite' 'First Author' 'Publication Year' 'DOI' };
