@@ -19,6 +19,9 @@ Al the data are in "data". The figures are all exported to "figs"
 Code dependencies needed to run the above codes are included in "utilities". If you are missing anything, we will be happy to add it. To comply with the license, some third-party packages may need to be installed separately:
 
 - [export_fig](https://github.com/altmany/export_fig)
+- [m_map](http://www.eos.ubc.ca/~rich/map.html)
+- [latextable](http://www.mathworks.com/matlabcentral/fileexchange/44274-latextable)
+
 
 
 ## To contribute
