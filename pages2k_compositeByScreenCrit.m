@@ -1,7 +1,5 @@
 % Purpose: investigate how the composite changes with screening criteria
 % Contributed by: Julien Emile-Geay, 25-Mar-2016
-
-
 % bin parameters
 binStep = 50;
 binEdges=flipud((2000:-binStep:0)');
@@ -12,6 +10,7 @@ tb = binEdges(2:end);
 n_tresh = 10; nboot = 500; % # of bootstrap samples.
 % plotting parameters
 style_l = style_t; style_l{4} = 12;  xlims = [0 2000];  K = 1.1; % expansion factor for tick marks
+cols = brewermap(length(tMin),'Set1');
 
 % 
 sCrit = {'none','regional','regional+FDR','local'}; % screening criterion strings
@@ -23,8 +22,10 @@ ylims       = [-0.75 1]; dy = 0.25;
 yticks      = ylims(1):dy:ylims(2);  % define tick marks
 
 fig('Screening criteria'),clf
+set(gcf,'Position',[440   270   852   628])
+
 for c = 1:nc
-    subplot(2,2,c)
+    subplot(2,2,c), col = cols(c,:);
     proxy_scr = bin_x(tce',proxy_sgn(:,iCrit{c}),binEdges);
     pcom      = nmean(proxy_scr,2);
     p_boot    = bootstrp(nboot,@nmean,proxy_scr');
@@ -70,8 +71,7 @@ for c = 1:nc
     ch = get(h1,'child'); set(ch,'EdgeAlpha',.3)
     title(['Screening: ',sCrit{c},', ', int2str(p_arch(c)), ' records'],style_l{:});
 end
+suptitle()
 froot = ['./figs/' opstring '_compositeByScreenCrit'];
 hepta_figprint(froot,400)  %export to PDF as one needs to adjust transparency manually in Illustrator.
 eps2pdfMac([froot '.eps'])
-
-save(f_out)

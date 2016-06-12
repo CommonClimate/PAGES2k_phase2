@@ -62,7 +62,7 @@ end
 [ny,nr] = size(proxy);
 
 % exploit temperature interpretation
-sgn = lower({T.climateInterpretation_interpDirection});
+sgn = cellfun(@lower,{T.climateInterpretation_interpDirection},'UniformOutput', false);
 sgn_vec = zeros(nr,1);
 for r = 1:nr
     if strcmpi(sgn{r},'positive') || strcmpi(sgn{r},'p')  % KLUDGE

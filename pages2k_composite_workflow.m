@@ -1,5 +1,5 @@
 clear all; close all;  % clean slate
-vers = '1_9_0';  % version of the database to be use
+vers = '1_11_1';  % version of the database to be use
 addpath(genpath('./utilities'))% load code utilities 
 
 % define analysis options
@@ -37,8 +37,7 @@ set(0,'defaultaxesfontsize',12); set(0,'defaulttextfontsize',12);
 % Now let the wild rumpus begin
 
 %% STAGE 1: load relevant data files and prepare the data
-pages2k_composite_prep
-SDmakeTable 
+pages2k_composite_prep 
 
 %% STAGE 2: create global binned composites, and test their sensitivity to methodological choices
 pages2k_composite_globalBins
