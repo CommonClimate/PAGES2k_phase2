@@ -38,7 +38,7 @@ for i = 1:5
     pcomp_t   = reshape([comp_t comp_t]',[],1);
     subplot(5,1,i); 
     plot(plotEdges,pcomp_i,'color',cols(i,:),'LineWidth',2); hold on    
-    ylim([floor(min(comp)) ceil(max(comp))])
+    ylim([floor(min(comp_i)) ceil(max(comp_i))])
     xlim([1 2015])
     title(band(i).title)
     holdYlim = ylim;

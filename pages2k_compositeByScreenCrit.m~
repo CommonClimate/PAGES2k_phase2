@@ -71,7 +71,7 @@ for c = 1:nc
     ch = get(h1,'child'); set(ch,'EdgeAlpha',.3)
     title(['Screening: ',sCrit{c},', ', int2str(p_arch(c)), ' records'],style_l{:});
 end
-suptitle()
+suptitle('Effect of screening criteria, HR records only','Fontweight','Bold')
 froot = ['./figs/' opstring '_compositeByScreenCrit'];
 hepta_figprint(froot,400)  %export to PDF as one needs to adjust transparency manually in Illustrator.
 eps2pdfMac([froot '.eps'])
