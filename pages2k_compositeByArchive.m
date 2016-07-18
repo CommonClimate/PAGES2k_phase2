@@ -14,7 +14,7 @@ tb = binEdges(2:end);
 
 %% 1) composite by archive type
 archive = {pages2k.S.archiveType};
-archive = strrep(archive,'ice core','glacier ice');
+archive = strrep(archive,'Tree Ring','tree');
 
 arch = archive(idx_q);
 proxy_r = proxy_sgn(:,idx_q);

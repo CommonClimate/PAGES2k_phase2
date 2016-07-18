@@ -5,18 +5,19 @@ binStep = 50;
 binEdges=flipud((2000:-binStep:0)');
 binYear=mean([binEdges(2:end) binEdges(1:end-1)],2);
 plotEdges=reshape([binEdges(1:end-1) binEdges(2:end)]',[],1);
-tb = binEdges(2:end);
+tb = binEdges(2:end); t
 % analysis parameters
 n_tresh = 10; nboot = 500; % # of bootstrap samples.
 % plotting parameters
 style_l = style_t; style_l{4} = 12;  xlims = [0 2000];  K = 1.1; % expansion factor for tick marks
-cols = brewermap(length(tMin),'Set1');
 
 % 
 sCrit = {'none','regional','regional+FDR','local'}; % screening criterion strings
 iCrit = {idx_qchr,scr_reg,scr_fdr,scr_loc}; % screening criterion indices
 nc = length(sCrit);
 col = rgb('Red');
+cols = brewermap(nc,'Set1');
+
 
 ylims       = [-0.75 1]; dy = 0.25;
 yticks      = ylims(1):dy:ylims(2);  % define tick marks
@@ -71,7 +72,7 @@ for c = 1:nc
     ch = get(h1,'child'); set(ch,'EdgeAlpha',.3)
     title(['Screening: ',sCrit{c},', ', int2str(p_arch(c)), ' records'],style_l{:});
 end
-suptitle()
+suptitle('Effect of screening criteria, HR records only','Fontweight','Bold')
 froot = ['./figs/' opstring '_compositeByScreenCrit'];
 hepta_figprint(froot,400)  %export to PDF as one needs to adjust transparency manually in Illustrator.
 eps2pdfMac([froot '.eps'])

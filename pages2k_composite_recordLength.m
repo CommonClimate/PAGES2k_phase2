@@ -73,6 +73,7 @@ for c = 1:4
     
     title([int2str(tMin(c)) 'CE and before' ],style_l{:});
 end
+suptitle('Effect of record length','Fontweight','Bold')
 
 set(gcf,'units','normalized','position',[0.1 0.1 0.6 0.4])
 %hepta_figprint(['./figs/compositeByLatitude_' options.source],800)

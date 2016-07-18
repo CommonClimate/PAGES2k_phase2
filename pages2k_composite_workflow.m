@@ -1,5 +1,5 @@
 clear all; close all;  % clean slate
-vers = '1_11_1';  % version of the database to be use
+vers = '1_12_0';  % version of the database to be use
 addpath(genpath('./utilities'))% load code utilities 
 
 % define analysis options
@@ -52,6 +52,8 @@ pages2k_compositeByLatitudeBand
 pages2k_compositeByScreenCrit
 % sensitivity to record length
 pages2k_composite_recordLength
+
+
 
 % stratification however you want !
   % write your own and share it with the PAGES2k community
