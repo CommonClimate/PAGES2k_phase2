@@ -15,7 +15,7 @@ tEnd   = 2000; %  define end year for the analysis
 
 % define I/O files
 f_out = ['./data/pages2k_composite_' vers '.mat'];
-% replace with Cowtan & Way median
+
 if detrend
     d_str = 'detrend';
 else
@@ -28,30 +28,37 @@ else
     g_str = 'raw';
 end
 
-f_merged = ['./data/pages2k_hadcrut4_' d_str '_' g_str '_' vers];
+% LOAD  merged proxy /temperature data + output of correlation analyses
+load(['./data/pages2k_hadcrut4_' d_str '_' g_str '_' vers])
 
 % define graphical defaults
 set(0, 'DefaultAxesFontName', 'Helvetica','DefaultAxesFontWeight','bold')
 set(0, 'DefaultTextFontName', 'Helvetica','DefaultAxesFontWeight','normal')  
 set(0,'defaultaxesfontsize',12); set(0,'defaulttextfontsize',12);
+
+%% prep work
+pages2k_SD_prep                  % makes SD Fig S2
+
 % Now let the wild rumpus begin
 
-%% STAGE 1: load relevant data files and prepare the data
-pages2k_composite_prep 
+%% STAGE 1: visualize dataset and produce Table 1
+pages2k_SDmakeFig01   
+pages2k_SDmakeFig02
+pages2k_SDmakeTable
 
 %% STAGE 2: create global binned composites, and test their sensitivity to methodological choices
-pages2k_composite_globalBins
+pages2k_composite_globalBins      % makes SD Fig 03
 
 %% STAGE 3: sensitivity analysis of the composite
 
 % stratification by archive type
-pages2k_compositeByArchive
+pages2k_compositeByArchive         % makes SD Fig 04
 % stratification by latitude band
-pages2k_compositeByLatitudeBand
+pages2k_compositeByLatitudeBand    % makes SD Fig S8 
 % sensitivity to Screening Criterion
-pages2k_compositeByScreenCrit
+pages2k_compositeByScreenCrit      % makes SD Fig S4 
 % sensitivity to record length
-pages2k_composite_recordLength
+pages2k_composite_recordLength     % makes SD Fig S3 
 
 
 

@@ -22,13 +22,9 @@ end
 
 opstring =  ['PAGES2k_v' vers '_' sifting_style '_' screenHR_style '_' Gauss];
 
-% load data matrices [TO DO: clean up so only the merged one is needed]
+% load data matrices 
 % ==================
- 
-% PAGES2k database
 
-% define output file
-load(f_merged)% merged proxy /temperature matrix
 % load essential arrays
 t = pages2k.year;
 tce  = pages2k.year(t >= tStart & t <= tEnd); nce = length(tce);
@@ -45,6 +41,8 @@ Graph   = pages2k.Graph;
 p_lon   = pages2k.loc(:,1);
 p_lat   = pages2k.loc(:,2);
 edgec   = pages2k.edgec;
+archive = pages2k.archive;
+      S = pages2k.S; 
 
 
 incl = [1:nr]; 
