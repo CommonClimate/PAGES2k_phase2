@@ -2,7 +2,7 @@
 %  Generate Fig 01 of the SD paper
 % the figure has to be generated in 2 parts, then glued in Illustrator,
 % because Matlab is a retarded language that cannot handle 2 different
-% colormaps on the same figure.  Annoying? Mildly. 
+% colormaps on the same figure.  Annoying? Mildly so.
 
 % conventions
 year = pages2k.year;
@@ -28,7 +28,7 @@ for r = 1:nr
         edgec{r} = 'k';
     end
 end
-na = numel(archiveType); 
+na = numel(archiveType);
 nproxy = zeros(ny,na); pind = zeros(na,1);
 for a = 1:na % loop over archive types
     nproxy(:,a) = sum(~isnan(avail(:,p_code == a)),2);
@@ -66,25 +66,25 @@ m_proj('Robinson','clong',10);
 m_coast('patch',[.9 .9 .9]);
 m_grid('xtick',6,'ytick',9,'xticklabel',[ ],'xlabeldir','middle', 'fontsize',8,'fontname','Helvetica');
 nc = 11; % number of color contours
-scheme = 'RdYlBu'; cx = [-1.2,2.2]; 
-colR = t2c_brewer(log10(resMed),nc,scheme,cx); 
+scheme = 'RdYlBu'; cx = [-1.2,2.2];
+colR = t2c_brewer(log10(resMed),nc,scheme,cx);
 % loop over records
 for r = 1:nr
     h(r) = m_line(p_lon(r),p_lat(r),'marker',Graph{p_code(r),2},'MarkerEdgeColor','k','MarkerFaceColor',colR(r,:),'linewidth',[1],'MarkerSize',[7],'linestyle','none');
 end
-% colorbar 
+% colorbar
 ogSize = get(gca, 'Position'); caxis(cx)
 hc = colorbar2('vert','Resolution (years)'); dtm = 1/12;
 ytl = [dtm,2*dtm,6*dtm, 1, 2,  5, 10, 20, 50, 100]';
 yt = log10(ytl);
 pos = get(hc,'Position');
-set(hc,'YTick',yt,'YLim',cx,'Position',[pos(1)+0.1,pos(2),pos(3),pos(4)]); 
-set(hc,'YTickLabel',rats(ytl)); 
+set(hc,'YTick',yt,'YLim',cx,'Position',[pos(1)+0.1,pos(2),pos(3),pos(4)]);
+set(hc,'YTickLabel',rats(ytl));
 set(gca,'Position',ogSize);
 title('b) Resolution',style_t{:});
 
 %pause; % manually adjust the size of the figure
-hepta_figprint(['./figs/PAGES2K_phase2_' vers '_dbview']);
+hepta_figprint(['./figs/PAGES2K_v' vers '_dbview']);
 
 
 %% TEMPORAL AVAILABILITY
@@ -106,5 +106,4 @@ set(hstackin,'ytick',[0:50:n1000],'FontName','Helvetica','YColor', [.3 .3 .3])
 title('First Millennium',style_l{:})
 %pause; % manually adjust the size of the figure
 
-hepta_figprint(['./figs/PAGES2K_phase2_' vers '_tempAvail.eps']);
-
+hepta_figprint(['./figs/PAGES2K_v' vers '_tempAvail.eps']);
