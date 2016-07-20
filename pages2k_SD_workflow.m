@@ -1,5 +1,5 @@
 clear all; close all;  % clean slate
-vers = '1_12_0';  % version of the database to be use
+vers = '1_12_2';  % version of the database to be use
 addpath(genpath('./utilities'))% load code utilities
 
 % define analysis options
