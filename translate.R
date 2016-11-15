@@ -8,47 +8,51 @@ require(reshape2)
 require("matrixStats")
 
 #change the path
-data<- readMat('/Users/wan/Documents/PAGES2k_phase2/data/pages2k_hadcrut4_noDetrend_normal_1_12_2.mat')
+basePath <- "/Users/wan/Documents/PAGES2k_phase2/"
+# or use
+basePath <- getwd()
 
-fieldnames=unlist(readMat('/Users/wan/Documents/PAGES2k_phase2/data/field_names.mat'))
+data <- readMat(paste( basePath,"data/pages2k_hadcrut4_noDetrend_normal_1_12_2.mat",sep="/"))
+fieldnames <- unlist(readMat(paste( basePath,"data/field_names.mat",sep="/"))
 
 
-norm_p = 1 #should proxies be mapped to a standard normal ?    [boolean]
-detrend = 0 #do you want to detrend coral d18O proxies? [boolean]
-navlMin = 20 #what is your threshold for # samples over the Common Era?
-tStart = 1 #define start year (remember: the Common Era does not have a year 0).
-tEnd   = 2000 #define end year for the analysis
+norm_p <- 1 #should proxies be mapped to a standard normal ?    [boolean]
+detrend <- 0 #do you want to detrend coral d18O proxies? [boolean]
+navlMin <- 20 #what is your threshold for # samples over the Common Era?
+tStart <- 1 #define start year (remember: the Common Era does not have a year 0).
+tEnd   <- 2000 #define end year for the analysis
 
 # define analysis options
-lat_weight = 0; # are we normalizing by the cosine of latitude? [boolean]
-sifting_style ='qcOnly'; # possible choices: noSift, qcOnly, qcScreenHR, qcScreenLR, qcScreenAll
-screenHR_style ="loc" # 'loc' = local; 'reg' = regional (within 2000km radius), 'fdr' = regional accounting for false discovery rate
-
-
-t=unlist(data$pages2k[rfind(fieldnames%in%'year')])
-tce  = tStart:tEnd
-nce = length(tce)
-T   = data$pages2k[rfind(fieldnames%in%'S')][[1]]
-nr = length(T[1,1,])
-names = T[18,,]
-yearMax = unlist(data$pages2k[rfind(fieldnames%in%'yearMax')])
-resMed  = unlist(data$pages2k[ rfind(fieldnames%in%'resMed')])
-resAvg  = unlist(data$pages2k[ rfind(fieldnames%in%'resAvg')])
-resMax  = unlist(data$pages2k[ rfind(fieldnames%in%'resMax')])
-p_code  = unlist(data$pages2k[rfind(fieldnames%in%'p_code')])
-Graph   = data$pages2k[32][[1]][12:22]
-p_lon   = unlist(data$pages2k[rfind(fieldnames%in%'loc')][[1]][,1])
-p_lat   = unlist(data$pages2k[rfind(fieldnames%in%'loc')][[1]][,2])
-edgec   = unlist(data$pages2k[rfind(fieldnames%in%'edgec')])
-archive = unlist(data$pages2k[rfind(fieldnames%in%'archive')])
-S = data$pages2k[rfind(fieldnames%in%'S')][[1]]
-incl = 1:nr
+lat_weight <- 0; # are we normalizing by the cosine of latitude? [boolean]
+sifting_style <-'qcOnly'; # possible choices: noSift, qcOnly, qcScreenHR, qcScreenLR, qcScreenAll
+screenHR_style <-"loc" # 'loc' = local; 'reg' = regional (within 2000km radius), 'fdr' = regional accounting for false discovery rate
 
 #define function %!in% which is same as ~ismember
 '%!in%' <- function(x,y)!('%in%'(y,x))
 
 #define rfind function as similar to find in matlab
 rfind <- function(x)seq(along=x)[as.logical(x)] 
+
+
+t<-unlist(data$pages2k[rfind(fieldnames%in%'year')])
+tce  <- tStart:tEnd
+nce <- length(tce)
+T   <- data$pages2k[rfind(fieldnames%in%'S')][[1]]
+nr <- length(T[1,1,])
+names <- T[18,,]
+yearMin <- unlist(data$pages2k[rfind(fieldnames%in%'yearMin')])
+yearMax <- unlist(data$pages2k[rfind(fieldnames%in%'yearMax')])
+resMed  <- unlist(data$pages2k[ rfind(fieldnames%in%'resMed')])
+resAvg  <- unlist(data$pages2k[ rfind(fieldnames%in%'resAvg')])
+resMax  <- unlist(data$pages2k[ rfind(fieldnames%in%'resMax')])
+p_code  <- unlist(data$pages2k[rfind(fieldnames%in%'p_code')])
+Graph   <- data$pages2k[32][[1]][12:22]
+p_lon   <- unlist(data$pages2k[rfind(fieldnames%in%'loc')][[1]][,1])
+p_lat   <- unlist(data$pages2k[rfind(fieldnames%in%'loc')][[1]][,2])
+edgec   <- unlist(data$pages2k[rfind(fieldnames%in%'edgec')])
+archive <- unlist(data$pages2k[rfind(fieldnames%in%'archive')])
+S <- data$pages2k[rfind(fieldnames%in%'S')][[1]]
+incl <- 1:nr
 
 #define multiplot function cite:http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_%28ggplot2%29/)
 multiplot <- function(..., plotlist = NULL, file, cols = 1, layout = NULL) {
@@ -152,10 +156,14 @@ myplot<- function(x){
 multiplot(myplot(1), myplot(2), myplot(3), myplot(4),myplot(5),myplot(6), cols=2)
 
 # merge indices of screened proxies. Get the wanted indices stored so as to facilitate the filterplot function
-HR=idx_qchr
-HR_local = intersect(scr_loc,idx_qchr)
-HR_fdr = intersect(scr_fdr,idx_qchr)
-HR_regional = intersect(scr_reg,idx_qchr)
+HR <- idx_qchr
+HR_local <- intersect(scr_loc,idx_qchr)
+HR_fdr   <- intersect(scr_fdr,idx_qchr)
+HR_regional <- intersect(scr_reg,idx_qchr)
+LR <- idx_qclr
+LR_local <- intersect(scr_loc,idx_qclr)
+LR_fdr   <- intersect(scr_fdr,idx_qclr)
+LR_regional <- intersect(scr_reg,idx_qclr)
 QC=idx_qc
 QC_local = intersect(scr_loc,idx_qc)
 QC_fdr = intersect(scr_fdr,idx_qc)
@@ -181,18 +189,19 @@ filterplot <- function(x){
 #Generating and then saving the plot to the destinated location
 
 #Contrasting HR only and HR+LR
-png("/Users/wan/Documents/PAGES2k_phase2/figures/HRandQConly_Contrast.png", width = 4, height = 4, units = 'in', res = 1600)
+png(paste( basePath,"figures/HRandQConly_Contrast.png",sep="/"), width = 4, height = 4, units = 'in', res = 1600)
 multiplot(filterplot("HR"), filterplot("HR_regional"),filterplot("HR_fdr"), filterplot("HR_local"), filterplot("QC"), filterplot("QC_regional"),filterplot("QC_fdr"), filterplot("QC_local"),cols=2)
 dev.off()
 
 
 #HR contrast
-png("/Users/wan/Documents/PAGES2k_phase2/figures/HR_Contrast.png", width = 4, height = 3, units = 'in', res = 1600)
-multiplot(filterplot("idx_qchr_reg"),filterplot("idx_qchr_fdr"), filterplot("idx_qchr_loc"), filterplot("scr_reg"), filterplot("scr_fdr"),filterplot("scr_loc"),cols=2)
+png(paste( basePath,"figures/HR_Contrast.png",sep="/"), width = 4, height = 3, units = 'in', res = 1600)
+multiplot(filterplot("HR_regional"),filterplot("HR_fdr"), filterplot("HR_local"), filterplot("QC_regional"), filterplot("QC_fdr"),filterplot("QC_local"),cols=2)
 dev.off()
 
 
 #LR contrast
-png("/Users/wan/Documents/PAGES2k_phase2/figures/LR_Contrast.png", width = 4, height = 3, units = 'in', res = 1600)
-multiplot(filterplot("idx_qclr_reg"),filterplot("idx_qclr_fdr"), filterplot("idx_qclr_loc"), filterplot("scr_reg"), filterplot("scr_fdr"),filterplot("scr_loc"),cols=2)
+png(paste( basePath,"/Users/wan/Documents/PAGES2k_phase2/figures/LR_Contrast.png",sep="/"), width = 4, height = 3, units = 'in', res = 1600)
+multiplot(filterplot("LR_regional"),filterplot("LR_fdr"), filterplot("LR_local"), filterplot("QC_regional"), filterplot("QC_fdr"),filterplot("QC_local"),cols=2)
 dev.off()
+
