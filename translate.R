@@ -13,7 +13,7 @@ basePath <- "/Users/wan/Documents/PAGES2k_phase2/"
 basePath <- getwd()
 
 data <- readMat(paste( basePath,"data/pages2k_hadcrut4_noDetrend_normal_1_12_2.mat",sep="/"))
-fieldnames <- unlist(readMat(paste( basePath,"data/field_names.mat",sep="/"))
+fieldnames <- unlist(readMat(paste( basePath,"data/field_names.mat",sep="/")) )
 
 
 norm_p <- 1 #should proxies be mapped to a standard normal ?    [boolean]
@@ -201,7 +201,7 @@ dev.off()
 
 
 #LR contrast
-png(paste( basePath,"/Users/wan/Documents/PAGES2k_phase2/figures/LR_Contrast.png",sep="/"), width = 4, height = 3, units = 'in', res = 1600)
+png(paste( basePath,"figures/LR_Contrast.png",sep="/"), width = 4, height = 3, units = 'in', res = 1600)
 multiplot(filterplot("LR_regional"),filterplot("LR_fdr"), filterplot("LR_local"), filterplot("QC_regional"), filterplot("QC_fdr"),filterplot("QC_local"),cols=2)
 dev.off()
 
