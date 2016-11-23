@@ -15,7 +15,7 @@ else
 end
 
 if nargin < 5 
-	FontName = 'Palatino';
+	FontName = 'Helvetica';
 else
 	FontName = varargin{2};
 end

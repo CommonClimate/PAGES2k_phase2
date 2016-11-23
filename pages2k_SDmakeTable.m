@@ -1,9 +1,5 @@
 % SDmakeTable(vers)  make excel table for the SD paper
 
-% Kludge for version 1.12.2 because 1.12.0 was great except for refs and
-% PAG
-%P =  load('/Users/jeg/Dropbox/PAGES2k_matlab/data/proxy_db/pages2kTSv1_12_2_unpack.mat') 
-%S = P.S;
 nr = length(S);
 
 archive = pages2k.archive;

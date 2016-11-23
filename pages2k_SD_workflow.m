@@ -1,5 +1,5 @@
 clear all; close all;  % clean slate
-vers = '1_12_2';  % version of the database to be use
+vers = '1_13_1';  % version of the database to be use
 addpath(genpath('./utilities'))% load code utilities
 
 % define analysis options
@@ -7,7 +7,7 @@ lat_weight = 0; % are we normalizing by the cosine of latitude? [boolean]
 sifting_style = 'qcOnly'; % possible choices: noSift, qcOnly, qcScreenHR, qcScreenLR, qcScreenAll
 screenHR_style = 'reg';  % 'loc' = local; 'reg' = regional (within 2000km radius), 'fdr' = regional accounting for false discovery rate
 
-norm_p = 1;  % should proxies be mapped to a standard normal ?    [boolean]
+norm_p = 0;  % should proxies be mapped to a standard normal ?    [boolean]
 detrend = 0; % do you want to detrend coral d18O proxies? [boolean]
 navlMin = 20; % what is your threshold for # samples over the Common Era?
 tStart = 1; % define start year (remember: the Common Era does not have a year 0).
@@ -58,7 +58,7 @@ pages2k_compositeByLatitudeBand    % makes SD Fig S8
 % sensitivity to Screening Criterion
 pages2k_compositeByScreenCrit      % makes SD Fig S4
 % sensitivity to record length
-pages2k_composite_ByRecordLength     % makes SD Fig S3
+pages2k_compositeByRecordLength     % makes SD Fig S3
 
 
 % sensitivity to whatever you want !

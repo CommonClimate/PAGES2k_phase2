@@ -9,10 +9,12 @@ ulat   = gridcorr.ulat;
 ggrid  = gridcorr.ggrid;
 
 % now plot it
-fig(1); clf;
+fig('Bete immonde'); clf;
 radius = 2000;
 nrad   = length(radius);
 np     = length(S);
+p_code = pages2k.p_code;
+
 
 % compute summary correations
 rMaxI = NaN(np,nrad);  % correlations to instrumental temperature
@@ -161,19 +163,21 @@ for ir = 1:nrad %
     set(mpxc,'linestyle','none')
     set(gcf,'units','normalized','position',[0.39 0.53 0.52 0.40])
     %
-    figure_name = ['./figs/PAGES2K_v' vers '_correlation_map' int2str(radius(ir))   '.eps'];
-    hepta_figprint(figure_name,400)
+    figure_name = ['./figs/PAGES2K_v' vers '_correlation_map' int2str(radius(ir))];
+    %hepta_figprint(figure_name,400)
+    export_fig([figure_name '.pdf'],'-r400','-nocrop','-cmyk','-painters');
+
 end
 
 % compute fraction of global area that is
 [X,Y] = meshgrid(ulon,ulat);
 area_weight = cosd(Y);
 A = ~isnan(gggrid(:,2:end)).*area_weight;
-area_fraction = sum(A(:))/sum(area_weight(:))  % 77% for v 1.9.0; 72% for v1.11.1
+area_fraction = sum(A(:))/sum(area_weight(:))  % 77% for v 1.9.0; 72% for v1.13.1
 
-fig(1), clf
+fig('colorbar'), clf
 m_proj('Robinson','clong',0);
-ulonl = [ulon;ulon(end)+5];
+ulonl =[ulon;ulon(end)+5];
 gggrid = squeeze(ggrid(2,:,:))';
 gggrid = [gggrid gggrid(:,1)]
 %
