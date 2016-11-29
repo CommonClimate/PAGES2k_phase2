@@ -107,5 +107,5 @@ set(hstackin,'YAxisLocation','Right')
 set(hstackin,'ytick',[0:50:n1000],'FontName','Helvetica','YColor', [.3 .3 .3])
 title('First Millennium',style_l{:})
 %pause; % manually adjust the size of the figure
-export_fig(['./figs/PAGES2k_v' vers '_tempAvail.pdf'],'-r300','-nocrop','-cmyk','-painters');
+export_fig(['./figs/PAGES2k_v' vers '_tempAvail.pdf'],'-r300','-cmyk','-painters','-transparent');
 %hepta_figprint(['./figs/PAGES2k_v' vers '_tempAvail.eps']);

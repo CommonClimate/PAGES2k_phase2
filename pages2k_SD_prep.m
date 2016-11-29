@@ -254,7 +254,7 @@ set(hstackin,'YAxisLocation','Right')
 set(hstackin,'ytick',[0:50:n1000],'YColor', [.3 .3 .3])
 title('First Millennium',style_l{:})
 froot = ['./figs/' opstring '_mapRecordsIncluded'];
-hepta_figprint(froot)  %export to PDF as one needs to adjust transparency manually in Illustrator.
+export_fig([froot '.pdf'],'-r400','-nocrop','-cmyk','-painters');
 clear hk
 
 
