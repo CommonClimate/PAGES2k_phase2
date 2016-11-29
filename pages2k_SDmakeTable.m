@@ -46,51 +46,55 @@ climateInterpretationDirection=({S.climateInterpretation_interpDirection})';
 ID=({S.paleoData_pages2kID})';
 [IDs isort] = sort(ID);
 
+
+% Journal Citations
 authors=({S.pub1_author})';
 investigators=({S.investigators})';
 pubYear=({S.pub1_pubYear})';
-
-citeKey=({S.pub1_citeKey})';
-noRef = cellfun(@isempty,citeKey); % locus of missing references
-citeKey(noRef) = {'MISSING'};      % flag missing references
-
-
+pubCiteKey=({S.pub1_citeKey})';
+noRef = cellfun(@isempty,pubCiteKey); % locus of missing references
+pubCiteKey(noRef) = {'MISSING'};      % flag missing references
 DOI=({S.pub1_DOI})';
+
+% Data Citations
+dataCiteKey=({S.dataPub1_citeKey})';
+
+
 QCnotes={S.paleoData_QCnotes}';
 
-for ii=1:length(investigators)
-    if size(investigators{ii,1},2)>0
-        if isstr(investigators{ii,1})
-            investigators2{ii,1}=investigators{ii,1};
-        else
-            investigators2{ii,1}=investigators{ii,1}(1);
-        end
-    end
-end
-noAuthor=find(cellfun(@length,authors)==0);
-yesInvestigator=find(cellfun(@length,investigators2)>0);
-repAuthor=intersect(noAuthor,yesInvestigator);
-authors(repAuthor)=investigators2(repAuthor);
-% extract first author
-for ii=1:nr
-    aName=authors{ii};
-    if ~isempty(aName)
-        if ~isstr(aName)
-            aName=authors{ii}{1};
-        end
-        if isstr(aName)
-            strend=min([strfind(aName,';') strfind(aName,',')]);
-            %strend=min([strfind(aName,';') strfind(aName,',') strfind(aName,' ')]);
-
-            if ~isempty(strend)
-                firstAuthor{ii,1}=aName(1:(strend-1));
-            else
-                firstAuthor{ii,1}=aName;
-            end
-        end
-    end
-    %pubCite{ii} = [firstAuthor{ii,1} 'et al.,[' int2str(pubYear{ii}) ']']
-end
+% for ii=1:length(investigators)
+%     if size(investigators{ii,1},2)>0
+%         if isstr(investigators{ii,1})
+%             investigators2{ii,1}=investigators{ii,1};
+%         else
+%             investigators2{ii,1}=investigators{ii,1}(1);
+%         end
+%     end
+% end
+% noAuthor=find(cellfun(@length,authors)==0);
+% yesInvestigator=find(cellfun(@length,investigators2)>0);
+% repAuthor=intersect(noAuthor,yesInvestigator);
+% authors(repAuthor)=investigators2(repAuthor);
+% % extract first author
+% for ii=1:nr
+%     aName=authors{ii};
+%     if ~isempty(aName)
+%         if ~isstr(aName)
+%             aName=authors{ii}{1};
+%         end
+%         if isstr(aName)
+%             strend=min([strfind(aName,';') strfind(aName,',')]);
+%             %strend=min([strfind(aName,';') strfind(aName,',') strfind(aName,' ')]);
+% 
+%             if ~isempty(strend)
+%                 firstAuthor{ii,1}=aName(1:(strend-1));
+%             else
+%                 firstAuthor{ii,1}=aName;
+%             end
+%         end
+%     end
+%     %pubCite{ii} = [firstAuthor{ii,1} 'et al.,[' int2str(pubYear{ii}) ']']
+% end
 
 for ii=1:length(siteName)
     sName=siteName{ii};
@@ -157,11 +161,11 @@ end
 
 %%  WRITE OUT FILES
 % 1) csv table
-header={'ID' 'Name' 'Lat' 'Lon' 'Archive' 'Proxy' 'minYear' 'maxYear' 'Resolution' 'First Author' 'Publication Year' 'CiteKey' 'inComposites'};
-outcell=[ID(isort) dataSetName(isort)  latValue(isort)  longValue(isort) archive(isort)' proxyType(isort) minYear(isort) maxYear(isort) medResolution(isort) firstAuthor(isort) pYear(isort) citeKey(isort) inComposite(isort)];
+header={'ID' 'Lat' 'Lon' 'Archive' 'Proxy' 'minYear' 'maxYear' 'Resolution' 'Publication' 'Data Citation' 'inComposites'};
+outcell=[ID(isort) latValue(isort)  longValue(isort) archive(isort)' proxyType(isort) minYear(isort) maxYear(isort) medResolution(isort) pubCiteKey(isort) dataCiteKey(isort) inComposite(isort)];
 cell2csv(['./SD-Table_v' vers '.csv'],[header ; outcell],',');
 % 2) BibTeX citations
-citeKey_c = unique(citeKey(~noRef)); nrefs = length(citeKey_c)
+citeKey_c = unique(pubCiteKey(~noRef)); nrefs = length(citeKey_c)
 
 refStr = '\cite{'; % initialize cite command
 for r = 1:nrefs-1

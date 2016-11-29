@@ -165,8 +165,8 @@ for ir = 1:nrad %
     %
     figure_name = ['./figs/PAGES2K_v' vers '_correlation_map' int2str(radius(ir))];
     %hepta_figprint(figure_name,400)
+    pause
     export_fig([figure_name '.pdf'],'-r400','-nocrop','-cmyk','-painters');
-
 end
 
 % compute fraction of global area that is
@@ -175,16 +175,16 @@ area_weight = cosd(Y);
 A = ~isnan(gggrid(:,2:end)).*area_weight;
 area_fraction = sum(A(:))/sum(area_weight(:))  % 77% for v 1.9.0; 72% for v1.13.1
 
-fig('colorbar'), clf
-m_proj('Robinson','clong',0);
-ulonl =[ulon;ulon(end)+5];
-gggrid = squeeze(ggrid(2,:,:))';
-gggrid = [gggrid gggrid(:,1)]
-%
-mpxc = m_pcolor2(ulonl,ulat,gggrid); hold on
-m_coast('color','k'); hold on;
-m_grid('xtick',6,'ytick',9,'xticklabel',[ ],'xlabeldir','middle', 'fontsize',10,'fontname','Helvetica','backcolor',[0.85 0.85 0.85]) %'xtick',[-125 -122 -119 -116]);
-caxis([0 1])
-%
-hcb4 = colorbar2('horiz','Absolute Correlation'), set(hcb4,'XTick',[0:0.2:1],'FontWeight','bold','FontSize',12,'FontName', 'Helvetica');
-hepta_figprint('./figs/correlation_map_colorbar.eps',400);
+% fig('colorbar'), clf
+% m_proj('Robinson','clong',0);
+% ulonl =[ulon;ulon(end)+5];
+% gggrid = squeeze(ggrid(2,:,:))';
+% gggrid = [gggrid gggrid(:,1)]
+% %
+% mpxc = m_pcolor2(ulonl,ulat,gggrid); hold on
+% m_coast('color','k'); hold on;
+% m_grid('xtick',6,'ytick',9,'xticklabel',[ ],'xlabeldir','middle', 'fontsize',10,'fontname','Helvetica','backcolor',[0.85 0.85 0.85]) %'xtick',[-125 -122 -119 -116]);
+% caxis([0 1])
+% %
+% hcb4 = colorbar2('horiz','Absolute Correlation'), set(hcb4,'XTick',[0:0.2:1],'FontWeight','bold','FontSize',12,'FontName', 'Helvetica');
+% hepta_figprint('./figs/correlation_map_colorbar.eps',400);
