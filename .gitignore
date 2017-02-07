@@ -1,14 +1,2 @@
 
-data/pages2k_composite_2015_08_20.mat
-
-figs/composite_noSift_Gaussianized_NoCoralO18DetrendScreeningEffects_Smoothed.eps
-
-figs/composite_noSift_Gaussianized_NoCoralO18DetrendScreeningEffects_Unsmoothed.eps
-
-figs/HadCRUT4_vs_composite_noSift_Gaussianized_NoCoralO18Detrend.eps
-
-figs/compositeByArchive_noSift_Gaussianized_NoCoralO18Detrend_smoothed.eps
-
-figs/compositeByArchive_noSift_Gaussianized_NoCoralO18Detrend_smoothed.eps
-
-figs/compositeByLatitude_smoothed.eps
+figs/*.*
