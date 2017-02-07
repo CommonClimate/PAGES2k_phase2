@@ -175,6 +175,8 @@ area_weight = cosd(Y);
 A = ~isnan(gggrid(:,2:end)).*area_weight;
 area_fraction = sum(A(:))/sum(area_weight(:))  % 77% for v 1.9.0; 72% for v1.13.1
 
+sprintf('%3.4g %s %i %s',100*area_fraction,'% of the planet is within ', radius,'km of a proxy')
+
 % fig('colorbar'), clf
 % m_proj('Robinson','clong',0);
 % ulonl =[ulon;ulon(end)+5];

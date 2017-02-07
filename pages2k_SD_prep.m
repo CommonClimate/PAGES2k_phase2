@@ -219,7 +219,7 @@ pind = pind(pind~=0);
 n1000 = ceil(sum(nproxy(tce == 1000,:))/10)*10;
 nsites    = length(unique({pages2k.S(idx_q).dataSetName})); % # of sites
 versl = strrep(vers,'_','.');
-fig('PAGES 2K screened'), clf;
+fig('PAGES2k screened'), clf;
 set(gcf,'position',[10 10 791 550])
 orient landscape
 % plot spatial distribution
@@ -230,7 +230,7 @@ m_grid('xtick',6,'ytick',9,'xticklabel',[ ],'xlabeldir','middle', 'fontsize',8);
 % loop over records
 for j = 1:length(idx_q)
     r = idx_q(j);
-    hk(j) = m_line(p_lon(r),p_lat(r),'marker',Graph{p_code(r),2},'MarkerEdgeColor',edgec{r},'MarkerFaceColor',Graph{p_code(r),1},'linewidth',[1],'MarkerSize',[7],'linestyle','none');
+    hk(j) = m_line(p_lon(r),p_lat(r),'marker',Graph{p_code(r),2},'MarkerEdgeColor','none','MarkerFaceColor',Graph{p_code(r),1},'linewidth',[1],'MarkerSize',[7],'linestyle','none');
 end
 text(-2,1.75,['Screened PAGES2k network (',sifting_style,' sifting , ', int2str(length(idx_q)) , ' records from ', int2str(nsites), ' sites)'],style_t{:});
 % legend
@@ -259,8 +259,8 @@ clear hk
 
 
 %% mean composite
-p_comp = nmean(proxy_qs,2);
-p_std  =  nstd(proxy_qs,0,2);
+%p_comp = nmean(proxy_qs,2);
+%p_std  =  nstd(proxy_qs,0,2);
 
 save(f_out)
 

@@ -2,8 +2,8 @@ function []=fancyplot_deco(title_str, xlabel_str, ylabel_str,varargin)
 % FUNCTION  []=fancyplot_deco(title_str, xlabel_str, ylabel_str,[FontSize]) 
 %     Pretties up an otherwise plain-looking matlab plot
 %   INPUTS:  - title (string)
-%			    - xlabel (string)
-%				 - ylabel (string)
+%			 - xlabel (string)
+%		     - ylabel (string)
 %            - FontSize (default = 14), applies to title, other sizes are scaled down
 %
 %    Written 2008 by Julien Emile-Geay (GaTech)
@@ -24,7 +24,7 @@ hTitle=title(title_str);
 hYLabel=ylabel(ylabel_str);
 hXLabel=xlabel(xlabel_str);
 
-set(gca,'FontName','Times','FontSize', round(FontSize*0.71));
+set(gca,'FontName',FontName,'FontSize', round(FontSize*0.71));
 set([hTitle, hXLabel, hYLabel], 'FontName' , FontName);
 set([hXLabel, hYLabel],'FontSize', round(FontSize*0.86));
 set(hTitle, 'FontSize', FontSize, 'FontWeight' , 'bold');

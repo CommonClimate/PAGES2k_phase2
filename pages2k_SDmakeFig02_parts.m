@@ -1,6 +1,6 @@
 clear all;
 addpath(genpath('./utilities'))
-network = 'M08';  % choices: M08, PAGES 2013, PAGES 2016. 
+network = 'M08';  % choices: M08, PAGES2k 2013, PAGES2k 2016. 
 vers = '1_13_1';  % version of the PAGES2k database to be use
 
 % fonts
@@ -14,7 +14,7 @@ style_l = {'FontName',FontName};
 icon{1,1}=rgb('Gold');        icon{1,2}= 'h';  icon{1,3} = 'bivalve';
 icon{2,1}=rgb('DarkKhaki');   icon{2,2}= 'h';  icon{2,3} = 'borehole';
 icon{3,1}=rgb('DarkOrange');  icon{3,2}= 'o';  icon{3,3} = 'coral';
-icon{4,1}=rgb('DimGray');     icon{4,2}= 'p';  icon{4,3} = 'document';
+icon{4,1}=rgb('Black');     icon{4,2}= 'p';  icon{4,3} = 'document';
 icon{5,1}=rgb('LightSkyBlue');icon{5,2}= 'd';  icon{5,3} = 'glacier ice';
 icon{6,1}=rgb('DeepSkyBlue'); icon{6,2}= '*';  icon{6,3} = 'hybrid';
 icon{7,1}=rgb('RoyalBlue');   icon{7,2}= 's';  icon{7,3} = 'lake sediment';
@@ -42,7 +42,7 @@ switch network
         [ny,nr]   = size(prox);             
         avail = nan(ny,nr); avail(~isnan(prox)) = 1;
 
-    case{'PAGES 2013'}
+    case{'PAGES2k 2013'}
         P1  = load('./data/pages2k_hadcrut4_data_v1');
         proxy = P1.proxy;
         keep      = setdiff(1:550,proxy.duplic);    % keep      = proxy.keep;
@@ -65,7 +65,7 @@ switch network
         %
         avail = nan(size(prox)); avail(~isnan(prox)) = 1;
         
-    case{'PAGES 2016'}
+    case{'PAGES2k 2016'}
         load(['./data/pages2kTSv' vers '_unpack.mat']);
         [ny,nr]   = size(proxy_ann);       
 end
@@ -85,33 +85,32 @@ end
 
 % define edge color (black except for ice cores)
 edgec = cell(nr,1);
-edgec(1:nr) = {rgb('black')};
+edgec(1:nr) = {'none'}; %rgb('black')
 edgec(p_code == 6) = {icon{6,1}};
 
 % define graphical parameters
 axlim   = [0 2000 0 1200];
-inaxlim = [0 1000 0 90];
+inaxlim = [0 1000 0 200];
 ytick   = [25 50 75];
 
 % =============
 % PLOT SPACETIME COVERAGE
 % =============
-n1000 = ceil(sum(nproxy(year == 1000,:))/10)*10;
+%n1000 = ceil(sum(nproxy(year == 1000,:))/10)*10;
 fig('Fixed Size'), clf
 orient landscape
-set(gcf,'PaperPositionMode','auto')
-%set(gcf, 'Position', [440   144   896   654])
-set(gcf, 'Position', [310   289   663   516])
+set(gcf, 'Units','centimeters', 'Position',[2.5    5   22   19])
+set(gcf, 'PaperPositionMode','auto')
 % plot spatial distribution
 hmap=axes('Position', [.05 0.45 0.75 0.5]);
-m_proj('Robinson','clong',10);
+m_proj('Robinson','clong',0);
 m_coast('patch',rgb('WhiteSmoke'));
-m_grid('xtick',6,'ytick',9,'xticklabel',[ ],'xlabeldir','middle', 'fontsize',4);
+m_grid('xtick',6,'ytick',9,'xticklabel',[ ],'xlabeldir','middle', 'fontsize',8);
 % loop over records
 for r = 1:nr
     h(r) = m_line(p_lon(r),p_lat(r),'marker',icon{p_code(r),2},'MarkerEdgeColor',edgec{r},'MarkerFaceColor',icon{p_code(r),1},'linewidth',[.5],'MarkerSize',[6],'linestyle','none');
 end
-text(-.45,1.75,['Network: ' network ', ' int2str(nr) ' records'],'FontWeight','bold','FontName', FontName,'Fontsize',16);
+text(-.55,1.75,['Network: ' network ', ' int2str(nr) ' records'],'FontWeight','bold','FontName', FontName,'Fontsize',16);
 % legend
 hl = legend(h(pind(~isnan(pind))),lbl{find(~isnan(pind))},'location',[.84 .6 .1 .2]);
 set(hl, 'FontName', FontName,'box','off','FontSize',12);
@@ -119,7 +118,7 @@ set(hl, 'FontName', FontName,'box','off','FontSize',12);
 hstack=axes('Position', [0.1 0.1 0.7 0.29]);
 cmap=cell2mat(icon(:,1));
 colormap(cmap);
-area(year,nproxy,'EdgeColor','w'), set(gca,'YAxisLocation','Right');
+area(year,nproxy,'EdgeColor','w'), set(gca,'YAxisLocation','Right','FontName','Helvetica');
 xlim([0 2000])
 %axis(axlim), %set(gca, 'Yscale', 'log','BaseValue', 1e0);
 fancyplot_deco('','Year (CE)','# proxies',14,FontName);
@@ -129,19 +128,15 @@ title('Temporal Availability','FontName', FontName,'Fontsize',14)
 frac=.5;
 hstackin=axes('Position', [0.1 0.2 frac*.7 0.14]);
 area(year,nproxy,'EdgeColor','w')
-axis([1 1000 0 n1000])
+axis(inaxlim)
 set(hstackin,'xtick',[],'box','off','TickDir','out','TickLength',[.02 .02],'YMinorTick','on', 'YGrid','on')
 set(hstackin,'YAxisLocation','Right')
-set(hstackin,'ytick',[0:50:n1000],'FontName','Helvetica','YColor', [.3 .3 .3])
+set(hstackin,'FontName','Helvetica','YColor', [.3 .3 .3])
 title('First Millennium','FontName','Helvetica','Fontsize',12,'Fontweight','bold')
-
-
+%display('Adjust figure size and press Enter')
+%pause
 %% export to PDF
-export_fig(['./figs/' network '_dbviewNarrow.pdf'],'-r200','-cmyk','-painters');
-
-
-
-
+export_fig(['./figs/' network '_dbview.pdf'],'-r300','-cmyk','-painters','-transparent');
 
 % % Instrumental availability only
 % fig('temporal availability'); set(gcf,'position',[233   394   970   324]); clf;
