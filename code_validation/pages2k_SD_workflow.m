@@ -1,6 +1,6 @@
 clear all; close all;  % clean slate
 vers = '1_13_1';  % version of the database to be use
-addpath(genpath('./utilities'))% load code utilities
+addpath(genpath('../utilities'))% load code utilities
 
 % define analysis options
 lat_weight = 0; % are we normalizing by the cosine of latitude? [boolean]
@@ -14,7 +14,7 @@ tStart = 1; % define start year (remember: the Common Era does not have a year 0
 tEnd   = 2000; %  define end year for the analysis
 
 % define I/O files
-f_out = ['./data/pages2k_composite_' vers '.mat'];
+f_out = ['../data/pages2k_composite_' vers '.mat'];
 
 if detrend
     d_str = 'detrend';
@@ -29,7 +29,7 @@ else
 end
 
 % LOAD  merged proxy /temperature data + output of correlation analyses
-load(['./data/pages2k_hadcrut4_' d_str '_' g_str '_' vers])
+load(['../data/pages2k_hadcrut4_' d_str '_' g_str '_' vers])
 
 % define graphical defaults
 set(0, 'DefaultAxesFontName', 'Helvetica','DefaultAxesFontWeight','bold')
