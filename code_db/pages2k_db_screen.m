@@ -156,7 +156,7 @@ op.nsim = options.nsim; % number of surrogates for isospectral test
 qBC = 0.05; % Target false discovery rate (knockoff, Barber & Candes 2015)
 qBH = 0.05; % Target false discovery rate (Benjamini-Hochberg 1995)
 % output file
-fname = ['../data/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string '_' method];
+fname = ['../data/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string '_' method '.mat'];
 
 for r = 1:nr
     disp(['Processing proxy ' num2str(r)])
