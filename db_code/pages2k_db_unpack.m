@@ -39,7 +39,7 @@ year_i = min(yearMin); year_f = max(yearMax);
 year   = year_i:year_f; ny = length(year);
 
 % Aggregate proxy timseries into 3 timeseries, f(seasonal sensitivity)
-proxy_cal = nan(ny,nr);
+proxy_ann = nan(ny,nr);
 proxy_djf = nan(ny,nr);
 proxy_jja = nan(ny,nr);
 
@@ -47,7 +47,7 @@ proxy_jja = nan(ny,nr);
 op.crit_name = 'pct_var'; op.P = 1.00;
 n = 0; m = 0; gappy = zeros(nr,1);
 for r = 1:nr
-    %for r = 649  %debug
+    %for r = 2  %debug
     T = S(r);
     disp(['Importing record ' int2str(r) '/' int2str(nr)])
 

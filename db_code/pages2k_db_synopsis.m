@@ -127,7 +127,8 @@ end
 
 fig('PAGES2K projections'), clf
 orient landscape
-%set(gcf,'PaperPositionMode','auto')
+set(gcf,'PaperPositionMode','auto')
+set(gcf, 'Position', [440   144   896   654])
 p = panel();
 p.pack('v', {1/2 []})
 p(1).pack(1, 2);

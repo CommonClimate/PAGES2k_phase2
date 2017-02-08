@@ -13,7 +13,7 @@ options.export = 1; % export figures or not?
 
 options.norm_p = 0; % use normalized proxies (1) or not (0)
 options.sample_thresh = 20; %minimum number of samples for a correlation to be meaningful
-options.nsim = 50; % # of surrogate timeseries in non-parametric tests
+options.nsim = 1000; % # of surrogate timeseries in non-parametric tests
 
 
 % ================================================
@@ -36,9 +36,9 @@ pages2k_db_process(vers,options);
 
 % name of correlation file
 if options.norm_p
-    corr_file = ['../../data/corr_hadcrut/pages2k_hadcrut4_corr_' options.dtype '_' vers '_normal_' options.method];
+    corr_file = ['../data/PAGES2k_hadcrut4_corr_' options.dtype '_' vers '_normal_' options.method];
 else
-    corr_file = ['../../data/corr_hadcrut/pages2k_hadcrut4_corr_' options.dtype '_' vers '_raw_' options.method];
+    corr_file = ['../data/PAGES2k_hadcrut4_corr_' options.dtype '_' vers '_raw_' options.method];
 end
 
 if ~exist([corr_file, '.mat'],'file')  % Only run this if necessary

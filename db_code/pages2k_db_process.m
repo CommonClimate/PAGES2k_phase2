@@ -61,7 +61,7 @@ if options.export
     lab{1} = 'Raw';
     lab{2} = 'ITS';
 
-    fig(1), step = 3;
+    fig('Zooooomba'), step = 3;
     set(gcf,'position',[224   234   1056   572]);
     disp('Plot gaussianized records...')
     for n=1:step:pd
@@ -159,7 +159,7 @@ save(fn,'-append','NPS','YKS','H_sy','H_sp','H_li','H_jb','-v6')
 
 if  options.InterpSuperAnn
     superAnn = find(resMed>1);
-    figDir = '../figs/annualize';
+    figDir = '../figs';
     proxy_a   = pages2k_db_annualizer(proxy_ann,S,superAnn,year,resMed,options.export,figDir);
     proxy_na  = pages2k_db_annualizer(proxy_n   ,S,superAnn,year,resMed);
     %proxy_da  = pages2k_db_annualizer(proxy_d   ,S,superAnn,year,resMed);
