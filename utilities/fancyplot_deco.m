@@ -24,7 +24,7 @@ hTitle=title(title_str);
 hYLabel=ylabel(ylabel_str);
 hXLabel=xlabel(xlabel_str);
 
-set(gca,'FontName','Times','FontSize', round(FontSize*0.71));
+set(gca,'FontName',FontName,'FontSize', round(FontSize*0.71));
 set([hTitle, hXLabel, hYLabel], 'FontName' , FontName);
 set([hXLabel, hYLabel],'FontSize', round(FontSize*0.86));
 set(hTitle, 'FontSize', FontSize, 'FontWeight' , 'bold');
