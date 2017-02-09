@@ -1,7 +1,7 @@
 
 # PAGES2k SD code
 Matlab code for the PAGES2k synthesis of temperature-sensitive proxies, version 2.0.0.
-The code and data herein allow to reproduce all PAGES2k-related figures from the main text and SOM, except Fig 3.
+The code and data herein allow to reproduce all PAGES2k-related figures from the main text and SOM.
 The code is provided "as is" and without warranty of running on your system. We welcome any and all feedback to make it run more smoothly.
 
 ## Input data
@@ -29,6 +29,10 @@ The master code, **pages2k_db_workflow.m** is made up of the following pieces:
 
 - **pages2k_db_prep** % exports all necessary matrices for subsequent analyses.
 
+## Directory code_HadCRUT
+
+- **HadCRUT4_prep.m** annualizes monthly HadCRUT4 data and generates Fig 3
+- **HadCRUT4_seasonal.m** generates Fig S6
 
 ## Directory code_validation
 This code assumes that **pages2k_db_workflow.m** has run to completion and produced a file called `pages2k_hadcrut4_noDetrend_raw _2.0.0.mat`, placed in the /data/ folder. (note: for this to happen, the code must have been run under default settings)
@@ -42,7 +46,7 @@ The master code, **pages2k_SD_workflow.m** is made up of the following pieces:
 - **pages2k_composite_globalBins** creates global binned composites, makes Fig 7
 - **pages2k_compositeByArchive**  stratification by archive type, makes Fig 8
 
-All the data are in "data". The figures are all exported to "figs"
+All the data are in "data". All figures are exported to "figs" (sometimes in subfolders thereof).
 Code dependencies needed to run the above codes are included in "utilities". If you are missing anything, we will be happy to add it. To comply with the license, some third-party packages may need to be installed separately:
 
 - [m_map](http://www.eos.ubc.ca/~rich/map.html)
