@@ -28,7 +28,7 @@ function [da,ta,ts]=intra_annual_avg(d,t,ms,me,frac);
 
 
 t = t(:); %ensure column vector is used
-dir = sign(median(diff(t)));
+dir = sign(median(diff(t))); % direction of time flow
 
 if (nargin<5)
     frac = 0.66;

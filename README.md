@@ -5,7 +5,7 @@ The code and data herein allow to reproduce all PAGES2k-related figures from the
 The code is provided "as is" and without warranty of running on your system. We welcome any and all feedback to make it run more smoothly.
 
 ## Input data
-the code needs the files `PAGES2k_v2.0.0.mat` and `had4med_graphem_sp70.mat` from the FigShare repository in the **data/** directory. (or at least, an alias pointing to such files)
+the code needs the files `PAGES2k_v2.0.0.mat` and `had4med_graphem_sp70.mat` from the [FigShare repository](https://figshare.com/s/d327a0367bb908a4c4f2) in the **data/** directory. (or at least, an alias pointing to such files). This repository is private until publication. Until then, the files may be accessed in this read-only Dropbox folder](https://www.dropbox.com/sh/kgfb5qn1epbsm93/AABIkTn4BCU_bBrMnPptKk01a?dl=0)
 
 ## Directory code_db
 
