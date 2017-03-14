@@ -22,7 +22,7 @@ not_kept    = setdiff([1:nr],keep);  % (diagnostic purposes only)
 
 % Archive type
 archive = {S.archiveType};
-archive = strrep(archive,'tree ring','tree'); %fix Laanila archive type 
+archive = strrep(archive,'tree ring','tree'); %fix Laanila archive type
 
 
 yearMin = nan(nr,1);
@@ -232,7 +232,8 @@ vname       = {S.paleoData_variableName};
 units       = {S.paleoData_units};
 
 
-save(['../data/PAGES2k_v' vers '_unpack.mat'],'-v6')
+save(['../data/PAGES2k_v' vers '_unpack.mat'])
+%save(['../data/PAGES2k_v' vers '_unpack.mat'])
 
 %save with v6 because of this:
 %http://undocumentedmatlab.com/blog/improving-save-performance

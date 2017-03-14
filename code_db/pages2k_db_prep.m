@@ -171,7 +171,7 @@ for r = 1:nr
     S(r).paleoData_valuesRange = range(S(r).paleoData_values);
 end
 disp('Saving results to unpack file')
-save(['../data/PAGES2k_v' vers '_unpack'],'S','-append','-v6')
+save(['../data/PAGES2k_v' vers '_unpack'],'S','-append')
 
 
 % output basic stats
@@ -234,7 +234,7 @@ hadcrut4.gmean = tmp_ann.gmean;
 
 disp('Bundling results in one big file')
 dn = ['../../data/proxy_db/useForCFR/pages2k_hadcrut4_' dtype '_' norm_string '_' vers];
-save(dn,'hadcrut4','pages2k','gridcorr','pcorr','-v6')
+save(dn,'hadcrut4','pages2k','gridcorr','pcorr')
 
 % Visualization of the screened networks
 % ======================================

@@ -213,4 +213,4 @@ for ii = 1:length(ulon)
 end
 
 fn = ['../../data/corr_hadcrut/pages2k_hadcrut4_gridcorr_' options.dtype '_' vers '_' norm_string '_annual.mat'];
-save(fn,,'-v6')
+save(fn,)

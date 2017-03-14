@@ -54,10 +54,10 @@ temp_ama = (temp(4:12:end-12,:) + temp(5:12:end-12,:) + temp(6:12:end-12,:) + ..
     temp(12+1:12:end,:) + temp(12+2:12:end,:) + temp(12+3:12:end,:))./12;
 
 % Restrict temperatura and proxy to the overlapping period
-temp_ann = temp_ann(tcal,:); 
-temp_jja = temp_jja(tcal,:); 
-temp_djf = temp_djf(tcal,:); 
-temp_ama = temp_ama(tcal,:); 
+temp_ann = temp_ann(tcal,:);
+temp_jja = temp_jja(tcal,:);
+temp_djf = temp_djf(tcal,:);
+temp_ama = temp_ama(tcal,:);
 
 % Remove duplicate records
 if norm_p
@@ -90,7 +90,7 @@ if strcmp(dtype,'detrend')
     disp('Detrend proxies before calculating correlations')
     temp_ann = detrend(temp_ann);  temp_ama = detrend(temp_ama);
     temp_jja = detrend(temp_jja);  temp_djf = detrend(temp_djf);
-   
+
     for v = 1:nr
         for s = 1:3
             eval(['Xa = proxc_' per{s} '(:,v);']);
@@ -182,7 +182,7 @@ for r = 1:10
         if resMed(r) <= 5               % hi-res proxies
             mat = temp_ann;   ama = temp_ama;
             djf = temp_djf;   jja = temp_jja;
-            
+
         else
             % Low-res proxies, temperature also needs to be
             % lowpass-filtered in order for correlations to be meaningful
@@ -215,7 +215,7 @@ for r = 1:10
                 [~,jmax]    = max(abs(rho_djf(:,r)));  % djf
                 preg_djf(r) = pval_djf(jmax,r);
                 [~,jmax]    = max(abs(rho_jja(:,r)));  % jja
-                preg_jja(r) = pval_jja(jmax,r); 
+                preg_jja(r) = pval_jja(jmax,r);
                 [~,jmax]    = max(abs(rho_ama(:,r)));  % ama
                 preg_ama(r) = pval_ama(jmax,r);
                 % 2) local correlation
@@ -282,7 +282,7 @@ for r = 1:10
     %    nest  = [num2str(num(1)), '-', num2str(num(end))];
     %    fname = ['../../data/corr_hadcrut/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string  '_' method '_' nest];
     %end
-    save(fname,'idx_loc','idx_neigh','rho_mat','sig_mat','rho_jja','sig_jja','rho_djf','sig_djf','rho_ama','sig_ama','pval_mat','pval_djf','pval_jja','pval_ama','d_pt','d_pp','-v6');
+    save(fname,'idx_loc','idx_neigh','rho_mat','sig_mat','rho_jja','sig_jja','rho_djf','sig_djf','rho_ama','sig_ama','pval_mat','pval_djf','pval_jja','pval_ama','d_pt','d_pp');
 end
 
 
@@ -303,15 +303,15 @@ for i = 1:nl
 end
 
 % Save output
-save(fname,'screen_fdr','screen_reg','screen_loc','pval_mat','pval_djf','pval_jja','note','season','ploc_mat','ploc_jja','ploc_djf','-append','-v6')
-save(fname,'preg_mat','preg_djf','preg_jja','n_sig_mat','n_sig_djf','n_sig_jja','-append','-v6')
+save(fname,'screen_fdr','screen_reg','screen_loc','pval_mat','pval_djf','pval_jja','note','season','ploc_mat','ploc_jja','ploc_djf','-append')
+save(fname,'preg_mat','preg_djf','preg_jja','n_sig_mat','n_sig_djf','n_sig_jja','-append')
 
 tname = ['../data/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string '_' method '.tex'];
 latextable(screen_mtx,'Horiz',season,'Vert',cmethod,'name',tname,'Hline',1,'Vline',1,'format','%d');
 
 
 if strcmpi(method,'knockoff')
-    save(fname,'S_ann','S_djf','S_jja','-append','-v6')
+    save(fname,'S_ann','S_djf','S_jja','-append')
 end
 
 % plot p-values

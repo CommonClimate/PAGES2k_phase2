@@ -49,7 +49,7 @@ for j = 1:pd
     noNaN = ~isnan(proxy_ann(:,j));
     proxy_n(noNaN,j)  = gaussianize(proxy_ann(noNaN,j));
 end
-save(fn,'proxy_n','-append','-v6')
+save(fn,'proxy_n','-append')
 
 % identify as suspect those proxies that fail either the Spiegelhalter or
 % the symmetry test
@@ -152,7 +152,7 @@ if options.export
     end
 end
 
-save(fn,'-append','NPS','YKS','H_sy','H_sp','H_li','H_jb','-v6')
+save(fn,'-append','NPS','YKS','H_sy','H_sp','H_li','H_jb')
 
 % Q: Test again for normality? Those records that are still not normal after being Gaussianized will be booted out unceremoniously
 % A:  everything is "Gaussian" after that (as far as we can tell...)
@@ -166,4 +166,4 @@ if  options.InterpSuperAnn
     %proxy_nda = pages2k_db_annualizer(proxy_nd  ,S,superAnn,year,resMed);
 end
 
-save(fn,'-append','proxy_a','proxy_na','-v6')
+save(fn,'-append','proxy_a','proxy_na')

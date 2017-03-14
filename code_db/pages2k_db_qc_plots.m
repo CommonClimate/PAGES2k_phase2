@@ -466,4 +466,4 @@ end
 
 fn = ['../data/PAGES2k_v' vers '_unpack'];
 
-save(fn,'instCalib','rho_n','signif_n','ds','n_raw_samples','n_ann_samples','-append','-v6');
+save(fn,'instCalib','rho_n','signif_n','ds','n_raw_samples','n_ann_samples','-append');

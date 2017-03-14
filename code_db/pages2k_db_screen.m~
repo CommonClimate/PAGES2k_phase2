@@ -273,7 +273,7 @@ for r = 1:nr
     %    nest  = [num2str(num(1)), '-', num2str(num(end))];
     %    fname = ['../../data/corr_hadcrut/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string  '_' method '_' nest];
     %end
-    save(fname,'idx_loc','idx_neigh','rho_mat','sig_mat','rho_jja','sig_jja','rho_djf','sig_djf','pval_mat','pval_djf','pval_jja','d_pt','d_pp','-v6');
+    save(fname,'idx_loc','idx_neigh','rho_mat','sig_mat','rho_jja','sig_jja','rho_djf','sig_djf','pval_mat','pval_djf','pval_jja','d_pt','d_pp');
 end
 
 
@@ -294,15 +294,15 @@ for i = 1:nl
 end
 
 % Save output
-save(fname,'screen_fdr','screen_reg','screen_loc','pval_mat','pval_djf','pval_jja','note','season','ploc_mat','ploc_jja','ploc_djf','-append','-v6')
-save(fname,'preg_mat','preg_djf','preg_jja','n_sig_mat','n_sig_djf','n_sig_jja','-append','-v6')
+save(fname,'screen_fdr','screen_reg','screen_loc','pval_mat','pval_djf','pval_jja','note','season','ploc_mat','ploc_jja','ploc_djf','-append')
+save(fname,'preg_mat','preg_djf','preg_jja','n_sig_mat','n_sig_djf','n_sig_jja','-append')
 
 tname = ['./pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string '_' method '.tex'];
 latextable(screen_mtx,'Horiz',season,'Vert',cmethod,'name',tname,'Hline',1,'Vline',1,'format','%d');
 
 
 if strcmpi(method,'knockoff')
-    save(fname,'S_ann','S_djf','S_jja','-append','-v6')
+    save(fname,'S_ann','S_djf','S_jja','-append')
 end
 
 % plot p-values

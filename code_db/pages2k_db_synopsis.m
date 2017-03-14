@@ -201,4 +201,4 @@ Span(Span>2000) = 2000;
 bins = [50 75 100:100:900 1000:500:2000];
 hist(Span,bins)
 
-save(['../data/PAGES2k_v' vers '_unpack.mat'],'-append','p_code','ny','Graph','archiveType','archive','na','recordNames','avail','edgec','-v6')
+save(['../data/PAGES2k_v' vers '_unpack.mat'],'-append','p_code','ny','Graph','archiveType','archive','na','recordNames','avail','edgec')
