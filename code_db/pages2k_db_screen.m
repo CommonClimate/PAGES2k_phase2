@@ -170,7 +170,7 @@ qBH = 0.05; % Target false discovery rate (Benjamini-Hochberg 1995)
 fname = ['../data/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string '_' method '.mat'];
 
 
-for r = 1:10
+for r = 1:nr
     disp(['Processing proxy ' num2str(r)])
     nz_ann = avl_ann(:,r); n = sum(nz_ann);
     nz_djf = avl_djf(:,r); nz_jja = avl_jja(:,r); nz_ama = avl_ama(:,r);
