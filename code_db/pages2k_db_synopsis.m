@@ -20,7 +20,7 @@ load(['../data/PAGES2k_v' vers '_unpack.mat'])
 FontName = 'Helvetica';
 set(0,'defaultAxesFontName', FontName)
 set(0,'defaultTextFontName', FontName)
-style_t = {'FontName',FontName,'Fontweight','Bold','Fontsize',16};
+style_t = {'FontName',FontName,'Fontweight','Bold','Fontsize',14};
 style_l = {'FontName',FontName};
 figpath = '../figs/';
 
@@ -79,7 +79,7 @@ versl = strrep(vers,'_','.'); % legacy
 fig('PAGES2K'), clf
 orient landscape
 set(gcf,'PaperPositionMode','auto')
-set(gcf, 'Position', [440   144   896   654])
+%set(gcf, 'Position', [440   144   896   654])
 % plot spatial distribution
 hmap=axes('Position', [.05 0.45 0.75 0.5]);
 m_proj('Robinson','clong',10);
@@ -124,17 +124,16 @@ end
 
 
 %% polar projections
-
 fig('PAGES2K projections'), clf
 orient landscape
-set(gcf,'PaperPositionMode','auto')
-set(gcf, 'Position', [440   144   896   654])
+%set(gcf,'PaperPositionMode','auto')
+%set(gcf, 'Position', [440   144   896   654])
 p = panel();
-p.pack('v', {1/2 []})
-p(1).pack(1, 2);
+p.pack('v', {1/15 1/2 []})
+p(2).pack(1, 2);
 rs = 30;
 % Arctic records
-p(1,1,1).select()
+p(2,1,1).select()
 m_proj('stereographic','lat',90,'long',0,'radius',rs);
 m_coast('patch',[.9 .9 .9]);
 m_grid('xtick',6,'ytick',7,'xlabeldir','out','fontsize',10,'fontname',FontName,'Yticklabel',[]);
@@ -143,7 +142,7 @@ for r = recs
     ha(r) = m_line(p_lon(r),p_lat(r),'marker',Graph{p_code(r),2},'MarkerEdgeColor',edgec{r},'MarkerFaceColor',Graph{p_code(r),1},'linewidth',[1],'MarkerSize',8,'linestyle','none');
 end
 % Antarctic records
-p(1,1,2).select()
+p(2,1,2).select()
 m_proj('stereographic','lat',-90,'long',0,'radius',rs);
 m_coast('patch',[.9 .9 .9]);
 m_grid('xtick',6,'ytick',7,'xlabeldir','out','fontsize',10,'fontname',FontName,'XaxisLocation','top','Yticklabel',[]);
@@ -153,7 +152,7 @@ for r = recs
     ha(r) = m_line(p_lon(r),p_lat(r),'marker',Graph{p_code(r),2},'MarkerEdgeColor',edgec{r},'MarkerFaceColor',Graph{p_code(r),1},'linewidth',[1],'MarkerSize',8,'linestyle','none');
 end
 %  tropical records
-p(2).select()
+p(3).select()
 Slongs=[-100 43;-75 20; 20 145;43 100;145 295;100 295];
 Slats= [  0  62;-62  0;-62   0; 0  62;-62   0;  0  62];
 for l=1:6,

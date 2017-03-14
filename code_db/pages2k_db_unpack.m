@@ -22,6 +22,8 @@ not_kept    = setdiff([1:nr],keep);  % (diagnostic purposes only)
 
 % Archive type
 archive = {S.archiveType};
+archive = strrep(archive,'tree ring','tree'); %fix Laanila archive type 
+
 
 yearMin = nan(nr,1);
 yearMax = nan(nr,1);
@@ -42,6 +44,7 @@ year   = year_i:year_f; ny = length(year);
 proxy_ann = nan(ny,nr);
 proxy_djf = nan(ny,nr);
 proxy_jja = nan(ny,nr);
+proxy_ama = nan(ny,nr);
 
 % parameters for SSA interpolation
 op.crit_name = 'pct_var'; op.P = 1.00;
@@ -163,20 +166,22 @@ for r = 1:nr
         elseif resMed(r)>=1 && resMin(r) < 1
             ta = [min(floor(tc)):max(floor(tc))]';
             F = griddedInterpolant(tc,Xc,'linear'); Xcal = F(ta);
-            Xdjf = Xcal; Xjja = Xcal;
+            Xdjf = Xcal; Xjja = Xcal;  Xama = Xcal;
         else
             [tc,Xc,ind] = consolidator(tn(:),Xn(:));
             ta = round(tc);
-            Xcal = Xc; Xdjf = Xc; Xjja = Xc;
+            Xcal = Xc; Xdjf = Xc; Xjja = Xc;  Xama = Xc;
         end
         if strcmp(archive{r},'ice core')
             proxy_ann(ismember(year,ta),r) = Xcal;  % As per Eric Steig: diffusion renders subannual averages meaningless
             proxy_djf(ismember(year,ta),r) = Xcal;
             proxy_jja(ismember(year,ta),r) = Xcal;
+            proxy_ama(ismember(year,ta),r) = Xcal;
         else
             proxy_ann(ismember(year,ta),r) = Xcal;
             proxy_djf(ismember(year,ta),r) = Xdjf;
             proxy_jja(ismember(year,ta),r) = Xjja;
+            proxy_ama(ismember(year,ta),r) = Xama;
         end
         clear Xcal Xdjf Xjja ta tm
     end

@@ -1,4 +1,4 @@
-% Compare the difference of instrumental records on: annual vs seasonal scales.
+% Compare the difference of instrumental records on annual vs seasonal scales.
 function pages2k__db_screen(vers,options)
 % function pages2k__db_screen(vers,options)
 %  INPUT:   vers (version of the database, string)
@@ -14,7 +14,7 @@ function pages2k__db_screen(vers,options)
 %
 % Tasks: individual record visual check, especially its sensitivity to
 % temeperature with respect to seasonality
-year = [];
+year = []; warning off
 addpath(genpath('../utilities'));
 fn = ['../data/PAGES2k_v' vers '_unpack.mat'];
 load(fn)
@@ -37,22 +37,27 @@ tc    = intersect(ti,t);
 tcal  = ismember(ti,tc);
 pcal  = ismember(t,tc);
 
-% TO DO: use intra_annual_avg2.m
-% Annual
-annual = (temp(1:12:end,:) + temp(2:12:end,:) + temp(3:12:end,:) + ...
+% TO DO: use intra_temp_ann_avg2.m
+% temp_ann
+temp_ann = (temp(1:12:end,:) + temp(2:12:end,:) + temp(3:12:end,:) + ...
     temp(4:12:end,:) + temp(5:12:end,:) + temp(6:12:end,:) + ...
     temp(7:12:end,:) + temp(8:12:end,:) + temp(9:12:end,:) + ...
     temp(10:12:end,:) + temp(11:12:end,:) + temp(12:12:end,:))./12;
 % JJA
-summer = (temp(6:12:end,:) + temp(7:12:end,:) + temp(8:12:end,:))./3;
+temp_jja = (temp(6:12:end,:) + temp(7:12:end,:) + temp(8:12:end,:))./3;
 % DJF
-winter = (temp(12:12:end,:) + temp(1:12:end,:) + temp(2:12:end,:))./3;
-% or possibly seasons by hemisphere
+temp_djf = (temp(12:12:end,:) + temp(1:12:end,:) + temp(2:12:end,:))./3;
+% tropical year
+temp_ama = (temp(4:12:end-12,:) + temp(5:12:end-12,:) + temp(6:12:end-12,:) + ...
+    temp(7:12:end-12,:) + temp(8:12:end-12,:) + temp(9:12:end-12,:) + ...
+    temp(10:12:end-12,:) + temp(11:12:end-12,:) + temp(12:12:end-12,:) + ...
+    temp(12+1:12:end,:) + temp(12+2:12:end,:) + temp(12+3:12:end,:))./12;
 
 % Restrict temperatura and proxy to the overlapping period
-annual = annual(tcal,:); % mat = annual;
-summer = summer(tcal,:); % jja = summer;
-winter = winter(tcal,:); % djf = winter;
+temp_ann = temp_ann(tcal,:); 
+temp_jja = temp_jja(tcal,:); 
+temp_djf = temp_djf(tcal,:); 
+temp_ama = temp_ama(tcal,:); 
 
 % Remove duplicate records
 if norm_p
@@ -61,27 +66,31 @@ if norm_p
     proxc_ann = gaussianize(proxy_ann(pcal,:));
     proxc_djf = gaussianize(proxy_djf(pcal,:));
     proxc_jja = gaussianize(proxy_jja(pcal,:));
+    proxc_ama = gaussianize(proxy_ama(pcal,:));
 else
     norm_string = 'raw';
     proxc_ann = proxy_ann(pcal,:);
     proxc_djf = proxy_djf(pcal,:);
     proxc_jja = proxy_jja(pcal,:);
+    proxc_ama = proxy_ama(pcal,:);
 end
 
 avl_ann = ~isnan(proxc_ann);
 avl_djf = ~isnan(proxc_djf);
 avl_jja = ~isnan(proxc_jja);
+avl_ama = ~isnan(proxc_ama);
+
 
 ns    = size(temp,2);
 nr    = length(S);
 
 %% detrending   % TO DO: implement more sophisticated detrending (splines?)
-per = {'ann','djf','jja'};
+per = {'ann','djf','jja','ama'};
 if strcmp(dtype,'detrend')
     disp('Detrend proxies before calculating correlations')
-    annual = detrend(annual);
-    summer = detrend(summer);
-    winter = detrend(winter);
+    temp_ann = detrend(temp_ann);  temp_ama = detrend(temp_ama);
+    temp_jja = detrend(temp_jja);  temp_djf = detrend(temp_djf);
+   
     for v = 1:nr
         for s = 1:3
             eval(['Xa = proxc_' per{s} '(:,v);']);
@@ -108,10 +117,11 @@ if strcmp(dtype,'detrend')
 elseif strcmp(dtype,'diff1')
     disp('Get the first difference before calculating correlations')
     % or first-difference
-    annual = diff(annual);  summer = diff(summer); winter = diff(winter);
+    temp_ann = diff(temp_ann);  temp_jja = diff(temp_jja); temp_djf = diff(temp_djf);
     proxc_ann  = diff(proxc_ann);
     proxc_djf  = diff(proxc_djf);
     proxc_jja  = diff(proxc_jja);
+    proxc_ama  = diff(proxc_ama);
     avl_ann  = ~isnan(proxc_ann);
 
 elseif strcmpi(dtype,'noDetrend')
@@ -159,26 +169,27 @@ qBH = 0.05; % Target false discovery rate (Benjamini-Hochberg 1995)
 fname = ['../data/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string '_' method '.mat'];
 
 for r = 1:nr
+%for r = 381
     disp(['Processing proxy ' num2str(r)])
     nz_ann = avl_ann(:,r); n = sum(nz_ann);
     nz_djf = avl_djf(:,r); nz_jja = avl_jja(:,r);
     T = S(r);
     n_raw_samples(r) = numel(T.paleoData_values);
     n_ann_samples(r) = sum(~isnan(proxc_ann(:,r)));
-    % Only evaluate P-T relationships if at least 'samples_thresh' annual measurements are available during instrumental period
+    % Only evaluate P-T relationships if at least 'samples_thresh' temp_ann measurements are available during instrumental period
     if n_raw_samples(r) >= sample_thresh & n_ann_samples(r) >= sample_thresh
         if resMed(r) <= 5               % hi-res proxies
-            mat = annual;
-            djf = winter;
-            jja = summer;
+            mat = temp_ann;
+            djf = temp_djf;
+            jja = temp_jja;
         else
             % Low-res proxies, temperature also needs to be
             % lowpass-filtered in order for correlations to be meaningful
             fc = 1/(2*resMed(r));
             for j = idx_neigh{r}
-                mat(:,j) = hepta_smooth(annual(:,j),fc);
-                djf(:,j) = hepta_smooth(summer(:,j),fc);
-                jja(:,j) = hepta_smooth(winter(:,j),fc);
+                mat(:,j) = hepta_smooth(temp_ann(:,j),fc);
+                djf(:,j) = hepta_smooth(temp_jja(:,j),fc);
+                jja(:,j) = hepta_smooth(temp_djf(:,j),fc);
             end
         end
         switch method
@@ -225,7 +236,7 @@ for r = 1:nr
                     iNeigh = idx_neigh{r};
                 end
 
-                % ANNUAL
+                % temp_ann
                 X = mat(nz,iNeigh);  y = proxc_ann(nz_ann,r);
                 S_ann{r} = knockoff.filter(X, y, q,'Knockoffs','sdp'); n_sig_mat(r) = numel(S_ann);
                 % DJF

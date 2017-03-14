@@ -56,7 +56,10 @@ if (dir==-1) % backwards
             da(k) = nmean(dm);
         end
     end
-    
+    % update year axis if the majority of the months are in year -1
+    if me<ms & numel([1:me])<numel([ms:12]) 
+        ta = ta-1;
+    end
 else  % FORWARD
     ta=[min(year):max(year)]'; da=nan(length(ta),1);
     for k = 1:length(ta)
@@ -72,8 +75,8 @@ else  % FORWARD
             da(k) = nmean(dm);
         end
     end
-    % update year axis if the months straddle Dec-Jan
-    if me<ms
+    % update year axis if the majority of the months are in year+1
+    if me<ms & numel([1:me])>numel([ms:12]) 
         ta = ta+1;
     end
 end

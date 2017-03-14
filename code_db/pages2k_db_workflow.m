@@ -13,7 +13,7 @@ options.export = 1; % export figures or not?
 
 options.norm_p = 0; % use normalized proxies (1) or not (0)
 options.sample_thresh = 20; %minimum number of samples for a correlation to be meaningful
-options.nsim = 1000; % # of surrogate timeseries in non-parametric tests
+options.nsim = 10; % # of surrogate timeseries in non-parametric tests
 
 
 % ================================================
@@ -22,14 +22,14 @@ options.nsim = 1000; % # of surrogate timeseries in non-parametric tests
 
 % 1.1 unpack database into a more usable form and annualize data
 visual = 0; % (set to 1 for debug purposes)
-S = pages2k_db_unpack(vers, visual);
+pages2k_db_unpack(vers, visual);
 
 % 1.2  map it all
-export = 1;
+export = 0;
 pages2k_db_synopsis(vers, export);
 
 % 1.3 Data pre-processing
-options.export = 0;
+options.export = 1;
 pages2k_db_process(vers,options);
 
 % 1.4 Screen for temperature predictors

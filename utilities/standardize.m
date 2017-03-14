@@ -15,7 +15,7 @@ function [x, xm, xs] = standardize(x, scale)
 %
 %    See also CENTER, NMEAN, MEAN, NSTD, STD.
 
-  error(nargchk(1,2,nargin))          % check number of input arguments 
+  narginchk(1,2)          % check number of input arguments 
   
   if nargin < 2 
     scale = 1;
