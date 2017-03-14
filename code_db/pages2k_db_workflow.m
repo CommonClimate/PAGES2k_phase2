@@ -1,9 +1,9 @@
 clear all; close all;
 addpath(genpath('../utilities')) % load code
 vers = '2.0.0';   % database version
+
 % global options
 options.InterpSuperAnn = 1; % re-interpolate super-annual proxies or not?
-options.search_radius  = 2000; % in km
 options.method = 'isospectral'; %'isospectral'; %'knockoff';
 options.dtype  = 'noDetrend'; %'noDetrend'; % detrending method for correlation calculation
 %  'detrend' : linear detrending,
@@ -12,8 +12,12 @@ options.dtype  = 'noDetrend'; %'noDetrend'; % detrending method for correlation 
 options.export = 1; % export figures or not?
 
 options.norm_p = 0; % use normalized proxies (1) or not (0)
+
+% screening/correlations options
 options.sample_thresh = 20; %minimum number of samples for a correlation to be meaningful
 options.nsim = 10; % # of surrogate timeseries in non-parametric tests
+options.search_radius  = 2000; % in km
+options.yearDef = 'ama'; %  'ann' (Jan-Dec) or 'ama' (Apr-Mar, the tropical year)
 
 
 % ================================================
@@ -29,7 +33,7 @@ export = 0;
 pages2k_db_synopsis(vers, export);
 
 % 1.3 Data pre-processing
-options.export = 1;
+options.export = 0;
 pages2k_db_process(vers,options);
 
 % 1.4 Screen for temperature predictors

@@ -215,6 +215,8 @@ yearCE    = year>0;
 proxy_ann = proxy_ann(yearCE,:);
 proxy_djf = proxy_djf(yearCE,:);
 proxy_jja = proxy_jja(yearCE,:);
+proxy_ama = proxy_ama(yearCE,:);
+
 year      = year(yearCE);
 
 % Coordinates

@@ -157,11 +157,9 @@ save ../data/distances.mat d_sort d_pp d_pt idx_loc idx_pp idx_neigh
 rho_mat = nan(ns,nr); sig_mat = nan(ns,nr); pval_mat = nan(ns,nr);
 rho_djf = nan(ns,nr); sig_djf = nan(ns,nr); pval_djf = nan(ns,nr);
 rho_jja = nan(ns,nr); sig_jja = nan(ns,nr); pval_jja = nan(ns,nr);
-rho_ama = nan(ns,nr); sig_ama = nan(ns,nr); pval_ama = nan(ns,nr);
-
-preg_mat = nan(nr,1); preg_djf = nan(nr,1);   preg_jja = nan(nr,1); preg_ama = nan(nr,1);
-ploc_mat = nan(nr,1); ploc_djf = nan(nr,1);   ploc_jja = nan(nr,1); ploc_ama = nan(nr,1);
-n_sig_mat = nan(nr,1); n_sig_djf = nan(nr,1); n_sig_jja = nan(nr,1);  n_sig_ama = nan(nr,1);
+preg_mat = nan(nr,1); preg_djf = nan(nr,1);   preg_jja = nan(nr,1);
+ploc_mat = nan(nr,1); ploc_djf = nan(nr,1);   ploc_jja = nan(nr,1);
+n_sig_mat = nan(nr,1); n_sig_djf = nan(nr,1); n_sig_jja = nan(nr,1);
 
 op.nsim = options.nsim; % number of surrogates for isospectral test
 qBC = 0.05; % Target false discovery rate (knockoff, Barber & Candes 2015)
@@ -170,7 +168,7 @@ qBH = 0.05; % Target false discovery rate (Benjamini-Hochberg 1995)
 fname = ['../data/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string '_' method '.mat'];
 
 
-for r = 1:10
+for r = 1:nr
     disp(['Processing proxy ' num2str(r)])
     nz_ann = avl_ann(:,r); n = sum(nz_ann);
     nz_djf = avl_djf(:,r); nz_jja = avl_jja(:,r); nz_ama = avl_ama(:,r);
@@ -203,8 +201,7 @@ for r = 1:10
                     [rho_mat(s,r),sig_mat(s,r),pval_mat(s,r)] = corr_sig(mat(nz_ann,s),proxc_ann(nz_ann,r),op);
                     [rho_djf(s,r),sig_djf(s,r),pval_djf(s,r)] = corr_sig(djf(nz_djf,s),proxc_djf(nz_djf,r),op);
                     [rho_jja(s,r),sig_jja(s,r),pval_jja(s,r)] = corr_sig(jja(nz_jja,s),proxc_jja(nz_jja,r),op);
-                    [rho_ama(s,r),sig_ama(s,r),pval_ama(s,r)] = corr_sig(ama(nz_ama,s),proxc_ama(nz_ama,r),op);
-
+                    
                 end
 
                 % Define screening criteria (local correlation, regional
@@ -215,23 +212,17 @@ for r = 1:10
                 [~,jmax]    = max(abs(rho_djf(:,r)));  % djf
                 preg_djf(r) = pval_djf(jmax,r);
                 [~,jmax]    = max(abs(rho_jja(:,r)));  % jja
-                preg_jja(r) = pval_jja(jmax,r); 
-                [~,jmax]    = max(abs(rho_ama(:,r)));  % ama
-                preg_ama(r) = pval_ama(jmax,r);
+                preg_jja(r) = pval_jja(jmax,r);
                 % 2) local correlation
                 ploc_mat(r) = pval_mat(idx_loc(r),r);  % mat
                 ploc_djf(r) = pval_djf(idx_loc(r),r);  % djf
                 ploc_jja(r) = pval_jja(idx_loc(r),r);  % jja
-                ploc_ama(r) = pval_ama(idx_loc(r),r);  % ama
-
                 % 3) FDR with Venura [2004] power boosting adjustment
                 n_sig_mat(r)= fdr(pval_mat(idx_neigh{r},r),qBH,'original','mean');  % mat idx_neigh{r}
                 n_sig_djf(r)= fdr(pval_djf(idx_neigh{r},r),qBH,'original','mean');  % djf
                 n_sig_jja(r)= fdr(pval_jja(idx_neigh{r},r),qBH,'original','mean');  % jja
-                n_sig_ama(r)= fdr(pval_ama(idx_neigh{r},r),qBH,'original','mean');  % ama
 
-
-            case 'knockoff'  %TODO: include ama screening
+            case 'knockoff'
                 % Identify significant features via the Knockoff filter
                 % Barber & Candes, Controlling the False Discovery Rate via Knockoffs, http://arxiv.org/abs/1404.5609
                 n = sum(nz); % number of samples
@@ -282,16 +273,16 @@ for r = 1:10
     %    nest  = [num2str(num(1)), '-', num2str(num(end))];
     %    fname = ['../../data/corr_hadcrut/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string  '_' method '_' nest];
     %end
-    save(fname,'idx_loc','idx_neigh','rho_mat','sig_mat','rho_jja','sig_jja','rho_djf','sig_djf','rho_ama','sig_ama','pval_mat','pval_djf','pval_jja','pval_ama','d_pt','d_pp','-v6');
+    save(fname,'idx_loc','idx_neigh','rho_mat','sig_mat','rho_jja','sig_jja','rho_djf','sig_djf','pval_mat','pval_djf','pval_jja','d_pt','d_pp','-v6');
 end
 
 
 % Screening
-season = {'mat','djf','jja','ama'}; nl = length(season);
+season = {'mat','djf','jja'}; nl = length(season);
 cmethod = {'reg','fdr','loc'}; nm = length(cmethod);
 note   = 'In each of the screen_* files, indices correspond to MAT, DJF, JJA, respectively';
 screen_fdr = cell(1,nl); screen_reg = cell(1,nl); screen_loc = cell(1,nl);
-screen_mtx = zeros(nm,nl);
+screen_mtx = zeros(nl,nm);
 
 for i = 1:nl
     screen_reg{i} = eval(['find(preg_' season{i} '<=0.05)']);
@@ -306,7 +297,7 @@ end
 save(fname,'screen_fdr','screen_reg','screen_loc','pval_mat','pval_djf','pval_jja','note','season','ploc_mat','ploc_jja','ploc_djf','-append','-v6')
 save(fname,'preg_mat','preg_djf','preg_jja','n_sig_mat','n_sig_djf','n_sig_jja','-append','-v6')
 
-tname = ['../data/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string '_' method '.tex'];
+tname = ['./pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string '_' method '.tex'];
 latextable(screen_mtx,'Horiz',season,'Vert',cmethod,'name',tname,'Hline',1,'Vline',1,'format','%d');
 
 
