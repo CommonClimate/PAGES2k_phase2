@@ -9,15 +9,12 @@ options.dtype  = 'noDetrend'; %'noDetrend'; % detrending method for correlation 
 %  'detrend' : linear detrending,
 %  'diff1'   : first-differencing the original time series,
 %  'noDetrend': no detrending
-options.export = 1; % export figures or not?
-
 options.norm_p = 0; % use normalized proxies (1) or not (0)
 
 % screening/correlations options
 options.sample_thresh = 20; %minimum number of samples for a correlation to be meaningful
-options.nsim = 10; % # of surrogate timeseries in non-parametric tests
+options.nsim = 1000; % # of surrogate timeseries in non-parametric tests
 options.search_radius  = 2000; % in km
-options.yearDef = 'ama'; %  'ann' (Jan-Dec) or 'ama' (Apr-Mar, the tropical year)
 
 
 % ================================================
