@@ -30,7 +30,7 @@ end
 
 
 %% Prepare data
-tmp  = load('../../data/temp/had4med_graphem_sp70.mat');  % TO DO: make this more general: should be able to load any temperature dataset, if stored under a more generic name
+tmp  = load('../data/had4med_graphem_sp70.mat');  % TO DO: make this more general: should be able to load any temperature dataset, if stored under a more generic name
 ti   = unique(tmp.tvec(1:1968,1));  % TO DO: remove ad-hockeries
 temp = tmp.Xf(1:1968,:); % 164 full calendar years from Jan 1850 - Dec 2013
 
@@ -79,7 +79,7 @@ np    = size(proxc_ann,2);
 
 
 %% Decide if any pre-processing of data is needed
-per = {'ann','djf','jja'};
+per = {'ann','djf','jja','ama'};
 if strcmp(options.dtype,'detrend')
     annual = detrend(annual);
     summer = detrend(summer);
@@ -212,5 +212,5 @@ for ii = 1:length(ulon)
     end
 end
 
-fn = ['../../data/corr_hadcrut/pages2k_hadcrut4_gridcorr_' options.dtype '_' vers '_' norm_string '_annual.mat'];
+fn = ['../data/pages2k_hadcrut4_gridcorr_' options.dtype '_' vers '_' norm_string '_annual.mat'];
 save(fn)
