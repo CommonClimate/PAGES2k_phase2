@@ -19,18 +19,18 @@ dtype = options.dtype;
 year = [];
 addpath(genpath('../utilities'))
 load JEG_graphics % load some graphical definitions
-load(['../data/PAGES2k_v' vers '_unpack']) % load proxy database
-load ../../data/distances.mat   % load P-T and P-P distances
-C = m_shaperead('../../data/NaturalEarth/ne_50m_admin_0_countries'); % load country boundaries
-P = m_shaperead('../../data/NaturalEarth/ne_50m_admin_1_states_provinces_lakes');  % load province boundaries for large countries
+load(['../data/PAGES2k_v' vers '_unpack.mat']) % load proxy database
+load ../data/distances.mat   % load P-T and P-P distances
+C = m_shaperead('../data/NaturalEarth/ne_50m_admin_0_countries'); % load country boundaries
+P = m_shaperead('../data/NaturalEarth/ne_50m_admin_1_states_provinces_lakes');  % load province boundaries for large countries
 
 % load correlation file
 method = options.method;
-%load ../../data/corr_hadcrut/pages2k_hadcrut4_corr_original_1-1020
+
 if options.norm_p
-    fname = ['../../data/corr_hadcrut/pages2k_hadcrut4_corr_' dtype '_' vers '_normal_' method];
+    fname = ['../data/pages2k_hadcrut4_corr_' dtype '_' vers '_normal_' method '.mat'];
 else
-    fname = ['../../data/corr_hadcrut/pages2k_hadcrut4_corr_' dtype '_' vers '_raw_' method];
+    fname = ['../data/pages2k_hadcrut4_corr_' dtype '_' vers '_raw_' method '.mat'];
 end
 load(fname)
 
@@ -38,7 +38,7 @@ load(fname)
 x  = -180:5:180; nx = length(x);
 y  = -90:5:90;   ny = length(y);
 
-tmp  = load('../../data/temp/had4med_graphem_sp70');
+tmp  = load('../data/had4med_graphem_sp70');
 locs = tmp.loc;
 inds = (locs+2.5)./5;
 ilat = inds(:,2)+18;
@@ -72,8 +72,8 @@ regions =  unique({S.geo_pages2kRegion}); nreg = numel(regions);
 if options.erase
     for k = 1:nreg
         region = regions{k};
-        unix(['rm -rf ../../figs/qc/' region '/*.pdf']);
-        unix(['rm -rf ../../figs/qc/' region '/*.eps']);
+        unix(['rm -rf ../figs/qc/' region '/*.pdf']);
+        unix(['rm -rf ../figs/qc/' region '/*.eps']);
     end
 end
 
@@ -452,7 +452,7 @@ for s = 1:nr
         %% export
         if options.export
             region  = T.geo_pages2kRegion;
-            dirname = ['../../figs/qc/' region];
+            dirname = ['../figs/qc/' region];
             if ~exist(dirname,'dir') % if necessary
                 system(['mkdir ', dirname]); % create regional directory
             end

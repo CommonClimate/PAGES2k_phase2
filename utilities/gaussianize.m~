@@ -14,12 +14,12 @@ function Xn = gaussianize(X)
 Xn    = NaN(n,p);
 for j = 1:p
     % Sort the data in ascending order and retain permutation indices
-    Z = X(:,j); nz = ~isnan(Z); N = sum(nz);
+    Z = X(:,j); nz = ~isnan(Z); N = leng
     [sorted,index]  = sort(Z(nz));
     % Make 'rank' the rank number of each observation
     [x, rank]       = sort(index);
     % The cumulative distribution function
-    CDF = rank./N - 1/(2*N);
+    CDF = rank./n - 1/(2*n);
     % Apply the inverse Rosenblatt transformation
     Xn(nz,j) = sqrt(2)*erfinv(2*CDF - 1);  % Xn is now normally distributed
 end
@@ -27,6 +27,7 @@ end
 end
 
 
-
-
-
+%test
+n = 1000;
+X = gamrnd(1,1,[n, 1]); % define highlugh skewed series
+X(randsample(n,round(n*.30)))= NaN;
