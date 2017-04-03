@@ -9,7 +9,7 @@ options.dtype  = 'noDetrend'; %'noDetrend'; % detrending method for correlation 
 %  'detrend' : linear detrending,
 %  'diff1'   : first-differencing the original time series,
 %  'noDetrend': no detrending
-options.norm_p = 0; % use normalized proxies (1) or not (0)
+options.norm_p = 1; % use normalized proxies (1) or not (0)
 
 % screening/correlations options
 options.sample_thresh = 20; %minimum number of samples for a correlation to be meaningful
@@ -26,7 +26,7 @@ visual = 0; % (set to 1 for debug purposes)
 pages2k_db_unpack(vers, visual);
 
 % 1.2  map it all
-export = 0;
+export = 1;
 pages2k_db_synopsis(vers, export);
 
 % 1.3 Data pre-processing

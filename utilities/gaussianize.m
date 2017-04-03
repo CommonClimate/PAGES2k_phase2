@@ -26,11 +26,11 @@ end
 
 end
 %test with 30% missing data
-n = 1000;
-X = gamrnd(1,1,[n, 1]); % define highly skewed series
-X(randsample(n,round(n*.30)))= NaN;
-Xn = gaussianize(X);
-scatterhist(X,Xn,'Kernel','on')
+% n = 1000;
+% X = gamrnd(1,1,[n, 1]); % define highly skewed series
+% X(randsample(n,round(n*.30)))= NaN;
+% Xn = gaussianize(X);
+% scatterhist(X,Xn,'Kernel','on')
 
 
 

@@ -181,7 +181,6 @@ if export
    export_fig([figpath fname],'-r200','-cmyk','-painters');
 end
 
-
 %%  plot resolution of non-tree records
 fig('Resolution'),clf
 res_notree = resAvg(p_code < 11);

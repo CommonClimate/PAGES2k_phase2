@@ -23,6 +23,8 @@ not_kept    = setdiff([1:nr],keep);  % (diagnostic purposes only)
 % Archive type
 archive = {S.archiveType};
 archive = strrep(archive,'tree ring','tree'); %fix Laanila archive type
+% PAGES2k ID
+pages2kID = {S.paleoData_pages2kID};
 
 
 yearMin = nan(nr,1);
@@ -225,15 +227,19 @@ p_lon = [S.geo_meanLon];
 
 clear TS D tr Xr tc Xc ts Xs spec eig_vec PC RC  Xi modes Xn tn n m r Xcal
 clear gappy gfrac interval iWei noNan noNaNx nseg ny segment t T ta ti tmax
-clear tmin ty X X5 Xm clim_interp F me ms
+clear tmin ty X X5 Xm clim_interp F me ms t5
 
 recordNames = {S.dataSetName};
 vname       = {S.paleoData_variableName};
 units       = {S.paleoData_units};
 
 
-save(['../data/PAGES2k_v' vers '_unpack.mat'])
-%save(['../data/PAGES2k_v' vers '_unpack.mat'])
+
+if ismac & ~verLessThan('matlab','R2016a') % horrible hack for JEG's machine. Mathworks, you suck!
+    save(['../data/PAGES2k_v' vers '_unpack.mat'],'-v6')
+else
+    save(['../data/PAGES2k_v' vers '_unpack.mat'])
+end
 
 %save with v6 because of this:
 %http://undocumentedmatlab.com/blog/improving-save-performance
