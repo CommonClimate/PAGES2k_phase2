@@ -182,8 +182,8 @@ for s = 1:nr
 
         %% Title
         % ht = suptitle({'Instructions: If metadata are missing or incorrect, please update on the metadata spreadsheet','Note: Additional metadata available on the spreadsheet'});
-        dataSetName = T.dataSetName; %strrep(T.dataSetName,'_','\_');
-        pages2kID   = T.paleoData_pages2kID; %strrep(T.paleoData_pages2kID,'_','\_');
+        dataSetName = strrep(T.dataSetName,'_','\_');
+        pages2kID   = strrep(T.paleoData_pages2kID,'_','\_');
         ht = suptitle([pages2kID ': ', dataSetName]);
         set(ht,'FontName','Helvetica','FontWeight','Bold','position',[0.5  -0.03 0])
         axes('position',[.8 .95 .2 .1])
@@ -464,6 +464,6 @@ for s = 1:nr
     % pause;
 end
 
-fn = ['../data/PAGES2k_v' vers '_unpack'];
+fn = ['../data/PAGES2k_v' vers '_unpack.mat'];
 
 save(fn,'instCalib','rho_n','signif_n','ds','n_raw_samples','n_ann_samples','-append');

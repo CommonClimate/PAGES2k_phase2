@@ -50,4 +50,7 @@ All the data are in "data". All figures are exported to "figs" (sometimes in sub
 Code dependencies needed to run the above codes are included in "utilities". If you are missing anything, we will be happy to add it. To comply with the license, some third-party packages may need to be installed separately:
 
 - [m_map](http://www.eos.ubc.ca/~rich/map.html)
-- [geopy](https://github.com/geopy/geopy)
+- [export_fig](http://github.com/altmany/export_fig)
+- [geopy](http://github.com/geopy/geopy)
+- [Brewermap](https://github.com/DrosteEffect/BrewerMap)
+- [Perceptually Improved Colormaps](https://www.mathworks.com/matlabcentral/fileexchange/28982-perceptually-improved-colormaps)

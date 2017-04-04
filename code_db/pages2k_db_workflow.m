@@ -16,7 +16,6 @@ options.sample_thresh = 20; %minimum number of samples for a correlation to be m
 options.nsim = 1000; % # of surrogate timeseries in non-parametric tests
 options.search_radius  = 2000; % in km
 
-
 % ================================================
 % 1. DATABASE UNPACKING, PLOTTING AND PRE-PROCESSING
 % ================================================

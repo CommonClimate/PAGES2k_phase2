@@ -60,10 +60,10 @@ end
 load(['../data/PAGES2k_v' vers '_unpack.mat'])
 
 % proxy-centric correlations
-fname1 = ['../../data/corr_hadcrut/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string '_' method];
+fname1 = ['../data/pages2k_hadcrut4_corr_' dtype '_' vers '_' norm_string '_' method '.mat'];
 pcorr  = load(fname1);
 %
-fname2 = ['../../data/corr_hadcrut/pages2k_hadcrut4_gridcorr_' dtype '_' vers '_' norm_string '_annual.mat'];
+fname2 = ['../data/pages2k_hadcrut4_gridcorr_' dtype '_' vers '_' norm_string '_annual.mat'];
 gridcorr = load(fname2,'ggrid','ulat','ulon','localCorrelation','localSignificance') % only get the variables we need, to
 
 
@@ -171,11 +171,11 @@ for r = 1:nr
     S(r).paleoData_valuesRange = range(S(r).paleoData_values);
 end
 disp('Saving results to unpack file')
-save(['../data/PAGES2k_v' vers '_unpack'],'S','-append')
+save(['../data/PAGES2k_v' vers '_unpack.mat'],'S','-append')
 
 
 % output basic stats
-fileID = fopen(['../../data/proxy_db/pages2k_db_stats.tex'],'w');
+fileID = fopen(['../data/pages2k_db_stats.tex'],'w');
 fprintf(fileID,'PAGES2k essential stats\n');
 fprintf(fileID,'================ COMPOSITION =================\n');
 for a = 1:na % loop over archive types
@@ -193,7 +193,7 @@ fprintf(fileID,'%s %g %s\n','Minimum span:', min(Span),' years')
 fprintf(fileID,'%s %g %s\n','Maximum span:', max(Span),' years')
 fprintf(fileID,'%s %g %s\n','Median span:', median(Span),' years')
 fprintf(fileID,'%s %g %s\n','Mean span (arithmetic):', mean(Span),' years')
-fprintf(fileID,'%s %g %s\n','Mean span (geometric):', geo_mean(Span),' years')
+fprintf(fileID,'%s %g %s\n','Mean span (geometric):', geomean(Span),' years')
 fprintf(fileID,'=========== CORRELATION TO TEMPERATURE ================\n');
 fprintf(fileID,'%i %s\n',numel(pcorr.screen_reg{1}), ' records retained by REG screening')
 fprintf(fileID,'%i %s\n',numel(pcorr.screen_fdr{1}), ' records retained by FDR screening')
@@ -210,8 +210,8 @@ fclose(fileID)  % close file
 
 
 %% HadCRUT4
-tmp     = load('../../data/temp/had4med_graphem_sp70');
-tmp_ann = load('../../data/temp/had4med_graphem_sp70_annual.mat');
+tmp     = load('../data/had4med_graphem_sp70');
+tmp_ann = load('../data/had4med_graphem_sp70_annual.mat');
 %ti   = unique(tmp.tvec(1:1968,1));
 temp = tmp.Xf(1:1968,tmp.idx); % 164 full calendar years from Jan 1850 - Dec 2013
 
@@ -233,15 +233,22 @@ hadcrut4.t   = tmp_ann.t;
 hadcrut4.gmean = tmp_ann.gmean;
 
 disp('Bundling results in one big file')
-dn = ['../../data/proxy_db/useForCFR/pages2k_hadcrut4_' dtype '_' norm_string '_' vers];
-save(dn,'hadcrut4','pages2k','gridcorr','pcorr')
+dn = ['../data/pages2k_hadcrut4_' dtype '_' norm_string '_' vers '.mat'];
+
+if ismac & ~verLessThan('matlab','R2016a') % horrible hack for JEG's machine. Mathworks, you suck!
+    save(dn,'hadcrut4','pages2k','gridcorr','pcorr','-v6')
+else
+    save(dn,'hadcrut4','pages2k','gridcorr','pcorr')
+end
+
+
 
 % Visualization of the screened networks
 % ======================================
 FontName = 'Helvetica';
 set(0,'defaultAxesFontName', FontName)
 set(0,'defaultTextFontName', FontName)
-style_t = {'FontName',FontName,'Fontweight','Bold','Fontsize',16};
+style_t = {'FontName',FontName,'Fontweight','Bold','Fontsize',14};
 style_l = {'FontName',FontName};
 screen = {'fdr','loc','reg'}; ns = length(screen);
 for i = 1:ns
@@ -261,7 +268,8 @@ for i = 1:ns
     nr    = length(unique({S(keep).dataSetName})); % # of sites
     versl = strrep(vers,'_','/');
     fig('PAGES 2K screened'), clf;
-    set(gcf,'position',[10 10 791 550])
+    set(gcf,'PaperPositionMode','auto')
+    %set(gcf,'position',[10 10 791 550])
     orient landscape
     % plot spatial distribution
     hmap=axes('Position', [.05 0.45 0.75 0.5]);
@@ -296,7 +304,7 @@ for i = 1:ns
     set(hstackin,'ytick',[0:10:n1000],'FontName','Helvetica','YColor', [.3 .3 .3])
     title('First Millennium',style_l{:})
     if options.export
-        export_fig(['../../figs/synopsis/PAGES2k_' vers '_spacetime_' screen{i} '.pdf'],'-r300','-cmyk','-nocrop','-painters')
+        export_fig(['../figs/PAGES2k_' vers '_spacetime_' screen{i} '.pdf'],'-r200','-cmyk','-painters')
         %hepta_figprint(['../../figs/synopsis/PAGES2K_phase2_' vers '_spacetime_' screen{i}])
     end
     clear hk
