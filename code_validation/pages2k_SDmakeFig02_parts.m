@@ -1,7 +1,7 @@
 clear all;
 addpath(genpath('./utilities'))
-network = 'M08';  % choices: M08, PAGES2k 2013, PAGES2k 2016. 
-vers = '1_13_1';  % version of the PAGES2k database to be use
+network = 'PAGES2k 2016';  % choices: M08, PAGES2k 2013, PAGES2k 2016. 
+vers = '2.0.0';  % version of the PAGES2k database to be use
 
 % fonts
 FontName = 'Helvetica';

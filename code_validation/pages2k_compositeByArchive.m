@@ -117,8 +117,10 @@ for k = 1:nType
 end
 
 froot = ['./figs/' opstring '_compositeByArchive'];
-hepta_figprint(froot,400)  %export to PDF as one needs to adjust transparency manually in Illustrator.
-eps2pdfMac([froot '.eps'])
+export_fig([froot '.pdf'],'-r300','-nocrop','-cmyk','-painters');
+
+%hepta_figprint(froot,400)  %export to PDF as one needs to adjust transparency manually in Illustrator.
+%eps2pdfMac([froot '.eps'])
 
 save(f_out)
 

@@ -204,6 +204,10 @@ end
 
 
 %% MAP THE RECORDS USED IN THE COMPOSITE
+edgec = cell(nr,1);
+edgec(1:nr) = {'none'};%{rgb('Black')};
+edgec(p_code == 6) = {Graph{6,1}};
+%
 archiveType = pages2k.archiveType;
 p_code_k = p_code(idx_q);  avec = unique(p_code_k);
 aType  = archiveType(avec); nak = numel(aType);
@@ -230,7 +234,7 @@ m_grid('xtick',6,'ytick',9,'xticklabel',[ ],'xlabeldir','middle', 'fontsize',8);
 % loop over records
 for j = 1:length(idx_q)
     r = idx_q(j);
-    hk(j) = m_line(p_lon(r),p_lat(r),'marker',Graph{p_code(r),2},'MarkerEdgeColor','none','MarkerFaceColor',Graph{p_code(r),1},'linewidth',[1],'MarkerSize',[7],'linestyle','none');
+    hk(j) = m_line(p_lon(r),p_lat(r),'marker',Graph{p_code(r),2},'MarkerEdgeColor',edgec{r},'MarkerFaceColor',Graph{p_code(r),1},'linewidth',[1],'MarkerSize',[7],'linestyle','none');
 end
 text(-2,1.75,['Screened PAGES2k network (',sifting_style,' sifting , ', int2str(length(idx_q)) , ' records from ', int2str(nsites), ' sites)'],style_t{:});
 % legend
@@ -253,8 +257,8 @@ set(hstackin,'xtick',[],'box','off','TickDir','out','TickLength',[.02 .02],'YMin
 set(hstackin,'YAxisLocation','Right')
 set(hstackin,'ytick',[0:50:n1000],'YColor', [.3 .3 .3])
 title('First Millennium',style_l{:})
-froot = ['./figs/' opstring '_mapRecordsIncluded'];
-export_fig([froot '.pdf'],'-r400','-nocrop','-cmyk','-painters');
+froot = ['../figs/' opstring '_mapRecordsIncluded'];
+export_fig([froot '.pdf'],'-r200','-nocrop','-cmyk','-painters');
 clear hk
 
 

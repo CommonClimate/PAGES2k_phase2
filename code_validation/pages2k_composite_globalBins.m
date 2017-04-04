@@ -27,9 +27,6 @@ col{1} = rgb('DarkBlue'), col{2} = rgb('DimGray'); col{3} = rgb('Red');
 nboot  = 500; % # of bootstrap samples
 ylims  = [-.5 .5]; %pmax = 600; % scale for # proxies
 
-
-
-
 for o=1:length(binStep)   
     %find the records that are low vs high res
     loResI=find(resMed>=resCutoff(o));
@@ -136,7 +133,8 @@ for o=1:length(binStep)
     end   
     
 end
-froot = ['./figs/' opstring '_compositeGlobalBins'];
-hepta_figprint(froot)
-eps2pdfMac([froot '.eps'])
+froot = ['../figs/' opstring '_compositeGlobalBins'];
+export_fig([froot '.pdf'],'-r200','-nocrop','-cmyk','-painters');
+%hepta_figprint(froot)
+%eps2pdfMac([froot '.eps'])
 

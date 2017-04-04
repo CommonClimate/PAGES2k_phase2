@@ -1,5 +1,5 @@
 clear all; close all;  % clean slate
-vers = '1_13_1';  % version of the database to be use
+vers = '2.0.0';  % version of the database to be use
 addpath(genpath('../utilities'))% load code utilities
 
 % define analysis options
@@ -7,7 +7,7 @@ lat_weight = 0; % are we normalizing by the cosine of latitude? [boolean]
 sifting_style = 'qcOnly'; % possible choices: noSift, qcOnly, qcScreenHR, qcScreenLR, qcScreenAll
 screenHR_style = 'reg';  % 'loc' = local; 'reg' = regional (within 2000km radius), 'fdr' = regional accounting for false discovery rate
 
-norm_p = 0;  % should proxies be mapped to a standard normal ?    [boolean]
+norm_p = 1;  % should proxies be mapped to a standard normal ?    [boolean]
 detrend = 0; % do you want to detrend coral d18O proxies? [boolean]
 navlMin = 20; % what is your threshold for # samples over the Common Era?
 tStart = 1; % define start year (remember: the Common Era does not have a year 0).
@@ -29,7 +29,7 @@ else
 end
 
 % LOAD  merged proxy /temperature data + output of correlation analyses
-load(['../data/pages2k_hadcrut4_' d_str '_' g_str '_' vers])
+load(['../data/pages2k_hadcrut4_' d_str '_' g_str '_' vers '.mat'])
 
 % define graphical defaults
 set(0, 'DefaultAxesFontName', 'Helvetica','DefaultAxesFontWeight','bold')
@@ -41,7 +41,6 @@ pages2k_SD_prep                  % makes SD Fig S2
 
 % Now let the wild rumpus begin
 pages2k_SDmakeFig01
-pages2k_SDmakeFig02_parts
 pages2k_SDmakeFig02_parts
 
 %pages2k_SDmakeTable
