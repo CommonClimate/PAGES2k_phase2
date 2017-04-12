@@ -44,11 +44,13 @@ nType = length(archType); nType = length(u_code);
 n_tresh = 10; nboot = 500; % # of bootstrap samples.
 
 % plotting parameters
-style_l = style_t; style_l{4} = 12;  xlims = [0 2000];  c = 1.1; % expansion factor for tick marks
+style_l = {'FontName','Helvetica','Fontweight','bold','Fontsize',12}
+xlims = [0 2000];  c = 1.1; % expansion factor for tick marks
+pnums = [50 20 60 50 60 500]; dp = [10 5  10 10 10 100]; % custom cosmetic ticks
 
 fig('By archive type'), clf
 set(gcf,'Position',[680   512   702   586])
-addpath('/Applications/MATLAB_R2013b.app/toolbox/stats/stats/'); % make sure it uses the right dir
+%addpath('/Applications/MATLAB_R2013b.app/toolbox/stats/stats/'); % make sure it uses the right dir
 
 for k = 1:nType
     if ismember(nType,[9 10]);
@@ -91,6 +93,8 @@ for k = 1:nType
     set(ax(1),'Ycolor',rgb('Silver'),'YAxisLocation','right');%'TickDir','out','YMinorTick','on')
     set(get(ax(1),'Ylabel'),'String','# records')
     set(get(ax(1),'Ylabel'),style_l{:}), set(ax(2),'yLim',ylims)
+    pticks = [0:dp(k):pnums(k)];
+    set(ax(1),'yLim',[0 pnums(k)],'YTick',pticks);
     %set(h2,'visible','off'); %make invisible for now;
     set(h2,'color',Graph{u,1},'linewidth',2,'linestyle',':');
     set(ax(2),'Ycolor',Graph{u,1},'YAxisLocation','left','Ytick',yticks)
@@ -116,10 +120,11 @@ for k = 1:nType
     title([archType{k} ', ' int2str(p_arch(k)) ' records'],style_l{:});
 end
 
-froot = ['./figs/' opstring '_compositeByArchive'];
-export_fig([froot '.pdf'],'-r300','-nocrop','-cmyk','-painters');
+froot = ['../figs/' opstring '_compositeByArchive'];
+%export_fig([froot '.pdf'],'-r300','-nocrop','-cmyk','-painters'); % no transparency
+%print(gcf, '-dpdf', '-cmyk','-r300',[froot '.pdf']);
 
-%hepta_figprint(froot,400)  %export to PDF as one needs to adjust transparency manually in Illustrator.
+hepta_figprint(froot,300)  %export to PDF as one needs to adjust transparency manually in Illustrator.
 %eps2pdfMac([froot '.eps'])
 
 save(f_out)
@@ -147,7 +152,7 @@ save(f_out)
 % lab{2} = 'Gingerbreads Bahamas coral growth data';
 % xlim([1550, 2000]); hl = legend(lab{:},style_l{:}), set(hl, 'box','off')
 % fancyplot_deco('Coral composite U-ness investigation','Time','Z-score')
-% hepta_figprint(['./figs/coral_composite' opstring '_' smoothString],400)
+% hepta_figprint(['../figs/coral_composite' opstring '_' smoothString],400)
 
 
 

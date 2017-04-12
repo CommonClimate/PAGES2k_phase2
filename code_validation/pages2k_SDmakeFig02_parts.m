@@ -1,7 +1,7 @@
-clear all;
-addpath(genpath('./utilities'))
-network = 'PAGES2k 2016';  % choices: M08, PAGES2k 2013, PAGES2k 2016. 
-vers = '2.0.0';  % version of the PAGES2k database to be use
+
+function pages2k_SDmakeFig02_parts(network,vers)
+
+addpath(genpath('../utilities'))
 
 % fonts
 FontName = 'Helvetica';
@@ -43,7 +43,7 @@ switch network
         avail = nan(ny,nr); avail(~isnan(prox)) = 1;
 
     case{'PAGES2k 2013'}
-        P1  = load('./data/pages2k_hadcrut4_data_v1');
+        P1  = load('../data/pages2k_hadcrut4_data_v1');
         proxy = P1.proxy;
         keep      = setdiff(1:550,proxy.duplic);    % keep      = proxy.keep;
         prox      = proxy.raw(:,keep);  % no duplicate NA tree rings
@@ -66,7 +66,7 @@ switch network
         avail = nan(size(prox)); avail(~isnan(prox)) = 1;
         
     case{'PAGES2k 2016'}
-        load(['./data/pages2kTSv' vers '_unpack.mat']);
+        load(['../data/PAGES2k_v' vers '_unpack.mat']);
         [ny,nr]   = size(proxy_ann);       
 end
 
@@ -99,7 +99,7 @@ ytick   = [25 50 75];
 %n1000 = ceil(sum(nproxy(year == 1000,:))/10)*10;
 fig('Fixed Size'), clf
 orient landscape
-set(gcf, 'Units','centimeters', 'Position',[2.5    5   22   19])
+%set(gcf, 'Units','centimeters', 'Position',[2.5    5   22   19])
 set(gcf, 'PaperPositionMode','auto')
 % plot spatial distribution
 hmap=axes('Position', [.05 0.45 0.75 0.5]);
@@ -133,10 +133,10 @@ set(hstackin,'xtick',[],'box','off','TickDir','out','TickLength',[.02 .02],'YMin
 set(hstackin,'YAxisLocation','Right')
 set(hstackin,'FontName','Helvetica','YColor', [.3 .3 .3])
 title('First Millennium','FontName','Helvetica','Fontsize',12,'Fontweight','bold')
-%display('Adjust figure size and press Enter')
-%pause
-%% export to PDF
-export_fig(['./figs/' network '_dbview.pdf'],'-r300','-cmyk','-painters','-transparent');
+display('Adjust figure size and press Enter')
+pause
+% export to PDF
+export_fig(['../figs/' network '_dbview.pdf'],'-r300','-cmyk','-painters','-transparent');
 
 % % Instrumental availability only
 % fig('temporal availability'); set(gcf,'position',[233   394   970   324]); clf;

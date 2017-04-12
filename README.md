@@ -1,18 +1,22 @@
 
 # PAGES2k SD code
 Matlab code for the PAGES2k synthesis of temperature-sensitive proxies, version 2.0.0.
-The code and data herein allow to reproduce all PAGES2k-related figures from the main text and SOM.
+Citation: PAGES2K Consortium (2017), A global multiproxy database for temperature reconstructions of the Common Era, Scientific Data.
+
+The code and data herein allow to reproduce all PAGES2k-related figures from the main text and supplementary online material.
 The code is provided "as is" and without warranty of running on your system. We welcome any and all feedback to make it run more smoothly.
+
+
 
 ## Input data
 the code needs the files `PAGES2k_v2.0.0.mat` and `had4med_graphem_sp70.mat` from the [FigShare repository](https://figshare.com/s/d327a0367bb908a4c4f2) in the **data/** directory. (or at least, an alias pointing to such files). This repository is private until publication. Until then, the files may be accessed in this read-only Dropbox folder](https://www.dropbox.com/sh/kgfb5qn1epbsm93/AABIkTn4BCU_bBrMnPptKk01a?dl=0)
 
-## Directory code_db
+## code_db directory
 
 The code in this directory takes  `PAGES2k_v2.0.0.mat`, and `had4med_graphem_sp70.mat` and produces several synopsis plots, including all the quality control plots (Figs 4 and 5 of the main paper, as well as components of all the "QCfig_bundles" PDF files).
 In most cases, additional visualizations are made if certain flags (visual, export) are set to 1 (TRUE).
 
-The master code, **pages2k_db_workflow.m** is made up of the following pieces:
+The master code, **pages2k_db_workflow.m** calls the following components:
 
 - **pages2k_db_unpack.m** unpacks the database, annualizes subannual data (mostly corals) and forms data matrices. if visual ==1, plots the visualizations in figs/annualize/
 
@@ -35,7 +39,7 @@ The master code, **pages2k_db_workflow.m** is made up of the following pieces:
 - **HadCRUT4_seasonal.m** generates Fig S6
 
 ## Directory code_validation
-This code assumes that **pages2k_db_workflow.m** has run to completion and produced a file called `pages2k_hadcrut4_noDetrend_raw _2.0.0.mat`, placed in the /data/ folder. (note: for this to happen, the code must have been run under default settings)
+This code assumes that **pages2k_db_workflow.m** has run to completion and produced a file called `pages2k_hadcrut4_(detrendFlag)_(normalizationFlag)_2.0.0.mat`, placed in the /data/ folder.
 
 The master code, **pages2k_SD_workflow.m** is made up of the following pieces:
 
@@ -47,10 +51,10 @@ The master code, **pages2k_SD_workflow.m** is made up of the following pieces:
 - **pages2k_compositeByArchive**  stratification by archive type, makes Fig 8
 
 All the data are in "data". All figures are exported to "figs" (sometimes in subfolders thereof).
-Code dependencies needed to run the above codes are included in "utilities". If you are missing anything, we will be happy to add it. To comply with the license, some third-party packages may need to be installed separately:
+Code dependencies needed to run the above codes are included in "utilities". If you are missing anything, we will be happy to add it. To comply with the license, some third-party packages may need to be installed separately, and be visible in your path:
 
 - [m_map](http://www.eos.ubc.ca/~rich/map.html)
 - [export_fig](http://github.com/altmany/export_fig)
-- [geopy](http://github.com/geopy/geopy)
 - [Brewermap](https://github.com/DrosteEffect/BrewerMap)
 - [Perceptually Improved Colormaps](https://www.mathworks.com/matlabcentral/fileexchange/28982-perceptually-improved-colormaps)
+- [CommonClimate](https://github.com/CommonClimate/common-climate)

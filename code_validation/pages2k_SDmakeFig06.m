@@ -163,7 +163,7 @@ for ir = 1:nrad %
     set(mpxc,'linestyle','none')
     set(gcf,'units','normalized','position',[0.39 0.53 0.52 0.40])
     %
-    figure_name = ['./figs/PAGES2K_v' vers '_correlation_map' int2str(radius(ir))];
+    figure_name = ['../figs/PAGES2K_v' vers '_correlation_map' int2str(radius(ir))];
     %hepta_figprint(figure_name,400)
     pause
     export_fig([figure_name '.pdf'],'-r400','-nocrop','-cmyk','-painters');
@@ -189,4 +189,4 @@ sprintf('%3.4g %s %i %s',100*area_fraction,'% of the planet is within ', radius,
 % caxis([0 1])
 % %
 % hcb4 = colorbar2('horiz','Absolute Correlation'), set(hcb4,'XTick',[0:0.2:1],'FontWeight','bold','FontSize',12,'FontName', 'Helvetica');
-% hepta_figprint('./figs/correlation_map_colorbar.eps',400);
+% hepta_figprint('../figs/correlation_map_colorbar.eps',400);

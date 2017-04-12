@@ -159,9 +159,9 @@ idx_qclr_screen = intersect(find(CalibFalse_sig),idx_qclr);
 % %
 % %linkaxes([ax1,ax2,ax3,ax4,ax5,ax6],'xy'), 
 % %xlim([0 2010]); ylim([-1.5 2]); 
-% %export_fig(['./figs/composite_ScreeningEffects_' opstring '_Unsmoothed.pdf'],'-r200','-cmyk','-nocrop')
+% %export_fig(['../figs/composite_ScreeningEffects_' opstring '_Unsmoothed.pdf'],'-r200','-cmyk','-nocrop')
 % 
-% hepta_figprint(['./figs/composite_ScreeningEffects_' opstring '_Unsmoothed'])
+% hepta_figprint(['../figs/composite_ScreeningEffects_' opstring '_Unsmoothed'])
 % 
 
 

@@ -25,7 +25,7 @@ end
 
 % define edge color (black except for hybrids)
 edgec = cell(nr,1);
-edgec(1:nr) = {'none'};%{rgb('Black')};
+edgec(1:nr) = {'none'}; %{rgb('Black')};
 edgec(p_code == 6) = {Graph{6,1}};
 
 % =============
@@ -86,7 +86,7 @@ set(gca,'Position',ogSize);
 title('b) Resolution',style_t{:});
 hold on
 %pause; % manually adjust the size of the figure
-%hepta_figprint(['./figs/PAGES2k_v' vers '_dbview']);
+%hepta_figprint(['../figs/PAGES2k_v' vers '_dbview']);
 
 %% TEMPORAL AVAILABILITY
 p(2,3,1).select()
@@ -106,8 +106,8 @@ set(hstackin,'YAxisLocation','Right','YTick',[0:50:200],'FontSize',10)
 set(hstackin,'FontName','Helvetica','YColor', [.3 .3 .3])
 title('First Millennium','Fontweight','bold')
 display('Adjust figure size and press Enter')
-pause; 
-export_fig(['./figs/PAGES2k_v' vers '_dbview.pdf'],'-r300','-nocrop','-cmyk','-painters');
+pause;
+export_fig(['../figs/PAGES2k_v' vers '_dbview.pdf'],'-r300','-nocrop','-cmyk','-painters');
 
-%export_fig(['./figs/PAGES2k_v' vers '_tempAvail.pdf'],'-r300','-cmyk','-painters','-transparent');
-%hepta_figprint(['./figs/PAGES2k_v' vers '_tempAvail.eps']);
+%export_fig(['../figs/PAGES2k_v' vers '_tempAvail.pdf'],'-r300','-cmyk','-painters','-transparent');
+%hepta_figprint(['../figs/PAGES2k_v' vers '_tempAvail.eps']);

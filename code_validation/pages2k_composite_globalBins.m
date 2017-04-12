@@ -133,7 +133,7 @@ for o=1:length(binStep)
     end   
     
 end
-froot = ['../figs/' opstring '_compositeGlobalBins'];
+froot = ['.../figs/' opstring '_compositeGlobalBins'];
 export_fig([froot '.pdf'],'-r200','-nocrop','-cmyk','-painters');
 %hepta_figprint(froot)
 %eps2pdfMac([froot '.eps'])
