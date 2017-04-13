@@ -5,8 +5,10 @@ Citation: PAGES2K Consortium (2017), A global multiproxy database for temperatur
 
 The code and data herein allow to reproduce all PAGES2k-related figures from the main text and supplementary online material.
 The code is provided "as is" and without warranty of running on your system. We welcome any and all feedback to make it run more smoothly.
-
+To cite this code, use:
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.545815.svg)](https://doi.org/10.5281/zenodo.545815)
+
+*Julien Emile-Geay, Nick McKay, Jianghao Wang & Kevin Anchukaitis (2017). CommonClimate/PAGES2k_phase2: First Public Release [Data set]. Zenodo. http://doi.org/10.5281/zenodo.545815*
 
 ## Input data
 the code needs the files `PAGES2k_v2.0.0.mat` and `had4med_graphem_sp70.mat` from the [FigShare repository](https://figshare.com/s/d327a0367bb908a4c4f2) in the **data/** directory. (or at least, an alias pointing to such files). This repository is private until publication. Until then, the files may be accessed in this read-only Dropbox folder](https://www.dropbox.com/sh/kgfb5qn1epbsm93/AABIkTn4BCU_bBrMnPptKk01a?dl=0)
