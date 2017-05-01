@@ -124,6 +124,7 @@ end
 
 pages2k.proxy_djf = proxy_djf;
 pages2k.proxy_jja = proxy_jja;
+pages2k.proxy_ama = proxy_ama;
 pages2k.year      = year(year>0);
 pages2k.avail     = avail;
 pages2k.archive   = archive;
