@@ -32,7 +32,7 @@ end
 t_lat = Hi.loc(:,1); nt = length(time);
 weight = repmat(cosd(t_lat)',[nt 1]);
 weight_a = repmat(cosd(t_lat)',[na 1]);
-%HadCRUT4_med_avg = nmean(HadCRUT4_med.*weight,2);
+HadCRUT4_med_avg = nmean(HadCRUT4_med.*weight,2);
 HadCRUT4_med_avg_i = nmean(HadCRUT4_med_i.*weight(:,idx),2);
 HadCRUT4_med_avg_a = nmean(HadCRUT4_med_annual.*weight_a(:,idx),2);
 tan = datenum([ta, 6*ones(na,1),15*ones(na,1)]);
@@ -49,7 +49,7 @@ fancyplot_deco('HadCRUT4 global mean','Time','Anomaly (K)');
 export_fig('../figs/HadCRUT4_GM_monthly_GraphEMsp70.pdf','-cmyk','-r200','-painters');
 
 %% export
-loc = Hi.loc(idx,:);
+loc = H.loc(idx,:);
 field = HadCRUT4_med_annual;
 gmean = HadCRUT4_med_avg_a;
 t = ta;
