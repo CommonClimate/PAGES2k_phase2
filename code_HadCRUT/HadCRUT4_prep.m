@@ -1,18 +1,30 @@
 % annualizes the HadCRUT4.2 monthly data and makes Fig 03 of the Data Descriptor.
 addpath(genpath('../utilities'));
+% Load raw HadCRUT4 temperature data
+H = load('../data/had4med')
+% contains:
+%H4med - raw median; structure contains unadulterated data as extracted from .nc file
+%rawH - raw median; reshaped to 2D for infilling
+%had4med - raw median w/ satellite data from Cowtan & Way 2014; 2D
+% ta: time axis in datenum format
+t_lon = H.loc(:,1); t_lat = H.loc(:,2);
+HadCRUT4_med = H.had4med; [nt,pt] = size(HadCRUT4_med);
+HadCRUT4_avail = reshape(~isnan(HadCRUT4_med),size(HadCRUT4_med));
+completeness = sum(HadCRUT4_avail,1)/nt;
+time = H.ta;
 % define completeness threshold
 thre = 0.3;
 
 % Load GraphEM-interpolated HadCRUT4 temperature data
 Hi = load('../data/had4med_graphem_sp70.mat')
-idx = (Hi.completeness>=thre);
-time = datenum(Hi.tvec)
+idx = (completeness>=thre);
 HadCRUT4_med_i = Hi.Xf(:,idx); pc = size(HadCRUT4_med_i,2);
 fig('Grid boxes with enough data');
-easy_scatter_map(Hi.loc(idx,:));
+easy_scatter_map(H.loc(idx,:));
 
 %% annualize
-ta = unique(Hi.tvec(:,1));  na = length(ta);
+tv = datevec(time); 
+ta = unique(tv(:,1));  na = length(ta);
 HadCRUT4_med_annual = nan(na,pc);
 ms = 1; me = 12;
 % loop over grid points
@@ -29,10 +41,9 @@ for j = 1:pc
 end
 
 %% compute global averages
-t_lat = Hi.loc(:,1); nt = length(time);
 weight = repmat(cosd(t_lat)',[nt 1]);
 weight_a = repmat(cosd(t_lat)',[na 1]);
-%HadCRUT4_med_avg = nmean(HadCRUT4_med.*weight,2);
+HadCRUT4_med_avg = nmean(HadCRUT4_med.*weight,2);
 HadCRUT4_med_avg_i = nmean(HadCRUT4_med_i.*weight(:,idx),2);
 HadCRUT4_med_avg_a = nmean(HadCRUT4_med_annual.*weight_a(:,idx),2);
 tan = datenum([ta, 6*ones(na,1),15*ones(na,1)]);
@@ -49,7 +60,7 @@ fancyplot_deco('HadCRUT4 global mean','Time','Anomaly (K)');
 export_fig('../figs/HadCRUT4_GM_monthly_GraphEMsp70.pdf','-cmyk','-r200','-painters');
 
 %% export
-loc = Hi.loc(idx,:);
+loc = H.loc(idx,:);
 field = HadCRUT4_med_annual;
 gmean = HadCRUT4_med_avg_a;
 t = ta;
