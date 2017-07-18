@@ -1,7 +1,7 @@
 
 # PAGES2k SD code
 Matlab code for the PAGES2k synthesis of temperature-sensitive proxies, version 2.0.0.
-Citation: PAGES2K Consortium (2017), A global multiproxy database for temperature reconstructions of the Common Era, Scientific Data.
+Citation: PAGES2K Consortium (2017), A global multiproxy database for tempera- ture reconstructions of the Common Era, *Scientific Data*, 4, 170,088 EP, doi:10.1038/sdata.2017.88
 
 The code and data herein allow to reproduce all PAGES2k-related figures from the main text and supplementary online material.
 The code is provided "as is" and without warranty of running on your system. We welcome any and all feedback to make it run more smoothly.
@@ -11,7 +11,9 @@ To cite this code, use:
 *Julien Emile-Geay, Nick McKay, Jianghao Wang & Kevin Anchukaitis (2017). CommonClimate/PAGES2k_phase2: First Public Release. Zenodo. http://doi.org/10.5281/zenodo.545815*
 
 ## Input data
-the code needs the files `PAGES2k_v2.0.0.mat` and `had4med_graphem_sp70.mat` from the [FigShare repository](https://figshare.com/s/d327a0367bb908a4c4f2) in the **data/** directory. (or at least, an alias pointing to such files). This repository is private until publication. Until then, the files may be accessed in this read-only Dropbox folder](https://www.dropbox.com/sh/kgfb5qn1epbsm93/AABIkTn4BCU_bBrMnPptKk01a?dl=0)
+the code needs the files [`PAGES2k_v2.0.0.mat`](https://ndownloader.figshare.com/files/8120039?private_link=d327a0367bb908a4c4f2) and [`had4med_graphem_sp70.mat`](https://ndownloader.figshare.com/files/8120138?private_link=d327a0367bb908a4c4f2) from the [FigShare repository](https://figshare.com/s/d327a0367bb908a4c4f2) in the **data/** directory. (or at least, an alias pointing to such files).
+
+Some figures also require a few definitions from [JEG_graphics.mat](https://github.com/CommonClimate/common-climate/blob/master/JEG_graphics.mat)
 
 ## code_db directory
 
@@ -52,7 +54,9 @@ The master code, **pages2k_SD_workflow.m** is made up of the following pieces:
 - **pages2k_composite_globalBins** creates global binned composites, makes Fig 7
 - **pages2k_compositeByArchive**  stratification by archive type, makes Fig 8
 
-All the data are in "data". All figures are exported to "figs" (sometimes in subfolders thereof).
+In addition, a plain composite (see e.g. [this one](http://futureearth.org/blog/2017-jul-11/new-dataset-provides-most-complete-look-yet-climate-last-2000-years)) can be produced using  **pages2k_compositeSimple.m**
+
+All the data are in "/data". All figures are exported to "/figs" (sometimes in subfolders thereof).
 Code dependencies needed to run the above codes are included in "utilities". If you are missing anything, we will be happy to add it. To comply with the license, some third-party packages may need to be installed separately, and be visible in your path:
 
 - [m_map](http://www.eos.ubc.ca/~rich/map.html)
@@ -60,3 +64,4 @@ Code dependencies needed to run the above codes are included in "utilities". If 
 - [Brewermap](https://github.com/DrosteEffect/BrewerMap)
 - [Perceptually Improved Colormaps](https://www.mathworks.com/matlabcentral/fileexchange/28982-perceptually-improved-colormaps)
 - [CommonClimate](https://github.com/CommonClimate/common-climate)
+- in current form, requires the "Statistics and Machine Learning" toolbox. We're happy to accept contributions that would make the code independent of this (expensive) toolboox. 
