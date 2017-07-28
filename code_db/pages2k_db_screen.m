@@ -50,23 +50,22 @@ for j = 1:ns      % this is slow, but consistent with what was applied to proxie
    temp_jja(:,j) = intra_annual_avg(temp(:,j),tim,6,8); 
    temp_djf(:,j) = intra_annual_avg(temp(:,j),tim,12,2); 
 end
-nia = length(tia);
+
 % sanity check
 
-weight = cosd(tmp.loc(:,2))/ns;
-seas = {'djf','jja','ann','ama'}; nl = length(seas);
-col = brewermap(
-fig('Sanity check'), clf
-hold on
-for i = 1:nl
-    eval(['gmean_' seas{i} ' = temp_' seas{i} '*weight;'])
-    eval(['h(i) = plot(tia,gmean_' seas{i} ')'])
-end
-lbl = {'Dec Jan Feb', 'Jun Jul Aug','Calendar year (Jan-Dec)','Tropical year (Apr-Mar)'}
-fancyplot_deco('HadCRUT4 annnualizations 4 ways','Time','Temperature ({}^\circ C)')
-legend(lbl,'fontsize',14,'location','northwest'), legend boxoff
-export_fig('../figs/HadCRUT4_4annualizations.pdf','-cmyk','-r200','-painters')
-
+% weight = cosd(tmp.loc(:,2))/ns;
+% seas = {'djf','jja','ann','ama'}; nl = length(seas);
+% fig('Sanity check'), clf
+% hold on
+% for i = 1:nl
+%     eval(['gmean_' seas{i} ' = temp_' seas{i} '*weight;'])
+%     eval(['h(i) = plot(tia,gmean_' seas{i} ')'])
+% end
+% lbl = {'Dec Jan Feb', 'Jun Jul Aug','Calendar year (Jan-Dec)','Tropical year (Apr-Mar)'}
+% fancyplot_deco('HadCRUT4 annnualizations 4 ways','Time','Temperature ({}^\circ C)')
+% legend(lbl,'fontsize',14,'location','northwest'), legend boxoff
+% export_fig('../figs/HadCRUT4_4annualizations.pdf','-cmyk','-r200','-painters')
+% 
 
 % Overlapping period (proxy vs. temperature)
 tc    = intersect(ti,t);
