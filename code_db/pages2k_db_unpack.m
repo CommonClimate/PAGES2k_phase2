@@ -172,18 +172,18 @@ for r = 1:nr
             ta = [min(floor(tc)):max(floor(tc))]';
             F = griddedInterpolant(tc,Xc,'linear'); Xcal = F(ta);
             Xdjf = Xcal; Xjja = Xcal;  Xama = Xcal;
-            tdjf = tcal; tama = tcal;
+            tcal = ta; tdjf = tcal; tama = tcal;
         else
             [tc,Xc,ind] = consolidator(tn(:),Xn(:));
             ta = round(tc);
             Xcal = Xc; Xdjf = Xc; Xjja = Xc;  Xama = Xc;
-            tdjf = tc; tama = tc;
+            tdjf = ta; tama = ta; tcal = ta;
         end
         if strcmp(archive{r},'ice core')
-            proxy_ann(ismember(year,tcal),r) = Xcal;  % As per Eric Steig: diffusion renders subannual averages meaningless
-            proxy_djf(ismember(year,tdjf),r) = Xcal;
-            proxy_jja(ismember(year,tcal),r) = Xcal;
-            proxy_ama(ismember(year,tama),r) = Xama;
+            proxy_ann(ismember(year,ta),r) = Xcal;  % As per Eric Steig: diffusion renders subannual averages meaningless
+            proxy_djf(ismember(year,ta),r) = Xcal;
+            proxy_jja(ismember(year,ta),r) = Xcal;
+            proxy_ama(ismember(year,ta),r) = Xcal;
         else
             proxy_ann(ismember(year,tcal),r) = Xcal;
             proxy_djf(ismember(year,tdjf),r) = Xdjf;

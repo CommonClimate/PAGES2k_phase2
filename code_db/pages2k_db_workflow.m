@@ -21,7 +21,7 @@ options.search_radius  = 2000; % in km
 % ================================================
 
 % 1.1 unpack database into a more usable form and annualize data
-visual = 0; % (set to 1 for debug purposes)
+visual = 1; % (set to 1 for debug purposes)
 pages2k_db_unpack(vers, visual);
 
 % 1.2  map it all
