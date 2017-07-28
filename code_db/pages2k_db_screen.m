@@ -68,8 +68,8 @@ end
 % 
 
 % Overlapping period (proxy vs. temperature)
-tc    = intersect(ti,t);
-tcal  = ismember(ti,tc);
+tc    = intersect(tia,t);
+tcal  = ismember(tia,tc);
 pcal  = ismember(t,tc);
 
 
