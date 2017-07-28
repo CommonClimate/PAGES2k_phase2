@@ -216,6 +216,7 @@ for r = iWei
     proxy_ann(ismember(year,ty),r) = Xcal;
     proxy_djf(ismember(year,ty),r) = Xcal;
     proxy_jja(ismember(year,ty),r) = Xcal;
+    proxy_ama(ismember(year,ty),r) = Xcal;
 end
 % restrict to Common Era
 yearCE    = year>0;
