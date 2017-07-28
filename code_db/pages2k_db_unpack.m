@@ -6,7 +6,7 @@ function  S = pages2k_db_unpack(vers,visual)
 %  Loads data from one of the pages2k_v{vers}.mat files and extract
 %  data and metadata for use in climate applications.
 %
-%  started   Nov 23 2015 by Julien Emile-Geay (USC), based on code by by J. Wang
+%  started   Nov 23 2015 by Julien Emile-Geay (USC), based on code by J. Wang
 %  Updated   Feb  6 2017 for public release (JEG)
 %  Corrected July 26 2017 for seasonal averaging. 
 

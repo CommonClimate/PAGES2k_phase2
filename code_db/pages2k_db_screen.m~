@@ -33,6 +33,10 @@ temp = tmp.Xf(1:nm,:);  %temperature anomaly matrix
 tim  = tmp.tvec(1:nm,1)+tmp.tvec(1:nm,2)/12-1/12; % fractional year
 
 t     = year(year>0);
+% Overlapping period (proxy vs. temperature)
+tc    = intersect(ti,t);
+tcal  = ismember(ti,tc);
+pcal  = ismember(t,tc);
 
 [nm,ns] = size(temp);
 nr      = length(S);
@@ -55,7 +59,6 @@ nia = length(tia);
 
 weight = cosd(tmp.loc(:,2))/ns;
 seas = {'djf','jja','ann','ama'}; nl = length(seas);
-col = brewermap(
 fig('Sanity check'), clf
 hold on
 for i = 1:nl
@@ -66,12 +69,6 @@ lbl = {'Dec Jan Feb', 'Jun Jul Aug','Calendar year (Jan-Dec)','Tropical year (Ap
 fancyplot_deco('HadCRUT4 annnualizations 4 ways','Time','Temperature ({}^\circ C)')
 legend(lbl,'fontsize',14,'location','northwest'), legend boxoff
 export_fig('../figs/HadCRUT4_4annualizations.pdf','-cmyk','-r200','-painters')
-
-
-% Overlapping period (proxy vs. temperature)
-tc    = intersect(ti,t);
-tcal  = ismember(ti,tc);
-pcal  = ismember(t,tc);
 
 
 % temp_ann
